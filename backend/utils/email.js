@@ -1,0 +1,1 @@
+module.exports = { sendEmail: async (opts) => console.log('Email stub:', opts.subject) };

@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --teal:#0D9B82;--tealL:#1DBEA0;--tealXL:#E6F7F4;--tealDk:#0A7A67;
+  --emerald:#10B981;--gold:#F59E0B;--rose:#F43F5E;--violet:#7C3AED;--sky:#0EA5E9;
+  --ink:#0A1628;--slate:#64748B;--mist:#94A3B8;--snow:#F8FAFC;
+  --bg:#F8FAFC;--surf:#FFFFFF;--surf2:#F1F5F9;
+  --txt:#0A1628;--txt2:#64748B;--txt3:#94A3B8;
+  --bdr:#E2E8F0;--bdr2:#CBD5E1;
+  --fd:'Syne',sans-serif;--fb:'DM Sans',sans-serif;
+  --tg:linear-gradient(135deg,#0D9B82,#1DBEA0);
+}
+html,body,#root{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt)}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--teal);border-radius:99px}
+a{text-decoration:none;color:inherit}
+button{font-family:'DM Sans',sans-serif}
+input,select,textarea{font-family:'DM Sans',sans-serif}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes slideLeft{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
+.fu{animation:fadeUp .5s ease both}
+.si{animation:scaleIn .3s ease both}
+.spin{animation:spin 1s linear infinite}
