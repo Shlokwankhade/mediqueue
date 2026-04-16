@@ -44,6 +44,7 @@ app.use('/api/appointments', require('./routes/appointments'));
 app.use('/api/queue', require('./routes/queue'));
 app.use('/api/doctors', require('./routes/doctors'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/payments', require('./routes/payments'));
 
 // WebSocket
 require('./sockets/queueSocket')(io);

@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import AppointmentsPanel from './panels/AppointmentsPanel';
 import QueuePanel from './panels/QueuePanel';
 import AdminPanel from './panels/AdminPanel';
+import PaymentsPanel from './panels/PaymentsPanel';
 import ToastStack from '../components/ToastStack';
 import Chatbot from '../components/Chatbot';
 const tg = 'linear-gradient(135deg,#0D9B82,#1DBEA0)';
@@ -16,6 +17,7 @@ function Sidebar({ role, active, onNav, user, onLogout }) {
       { id:'appointments', icon:'fa-calendar-check', label:'Appointments' },
       { id:'queue', icon:'fa-ticket-alt', label:'Queue Status' },
       { id:'doctors', icon:'fa-user-md', label:'Find Doctors' },
+      { id:'payments', icon:'fa-credit-card', label:'Payments' },
       { id:'settings', icon:'fa-cog', label:'Settings' }
     ],
     doctor: [
@@ -175,7 +177,7 @@ function SettingsPanel({ user }) {
 export default function Dashboard() {
   const { user, logout } = useAuth();
   const [panel, setPanel] = useState('overview');
-  const titles = { overview:'Dashboard', appointments:'Appointments', queue:user?.role==='doctor'?'Queue Management':'Queue Status', doctors:'Find Doctors', admin:'Analytics', settings:'Settings' };
+  const titles = { overview:'Dashboard', appointments:'Appointments', queue:user?.role==='doctor'?'Queue Management':'Queue Status', doctors:'Find Doctors', admin:'Analytics', settings:'Settings', payments:'Payments' };
 
   const renderPanel = () => {
     switch(panel) {
@@ -184,6 +186,7 @@ export default function Dashboard() {
       case 'queue': return <QueuePanel role={user?.role}/>;
       case 'doctors': return <DoctorsPanel/>;
       case 'admin': return <AdminPanel/>;
+      case 'payments': return <PaymentsPanel/>;
       case 'settings': return <SettingsPanel user={user}/>;
       default: return <div style={{padding:40,color:'var(--txt2)'}}>Coming soon...</div>;
     }
