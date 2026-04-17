@@ -12,7 +12,7 @@ import Chatbot from '../components/Chatbot';
 
 const tg = 'linear-gradient(135deg,#0D9B82,#1DBEA0)';
 
-// Role-based navigation � strictly separated
+// Role-based navigation  strictly separated
 const NAV_CONFIG = {
   patient: [
     { id:'overview',       icon:'fa-home',                label:'Dashboard' },
@@ -54,25 +54,25 @@ function Sidebar({ role, active, onNav, user, onLogout }) {
 
   return (
     <aside style={{
-      width:260, background:'var(--surf)',
-      borderRight:'1px solid var(--bdr)',
+      width:260, background:'var(--surface)',
+      borderRight:'1px solid var(--border)',
       height:'100vh', display:'flex',
       flexDirection:'column', flexShrink:0,
       position:'fixed', top:0, left:0, zIndex:100
     }}>
       {/* Logo */}
-      <div style={{padding:'20px 16px',borderBottom:'1px solid var(--bdr)',display:'flex',alignItems:'center',gap:10}}>
+      <div style={{padding:'20px 16px',borderBottom:'1px solid var(--border)',display:'flex',alignItems:'center',gap:10}}>
         <div style={{width:36,height:36,background:tg,borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
           <i className='fas fa-heart-pulse' style={{color:'#fff',fontSize:16}}/>
         </div>
         <div>
           <div style={{fontFamily:'Syne,sans-serif',fontWeight:800,fontSize:15,background:tg,WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',letterSpacing:.5}}>MEDIQUEUE</div>
-          <div style={{fontSize:9,color:'var(--txt3)',letterSpacing:.8,textTransform:'uppercase',fontWeight:600}}>Digital Queue System</div>
+          <div style={{fontSize:9,color:'var(--text-3)',letterSpacing:.8,textTransform:'uppercase',fontWeight:600}}>Digital Queue System</div>
         </div>
       </div>
 
       {/* Role Badge */}
-      <div style={{padding:'10px 14px',borderBottom:'1px solid var(--bdr)'}}>
+      <div style={{padding:'10px 14px',borderBottom:'1px solid var(--border)'}}>
         <div style={{display:'inline-flex',alignItems:'center',gap:6,padding:'5px 12px',borderRadius:99,background:roleBg,color:roleColor,fontSize:11,fontWeight:700,textTransform:'uppercase',letterSpacing:.5}}>
           <i className={'fas '+(role==='patient'?'fa-user':role==='doctor'?'fa-user-md':'fa-crown')}/>
           {role} Portal
@@ -89,19 +89,19 @@ function Sidebar({ role, active, onNav, user, onLogout }) {
               display:'flex', alignItems:'center', gap:10,
               padding:'10px 12px', borderRadius:10,
               cursor:'pointer', marginBottom:3,
-              background: active===item.id ? 'var(--tealXL)' : 'transparent',
-              color: active===item.id ? 'var(--teal)' : 'var(--txt2)',
+              background: active===item.id ? '#E6F7F4' : 'transparent',
+              color: active===item.id ? '#0D9B82' : 'var(--text-2)',
               fontWeight: active===item.id ? 600 : 500,
               fontSize:13, transition:'all .2s'
             }}
-            onMouseEnter={e => { if(active!==item.id) e.currentTarget.style.background='var(--surf2)'; }}
+            onMouseEnter={e => { if(active!==item.id) e.currentTarget.style.background='var(--surface-2)'; }}
             onMouseLeave={e => { if(active!==item.id) e.currentTarget.style.background='transparent'; }}
           >
             <div style={{
               width:32, height:32, borderRadius:9, flexShrink:0,
-              background: active===item.id ? tg : 'var(--surf2)',
+              background: active===item.id ? tg : 'var(--surface-2)',
               display:'flex', alignItems:'center', justifyContent:'center',
-              fontSize:13, color: active===item.id ? '#fff' : 'var(--txt3)'
+              fontSize:13, color: active===item.id ? '#fff' : 'var(--text-3)'
             }}>
               <i className={'fas '+item.icon}/>
             </div>
@@ -111,14 +111,14 @@ function Sidebar({ role, active, onNav, user, onLogout }) {
       </div>
 
       {/* User + Logout */}
-      <div style={{padding:'12px 8px',borderTop:'1px solid var(--bdr)'}}>
-        <div style={{display:'flex',alignItems:'center',gap:9,padding:'10px 12px',borderRadius:10,background:'var(--surf2)',marginBottom:6}}>
+      <div style={{padding:'12px 8px',borderTop:'1px solid var(--border)'}}>
+        <div style={{display:'flex',alignItems:'center',gap:9,padding:'10px 12px',borderRadius:10,background:'var(--surface-2)',marginBottom:6}}>
           <div style={{width:34,height:34,borderRadius:9,background:tg,display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',fontWeight:700,fontSize:12,flexShrink:0}}>
             {user?.name?.slice(0,2).toUpperCase()||'??'}
           </div>
           <div style={{flex:1,minWidth:0}}>
-            <div style={{fontSize:12,fontWeight:700,color:'var(--txt)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{user?.name}</div>
-            <div style={{fontSize:10,color:'var(--txt3)',textTransform:'capitalize'}}>{user?.email}</div>
+            <div style={{fontSize:12,fontWeight:700,color:'var(--text)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{user?.name}</div>
+            <div style={{fontSize:10,color:'var(--text-3)',textTransform:'capitalize'}}>{user?.email}</div>
           </div>
         </div>
         <button
@@ -168,8 +168,8 @@ function OverviewPanel({ role, user }) {
 
   if (loading) return (
     <div style={{padding:60,textAlign:'center'}}>
-      <i className='fas fa-spinner fa-spin' style={{fontSize:32,color:'var(--teal)',display:'block',marginBottom:12}}/>
-      <div style={{color:'var(--txt3)',fontSize:14}}>Loading dashboard...</div>
+      <i className='fas fa-spinner fa-spin' style={{fontSize:32,color:'#0D9B82',display:'block',marginBottom:12}}/>
+      <div style={{color:'var(--text-3)',fontSize:14}}>Loading dashboard...</div>
     </div>
   );
 
@@ -183,7 +183,7 @@ function OverviewPanel({ role, user }) {
         <div style={{position:'absolute',top:-30,right:-30,width:150,height:150,borderRadius:'50%',background:'rgba(255,255,255,.08)'}}/>
         <div style={{position:'absolute',bottom:-40,right:40,width:100,height:100,borderRadius:'50%',background:'rgba(255,255,255,.06)'}}/>
         <div style={{fontSize:12,opacity:.8,marginBottom:4}}>{today}</div>
-        <div style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:700,marginBottom:4}}>Good {new Date().getHours()<12?'Morning':new Date().getHours()<17?'Afternoon':'Evening'}, {user?.name?.split(' ')[0]}! ??</div>
+        <div style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:700,marginBottom:4}}>Good {new Date().getHours()<12?'Morning':new Date().getHours()<17?'Afternoon':'Evening'}, {user?.name?.split(' ')[0]}!??</div>
         <div style={{fontSize:13,opacity:.85}}>You have {upcoming.length} upcoming appointment{upcoming.length!==1?'s':''}</div>
       </div>
 
@@ -193,8 +193,8 @@ function OverviewPanel({ role, user }) {
           {label:'Total Visits',val:appointments.length,icon:'history',color:'#7C3AED',bg:'#EDE9FE'},
           {label:'Prescriptions',val:'View',icon:'prescription-bottle',color:'#F59E0B',bg:'#FEF3C7'},
         ].map(m=>(
-          <div key={m.label} style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'hidden'}}>
-            <div style={{fontSize:11,fontWeight:700,color:'var(--txt3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:6}}>{m.label}</div>
+          <div key={m.label} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'hidden'}}>
+            <div style={{fontSize:11,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:6}}>{m.label}</div>
             <div style={{fontFamily:'Syne,sans-serif',fontSize:28,fontWeight:700,color:m.color}}>{m.val}</div>
             <div style={{position:'absolute',top:14,right:14,width:36,height:36,borderRadius:10,background:m.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,color:m.color}}>
               <i className={'fas fa-'+m.icon}/>
@@ -204,38 +204,38 @@ function OverviewPanel({ role, user }) {
       </div>
 
       <div style={{display:'grid',gridTemplateColumns:'2fr 1fr',gap:20}}>
-        <div style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:20}}>
+        <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:20}}>
           <div style={{fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700,marginBottom:16,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
             Upcoming Appointments
             <span style={{fontSize:11,padding:'3px 10px',borderRadius:99,background:'#E6F7F4',color:'#0D9B82',fontWeight:700}}>{upcoming.length}</span>
           </div>
           {upcoming.length === 0 ? (
-            <div style={{textAlign:'center',padding:'30px 0',color:'var(--txt3)'}}>
+            <div style={{textAlign:'center',padding:'30px 0',color:'var(--text-3)'}}>
               <i className='fas fa-calendar-plus' style={{fontSize:32,display:'block',marginBottom:10}}/>
               <div style={{fontSize:13,marginBottom:12}}>No upcoming appointments</div>
             </div>
           ) : upcoming.map((a,i)=>(
-            <div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'12px',background:'var(--surf2)',borderRadius:12,marginBottom:8}}>
+            <div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'12px',background:'var(--surface-2)',borderRadius:12,marginBottom:8}}>
               <div style={{width:44,height:44,borderRadius:12,background:tg,display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700,fontSize:13,flexShrink:0}}>
                 {a.doctor_name?.slice(0,2)||'Dr'}
               </div>
               <div style={{flex:1}}>
                 <div style={{fontSize:13,fontWeight:600}}>{a.doctor_name||'Doctor'}</div>
-                <div style={{fontSize:11,color:'var(--txt3)'}}>{new Date(a.appointment_time).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</div>
+                <div style={{fontSize:11,color:'var(--text-3)'}}>{new Date(a.appointment_time).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</div>
               </div>
               <span style={{fontSize:11,padding:'3px 9px',borderRadius:99,fontWeight:700,background:'#D1FAE5',color:'#065F46'}}>{a.status}</span>
             </div>
           ))}
         </div>
         <div style={{display:'flex',flexDirection:'column',gap:16}}>
-          <div style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:20}}>
+          <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:20}}>
             <div style={{fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700,marginBottom:12}}>Quick Actions</div>
             {[
               {icon:'fa-calendar-plus',label:'Book Appointment',color:'#0D9B82',bg:'#E6F7F4'},
               {icon:'fa-ticket-alt',label:'Check Queue',color:'#7C3AED',bg:'#EDE9FE'},
               {icon:'fa-prescription-bottle',label:'My Prescriptions',color:'#F59E0B',bg:'#FEF3C7'},
             ].map(a=>(
-              <div key={a.label} style={{display:'flex',alignItems:'center',gap:10,padding:'10px',borderRadius:10,cursor:'pointer',marginBottom:6,border:'1px solid var(--bdr)',transition:'all .2s'}}
+              <div key={a.label} style={{display:'flex',alignItems:'center',gap:10,padding:'10px',borderRadius:10,cursor:'pointer',marginBottom:6,border:'1px solid var(--border)',transition:'all .2s'}}
                 onMouseEnter={e=>e.currentTarget.style.background=a.bg}
                 onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
                 <div style={{width:32,height:32,borderRadius:8,background:a.bg,display:'flex',alignItems:'center',justifyContent:'center',color:a.color}}>
@@ -256,7 +256,7 @@ function OverviewPanel({ role, user }) {
       <div style={{marginBottom:24,padding:'20px 24px',background:'linear-gradient(135deg,#7C3AED,#A78BFA)',borderRadius:20,color:'white',position:'relative',overflow:'hidden'}}>
         <div style={{position:'absolute',top:-30,right:-30,width:150,height:150,borderRadius:'50%',background:'rgba(255,255,255,.08)'}}/>
         <div style={{fontSize:12,opacity:.8,marginBottom:4}}>{today}</div>
-        <div style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:700,marginBottom:4}}>Welcome, {user?.name}! ?????</div>
+        <div style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:700,marginBottom:4}}>Welcome, {user?.name}!</div>
         <div style={{fontSize:13,opacity:.85}}>You have {appointments.length} appointment{appointments.length!==1?'s':''} scheduled</div>
       </div>
 
@@ -266,8 +266,8 @@ function OverviewPanel({ role, user }) {
           {label:'Confirmed',val:appointments.filter(a=>a.status==='confirmed').length,icon:'calendar-check',color:'#0D9B82',bg:'#E6F7F4'},
           {label:'Completed',val:appointments.filter(a=>a.status==='completed').length,icon:'check-circle',color:'#F59E0B',bg:'#FEF3C7'},
         ].map(m=>(
-          <div key={m.label} style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'hidden'}}>
-            <div style={{fontSize:11,fontWeight:700,color:'var(--txt3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:6}}>{m.label}</div>
+          <div key={m.label} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'hidden'}}>
+            <div style={{fontSize:11,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:6}}>{m.label}</div>
             <div style={{fontFamily:'Syne,sans-serif',fontSize:28,fontWeight:700,color:m.color}}>{m.val}</div>
             <div style={{position:'absolute',top:14,right:14,width:36,height:36,borderRadius:10,background:m.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,color:m.color}}>
               <i className={'fas fa-'+m.icon}/>
@@ -276,21 +276,21 @@ function OverviewPanel({ role, user }) {
         ))}
       </div>
 
-      <div style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:20}}>
+      <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:20}}>
         <div style={{fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700,marginBottom:16}}>Today Schedule</div>
         {appointments.filter(a=>new Date(a.appointment_time).toDateString()===new Date().toDateString()).length === 0 ? (
-          <div style={{textAlign:'center',padding:'30px 0',color:'var(--txt3)'}}>
+          <div style={{textAlign:'center',padding:'30px 0',color:'var(--text-3)'}}>
             <i className='fas fa-calendar' style={{fontSize:32,display:'block',marginBottom:10}}/>
             <div style={{fontSize:13}}>No appointments today</div>
           </div>
         ) : appointments.filter(a=>new Date(a.appointment_time).toDateString()===new Date().toDateString()).map((a,i)=>(
-          <div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:12,background:'var(--surf2)',borderRadius:12,marginBottom:8}}>
+          <div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:12,background:'var(--surface-2)',borderRadius:12,marginBottom:8}}>
             <div style={{width:44,height:44,borderRadius:12,background:'linear-gradient(135deg,#7C3AED,#A78BFA)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700,fontSize:13}}>
               {a.patient_name?.slice(0,2)||'P'}
             </div>
             <div style={{flex:1}}>
               <div style={{fontSize:13,fontWeight:600}}>{a.patient_name}</div>
-              <div style={{fontSize:11,color:'var(--txt3)'}}>{new Date(a.appointment_time).toLocaleTimeString('en-IN',{timeStyle:'short'})} � {a.type}</div>
+              <div style={{fontSize:11,color:'var(--text-3)'}}>{new Date(a.appointment_time).toLocaleTimeString('en-IN',{timeStyle:'short'})}  {a.type}</div>
             </div>
             <span style={{fontSize:11,padding:'3px 9px',borderRadius:99,fontWeight:700,background:'#D1FAE5',color:'#065F46'}}>{a.status}</span>
           </div>
@@ -306,7 +306,7 @@ function OverviewPanel({ role, user }) {
         <div style={{position:'absolute',top:-30,right:-30,width:150,height:150,borderRadius:'50%',background:'rgba(0,0,0,.06)'}}/>
         <div style={{fontSize:12,opacity:.7,marginBottom:4}}>{today}</div>
         <div style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:700,marginBottom:4}}>Admin Dashboard ??</div>
-        <div style={{fontSize:13,opacity:.8}}>{stats?.totalPatients||0} patients � {stats?.activeDoctors||0} doctors � {stats?.todayAppointments||0} appointments today</div>
+        <div style={{fontSize:13,opacity:.8}}>{stats?.totalPatients||0} patients  {stats?.activeDoctors||0} doctors  {stats?.todayAppointments||0} appointments today</div>
       </div>
 
       <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:24}}>
@@ -316,8 +316,8 @@ function OverviewPanel({ role, user }) {
           {label:'Today Appts',val:stats?.todayAppointments||0,icon:'calendar',color:'#F59E0B',bg:'#FEF3C7'},
           {label:'Revenue',val:'Rs.'+(stats?.totalRevenue?Math.round(stats.totalRevenue).toLocaleString():'0'),icon:'indian-rupee-sign',color:'#F43F5E',bg:'#FFE4E6'},
         ].map(m=>(
-          <div key={m.label} style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'hidden'}}>
-            <div style={{fontSize:11,fontWeight:700,color:'var(--txt3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:6}}>{m.label}</div>
+          <div key={m.label} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'hidden'}}>
+            <div style={{fontSize:11,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:6}}>{m.label}</div>
             <div style={{fontFamily:'Syne,sans-serif',fontSize:24,fontWeight:700,color:m.color}}>{m.val}</div>
             <div style={{position:'absolute',top:14,right:14,width:36,height:36,borderRadius:10,background:m.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,color:m.color}}>
               <i className={'fas fa-'+m.icon}/>
@@ -326,13 +326,13 @@ function OverviewPanel({ role, user }) {
         ))}
       </div>
 
-      <div style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:20}}>
+      <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:20}}>
         <div style={{fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700,marginBottom:16}}>Recent Appointments</div>
         {appointments.slice(0,5).map((a,i)=>(
-          <div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:12,borderBottom:'1px solid var(--bdr)'}}>
+          <div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:12,borderBottom:'1px solid var(--border)'}}>
             <div style={{flex:1}}>
               <div style={{fontSize:13,fontWeight:600}}>{a.patient_name} ? {a.doctor_name}</div>
-              <div style={{fontSize:11,color:'var(--txt3)'}}>{new Date(a.appointment_time).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</div>
+              <div style={{fontSize:11,color:'var(--text-3)'}}>{new Date(a.appointment_time).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</div>
             </div>
             <span style={{fontSize:11,padding:'3px 9px',borderRadius:99,fontWeight:700,background:a.status==='confirmed'?'#D1FAE5':a.status==='cancelled'?'#FFE4E6':'#FEF3C7',color:a.status==='confirmed'?'#065F46':a.status==='cancelled'?'#9F1239':'#92400E'}}>{a.status}</span>
           </div>
@@ -345,32 +345,53 @@ function OverviewPanel({ role, user }) {
 }
 
 function SettingsPanel({ user }) {
+  const [name, setName] = useState(user?.name || '');
+  const [phone, setPhone] = useState(user?.phone || '');
+  const [saving, setSaving] = useState(false);
+
+  const save = async () => {
+    setSaving(true);
+    try {
+      const { default: api } = await import('../services/api');
+      await api.put('/auth/profile', { name, phone });
+      const { toast } = await import('../components/ToastStack');
+      toast('Profile updated successfully!', 'success');
+    } catch(e) {
+      console.error(e);
+      const { toast } = await import('../components/ToastStack');
+      toast('Failed to save', 'error');
+    } finally { setSaving(false); }
+  };
+
   return (
     <div className='fu'>
-      <div style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:24,maxWidth:600}}>
+      <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:24,maxWidth:600}}>
         <div style={{fontFamily:'Syne,sans-serif',fontSize:16,fontWeight:700,marginBottom:20}}>Account Settings</div>
-        <div style={{display:'flex',alignItems:'center',gap:16,padding:20,background:'var(--surf2)',borderRadius:14,marginBottom:20}}>
+        <div style={{display:'flex',alignItems:'center',gap:16,padding:20,background:'#F8FAFC',borderRadius:14,marginBottom:24}}>
           <div style={{width:64,height:64,borderRadius:16,background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700,fontSize:24,flexShrink:0}}>
             {user?.name?.slice(0,2).toUpperCase()}
           </div>
           <div>
             <div style={{fontFamily:'Syne,sans-serif',fontSize:18,fontWeight:700}}>{user?.name}</div>
-            <div style={{fontSize:13,color:'var(--txt3)'}}>{user?.email}</div>
+            <div style={{fontSize:13,color:'#64748B'}}>{user?.email}</div>
             <span style={{fontSize:11,padding:'3px 10px',borderRadius:99,fontWeight:700,background:'#E6F7F4',color:'#0D9B82',textTransform:'capitalize',marginTop:4,display:'inline-block'}}>{user?.role}</span>
           </div>
         </div>
-        {[
-          {label:'Full Name',val:user?.name,type:'text'},
-          {label:'Email',val:user?.email,type:'email'},
-          {label:'Phone',val:user?.phone||'Not set',type:'tel'},
-        ].map(f=>(
-          <div key={f.label} style={{marginBottom:16}}>
-            <label style={{display:'block',fontSize:12,fontWeight:700,color:'var(--txt3)',marginBottom:5,textTransform:'uppercase',letterSpacing:.4}}>{f.label}</label>
-            <input defaultValue={f.val} type={f.type} style={{width:'100%',padding:'11px 14px',background:'var(--surf2)',border:'1.5px solid var(--bdr)',borderRadius:10,fontSize:14,color:'var(--txt)',outline:'none',fontFamily:'DM Sans,sans-serif'}}/>
-          </div>
-        ))}
-        <button style={{padding:'11px 24px',background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',color:'white',border:'none',borderRadius:10,fontFamily:'DM Sans,sans-serif',fontSize:14,fontWeight:700,cursor:'pointer'}}>
-          Save Changes
+        <div style={{marginBottom:16}}>
+          <label style={{display:'block',fontSize:12,fontWeight:700,color:'#64748B',marginBottom:5,textTransform:'uppercase',letterSpacing:.4}}>Full Name</label>
+          <input value={name} onChange={e=>setName(e.target.value)} type='text' style={{width:'100%',padding:'11px 14px',background:'#F8FAFC',border:'1.5px solid #E2E8F0',borderRadius:10,fontSize:14,color:'#0A1628',outline:'none',fontFamily:'DM Sans,sans-serif'}}/>
+        </div>
+        <div style={{marginBottom:16}}>
+          <label style={{display:'block',fontSize:12,fontWeight:700,color:'#64748B',marginBottom:5,textTransform:'uppercase',letterSpacing:.4}}>Email</label>
+          <input value={user?.email} disabled type='email' style={{width:'100%',padding:'11px 14px',background:'#F1F5F9',border:'1.5px solid #E2E8F0',borderRadius:10,fontSize:14,color:'#94A3B8',outline:'none',fontFamily:'DM Sans,sans-serif',cursor:'not-allowed'}}/>
+          <div style={{fontSize:11,color:'#94A3B8',marginTop:4}}>Email cannot be changed</div>
+        </div>
+        <div style={{marginBottom:24}}>
+          <label style={{display:'block',fontSize:12,fontWeight:700,color:'#64748B',marginBottom:5,textTransform:'uppercase',letterSpacing:.4}}>Phone</label>
+          <input value={phone} onChange={e=>setPhone(e.target.value)} type='tel' placeholder='+91 98765 43210' style={{width:'100%',padding:'11px 14px',background:'#F8FAFC',border:'1.5px solid #E2E8F0',borderRadius:10,fontSize:14,color:'#0A1628',outline:'none',fontFamily:'DM Sans,sans-serif'}}/>
+        </div>
+        <button onClick={save} disabled={saving} style={{padding:'11px 28px',background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',color:'white',border:'none',borderRadius:10,fontFamily:'DM Sans,sans-serif',fontSize:14,fontWeight:700,cursor:'pointer',opacity:saving?0.7:1}}>
+          {saving ? 'Saving...' : 'Save Changes'}
         </button>
       </div>
     </div>
@@ -394,9 +415,9 @@ export default function Dashboard() {
       case 'overview':      return <OverviewPanel role={role} user={user}/>;
       case 'appointments':  return <AppointmentsPanel role={role}/>;
       case 'queue':         return <QueuePanel role={role}/>;
-      case 'payments':      return role==='patient' ? <PaymentsPanel/> : <div style={{padding:40,textAlign:'center',color:'var(--txt3)'}}>Access denied</div>;
+      case 'payments':      return role==='patient' ? <PaymentsPanel/> : <div style={{padding:40,textAlign:'center',color:'var(--text-3)'}}>Access denied</div>;
       case 'prescriptions': return <PrescriptionsPanel role={role}/>;
-      case 'admin':         return role==='admin' ? <AdminPanel/> : <div style={{padding:40,textAlign:'center',color:'var(--txt3)'}}>Access denied</div>;
+      case 'admin':         return role==='admin' ? <AdminPanel/> : <div style={{padding:40,textAlign:'center',color:'var(--text-3)'}}>Access denied</div>;
       case 'doctors':       return role==='admin' ? <AdminDoctorsPanel/> : <FindDoctorsPanel/>;
       case 'settings':      return <SettingsPanel user={user}/>;
       default:              return <OverviewPanel role={role} user={user}/>;
@@ -404,28 +425,28 @@ export default function Dashboard() {
   };
 
   return (
-    <div style={{display:'flex',minHeight:'100vh',background:'var(--bg)'}}>
+    <div style={{display:'flex',minHeight:'100vh',background:'#F8FAFC'}}>
       <ToastStack/>
       <Sidebar role={role} active={panel} onNav={setPanel} user={user} onLogout={logout}/>
 
       <div style={{marginLeft:260,flex:1,display:'flex',flexDirection:'column',minHeight:'100vh'}}>
         {/* Topbar */}
-        <div style={{height:60,padding:'0 24px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--surf)',borderBottom:'1px solid var(--bdr)',position:'sticky',top:0,zIndex:50}}>
+        <div style={{height:60,padding:'0 24px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--surface)',borderBottom:'1px solid var(--border)',position:'sticky',top:0,zIndex:50}}>
           <div>
             <div style={{fontFamily:'Syne,sans-serif',fontSize:18,fontWeight:700}}>{PAGE_TITLES[panel]||panel}</div>
-            <div style={{fontSize:11,color:'var(--txt3)'}}>Welcome back, {user?.name}!</div>
+            <div style={{fontSize:11,color:'var(--text-3)'}}>Welcome back, {user?.name}!</div>
           </div>
           <div style={{display:'flex',alignItems:'center',gap:10}}>
-            <button onClick={toggleDark} style={{width:36,height:36,borderRadius:9,background:'var(--surf2)',border:'1px solid var(--bdr)',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',color:'var(--txt2)',fontSize:14}}>
+            <button onClick={toggleDark} style={{width:36,height:36,borderRadius:9,background:'var(--surface-2)',border:'1px solid var(--border)',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',color:'var(--text-2)',fontSize:14}}>
               <i className={'fas '+(dark?'fa-sun':'fa-moon')}/>
             </button>
-            <div style={{display:'flex',alignItems:'center',gap:8,padding:'6px 12px',background:'var(--surf2)',border:'1px solid var(--bdr)',borderRadius:10}}>
+            <div style={{display:'flex',alignItems:'center',gap:8,padding:'6px 12px',background:'var(--surface-2)',border:'1px solid var(--border)',borderRadius:10}}>
               <div style={{width:28,height:28,borderRadius:7,background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700,fontSize:11}}>
                 {user?.name?.slice(0,2).toUpperCase()}
               </div>
               <div>
-                <div style={{fontSize:12,fontWeight:600,color:'var(--txt)'}}>{user?.name}</div>
-                <div style={{fontSize:10,color:'var(--txt3)',textTransform:'capitalize'}}>{role}</div>
+                <div style={{fontSize:12,fontWeight:600,color:'var(--text)'}}>{user?.name}</div>
+                <div style={{fontSize:10,color:'var(--text-3)',textTransform:'capitalize'}}>{role}</div>
               </div>
             </div>
             <button onClick={logout} style={{display:'flex',alignItems:'center',gap:6,padding:'8px 14px',background:'#FFE4E6',color:'#9F1239',border:'none',borderRadius:9,cursor:'pointer',fontSize:12,fontWeight:700}}>
@@ -451,19 +472,19 @@ function FindDoctorsPanel() {
   useEffect(()=>{
     doctorAPI.getAll().then(r=>setDoctors(r.data.doctors||[])).catch(console.error).finally(()=>setLoading(false));
   },[]);
-  if(loading) return <div style={{padding:40,textAlign:'center'}}><i className='fas fa-spinner fa-spin' style={{fontSize:32,color:'var(--teal)'}}/></div>;
+  if(loading) return <div style={{padding:40,textAlign:'center'}}><i className='fas fa-spinner fa-spin' style={{fontSize:32,color:'#0D9B82'}}/></div>;
   return (
     <div className='fu'>
       <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(240px,1fr))',gap:16}}>
         {doctors.map(d=>(
-          <div key={d.id} style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:20,textAlign:'center',transition:'all .2s'}}
+          <div key={d.id} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:20,textAlign:'center',transition:'all .2s'}}
             onMouseEnter={e=>e.currentTarget.style.transform='translateY(-4px)'}
             onMouseLeave={e=>e.currentTarget.style.transform='none'}>
             <div style={{width:64,height:64,borderRadius:18,background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700,fontSize:22,margin:'0 auto 12px'}}>
               {d.name?.slice(0,2)||'Dr'}
             </div>
             <div style={{fontWeight:700,fontSize:15,marginBottom:4}}>{d.name}</div>
-            <div style={{fontSize:12,color:'var(--txt3)',marginBottom:8}}>{d.speciality}</div>
+            <div style={{fontSize:12,color:'var(--text-3)',marginBottom:8}}>{d.speciality}</div>
             <div style={{display:'flex',justifyContent:'center',gap:6,marginBottom:12}}>
               <span style={{fontSize:11,padding:'3px 9px',borderRadius:99,background:'#E6F7F4',color:'#0D9B82',fontWeight:700}}>Rs.{d.consultation_fee}</span>
               <span style={{fontSize:11,padding:'3px 9px',borderRadius:99,background:'#FEF3C7',color:'#92400E',fontWeight:700}}>? {d.rating||'4.9'}</span>
@@ -484,24 +505,24 @@ function AdminDoctorsPanel() {
   useEffect(()=>{
     doctorAPI.getAll().then(r=>setDoctors(r.data.doctors||[])).catch(console.error).finally(()=>setLoading(false));
   },[]);
-  if(loading) return <div style={{padding:40,textAlign:'center'}}><i className='fas fa-spinner fa-spin' style={{fontSize:32,color:'var(--teal)'}}/></div>;
+  if(loading) return <div style={{padding:40,textAlign:'center'}}><i className='fas fa-spinner fa-spin' style={{fontSize:32,color:'#0D9B82'}}/></div>;
   return (
     <div className='fu'>
-      <div style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,overflow:'hidden'}}>
-        <div style={{padding:'16px 20px',borderBottom:'1px solid var(--bdr)',fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700}}>All Doctors ({doctors.length})</div>
+      <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,overflow:'hidden'}}>
+        <div style={{padding:'16px 20px',borderBottom:'1px solid var(--border)',fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700}}>All Doctors ({doctors.length})</div>
         <table style={{width:'100%',borderCollapse:'collapse'}}>
           <thead>
-            <tr style={{background:'var(--surf2)'}}>
+            <tr style={{background:'var(--surface-2)'}}>
               {['Name','Speciality','Fee','Rating','Status'].map(h=>(
-                <th key={h} style={{padding:'11px 16px',textAlign:'left',fontSize:11,fontWeight:700,color:'var(--txt3)',textTransform:'uppercase',letterSpacing:.6}}>{h}</th>
+                <th key={h} style={{padding:'11px 16px',textAlign:'left',fontSize:11,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.6}}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {doctors.map((d,i)=>(
-              <tr key={i} style={{borderTop:'1px solid var(--bdr)'}}>
+              <tr key={i} style={{borderTop:'1px solid var(--border)'}}>
                 <td style={{padding:'13px 16px',fontWeight:600,fontSize:14}}>{d.name}</td>
-                <td style={{padding:'13px 16px',fontSize:13,color:'var(--txt2)'}}>{d.speciality}</td>
+                <td style={{padding:'13px 16px',fontSize:13,color:'var(--text-2)'}}>{d.speciality}</td>
                 <td style={{padding:'13px 16px',fontSize:13}}>Rs.{d.consultation_fee}</td>
                 <td style={{padding:'13px 16px',fontSize:13}}>? {d.rating||'4.9'}</td>
                 <td style={{padding:'13px 16px'}}>

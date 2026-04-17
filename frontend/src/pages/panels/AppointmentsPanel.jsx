@@ -187,9 +187,9 @@ export default function AppointmentsPanel({ role }) {
               {slots.filter(s=>s.available).slice(0,16).map(s=>(
                 <button key={s.time} onClick={()=>setForm(f=>({...f,time:s.time}))}
                   style={{padding:'9px 4px',border:'1.5px solid',borderRadius:9,fontSize:12,fontWeight:600,cursor:'pointer',transition:'all .15s',
-                    borderColor:form.time===s.time?'var(--teal)':'var(--border)',
+                    borderColor:form.time===s.time?'#0D9B82':'var(--border)',
                     background:form.time===s.time?'var(--teal-xlight)':'transparent',
-                    color:form.time===s.time?'var(--teal)':'var(--text-2)'}}>
+                    color:form.time===s.time?'#0D9B82':'var(--text-2)'}}>
                   {s.time}
                 </button>
               ))}

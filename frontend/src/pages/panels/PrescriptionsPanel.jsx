@@ -89,7 +89,7 @@ export default function PrescriptionsPanel({ role }) {
             <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8,marginBottom:p.notes?12:0}}>
               {(typeof p.medicines === 'string' ? JSON.parse(p.medicines) : p.medicines).map((m, j) => (
                 <div key={j} style={{background:'var(--surface-2)',borderRadius:10,padding:12}}>
-                  <div style={{fontSize:13,fontWeight:700,marginBottom:4,color:'var(--teal)'}}>{m.name}</div>
+                  <div style={{fontSize:13,fontWeight:700,marginBottom:4,color:'#0D9B82'}}>{m.name}</div>
                   <div style={{fontSize:11,color:'var(--text-3)'}}>{m.dosage}</div>
                   <div style={{fontSize:11,color:'var(--text-3)'}}>{m.frequency}</div>
                   <div style={{fontSize:11,color:'var(--text-3)',fontWeight:600}}>{m.duration}</div>
@@ -118,7 +118,7 @@ export default function PrescriptionsPanel({ role }) {
         <div style={{marginBottom:12}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
             <label style={lStyle}>Medicines</label>
-            <button onClick={addMedicine} style={{fontSize:11,padding:'4px 10px',background:'var(--teal-xlight)',color:'var(--teal)',border:'none',borderRadius:7,cursor:'pointer',fontWeight:600}}>+ Add</button>
+            <button onClick={addMedicine} style={{fontSize:11,padding:'4px 10px',background:'var(--teal-xlight)',color:'#0D9B82',border:'none',borderRadius:7,cursor:'pointer',fontWeight:600}}>+ Add</button>
           </div>
           {form.medicines.map((m, i) => (
             <div key={i} style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 1fr auto',gap:6,marginBottom:8}}>

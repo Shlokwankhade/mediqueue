@@ -52,7 +52,11 @@ const login = async (req, res) => {
 const getMe = async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT u.id, u.name, u.email, u.phone, u.role, d.id as doctor_id, d.speciality, d.consultation_fee, d.rating FROM users u LEFT JOIN doctors d ON d.user_id = u.id WHERE u.id = $1',
+      `SELECT u.id, u.name, u.email, u.phone, u.role, 
+       d.id as doctor_id, d.speciality, d.consultation_fee, d.rating, d.is_available
+       FROM users u 
+       LEFT JOIN doctors d ON d.user_id = u.id 
+       WHERE u.id = $1`,
       [req.user.id]
     );
     res.json({ success: true, user: result.rows[0] });
@@ -107,4 +111,15 @@ const resetPassword = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getMe, forgotPassword, resetPassword };
+const updateProfile = async (req, res) => {
+  try {
+    const { name, phone } = req.body;
+    await pool.query(
+      'UPDATE users SET name=$1, phone=$2 WHERE id=$3',
+      [name, phone, req.user.id]
+    );
+    res.json({ success: true, message: 'Profile updated!' });
+  } catch(err) { res.status(500).json({ success:false, message:err.message }); }
+};
+
+module.exports = { register, updateProfile, login, getMe, forgotPassword, resetPassword };
