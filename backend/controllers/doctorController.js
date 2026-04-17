@@ -42,4 +42,36 @@ const getAvailability = async (req, res) => {
   }
 };
 
-module.exports = { getDoctors, getDoctorById, getAvailability };
+
+const createProfile = async (req, res) => {
+  try {
+    const { speciality, experience_years, consultation_fee, bio, room_number, qualification } = req.body;
+    const user_id = req.user.id;
+
+    // Check if doctor profile already exists
+    const existing = await pool.query('SELECT id FROM doctors WHERE user_id = $1', [user_id]);
+    if (existing.rows.length > 0) {
+      // Update existing
+      const result = await pool.query(
+        'UPDATE doctors SET speciality=$1, experience_years=$2, consultation_fee=$3, bio=$4, room_number=$5, updated_at=NOW() WHERE user_id=$6 RETURNING *',
+        [speciality, experience_years||0, consultation_fee||500, bio||'', room_number||'', user_id]
+      );
+      return res.json({ success: true, doctor: result.rows[0] });
+    }
+
+    // Create new doctor profile
+    const result = await pool.query(
+      'INSERT INTO doctors (user_id, speciality, experience_years, consultation_fee, bio, room_number, is_available) VALUES ($1,$2,$3,$4,$5,$6,true) RETURNING *',
+      [user_id, speciality||'General', experience_years||0, consultation_fee||500, bio||'', room_number||'']
+    );
+
+    // Update user role to doctor
+    await pool.query('UPDATE users SET role = $1 WHERE id = $2', ['doctor', user_id]);
+
+    res.status(201).json({ success: true, doctor: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+module.exports = { getDoctors, getDoctorById, getAvailability, createProfile };
