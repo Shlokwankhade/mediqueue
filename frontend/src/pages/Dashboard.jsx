@@ -1,177 +1,377 @@
-import PrescriptionsPanel from './panels/PrescriptionsPanel';
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { adminAPI, appointmentAPI, doctorAPI } from '../services/api';
-import { useEffect } from 'react';
 import AppointmentsPanel from './panels/AppointmentsPanel';
 import QueuePanel from './panels/QueuePanel';
 import AdminPanel from './panels/AdminPanel';
 import PaymentsPanel from './panels/PaymentsPanel';
+import PrescriptionsPanel from './panels/PrescriptionsPanel';
 import ToastStack from '../components/ToastStack';
 import Chatbot from '../components/Chatbot';
+
 const tg = 'linear-gradient(135deg,#0D9B82,#1DBEA0)';
 
+// Role-based navigation � strictly separated
+const NAV_CONFIG = {
+  patient: [
+    { id:'overview',       icon:'fa-home',                label:'Dashboard' },
+    { id:'appointments',   icon:'fa-calendar-check',      label:'My Appointments' },
+    { id:'queue',          icon:'fa-ticket-alt',           label:'Queue Status' },
+    { id:'doctors',        icon:'fa-user-md',             label:'Find Doctors' },
+    { id:'payments',       icon:'fa-credit-card',         label:'Payments' },
+    { id:'prescriptions',  icon:'fa-prescription-bottle', label:'Prescriptions' },
+    { id:'settings',       icon:'fa-cog',                 label:'Settings' },
+  ],
+  doctor: [
+    { id:'overview',       icon:'fa-home',                label:'Dashboard' },
+    { id:'appointments',   icon:'fa-calendar-alt',        label:'My Schedule' },
+    { id:'queue',          icon:'fa-ticket-alt',           label:'Queue Management' },
+    { id:'prescriptions',  icon:'fa-prescription-bottle', label:'E-Prescriptions' },
+    { id:'settings',       icon:'fa-cog',                 label:'Settings' },
+  ],
+  admin: [
+    { id:'overview',       icon:'fa-home',                label:'Overview' },
+    { id:'admin',          icon:'fa-chart-bar',           label:'Analytics' },
+    { id:'appointments',   icon:'fa-calendar-alt',        label:'All Appointments' },
+    { id:'doctors',        icon:'fa-user-md',             label:'Manage Doctors' },
+    { id:'settings',       icon:'fa-cog',                 label:'Settings' },
+  ]
+};
+
+const PAGE_TITLES = {
+  overview:'Dashboard', appointments:'Appointments', queue:'Queue',
+  doctors:'Doctors', payments:'Payments', prescriptions:'Prescriptions',
+  settings:'Settings', admin:'Analytics'
+};
+
 function Sidebar({ role, active, onNav, user, onLogout }) {
-  const navs = {
-    patient: [
-      { id:'overview', icon:'fa-home', label:'Dashboard' },
-      { id:'appointments', icon:'fa-calendar-check', label:'Appointments' },
-      { id:'queue', icon:'fa-ticket-alt', label:'Queue Status' },
-      { id:'doctors', icon:'fa-user-md', label:'Find Doctors' },
-      { id:'payments', icon:'fa-credit-card', label:'Payments' },
-      { id:'prescriptions', icon:'fa-prescription-bottle', label:'Prescriptions' },
-      { id:'settings', icon:'fa-cog', label:'Settings' }
-    ],
-    doctor: [
-      { id:'overview', icon:'fa-home', label:'Dashboard' },
-      { id:'queue', icon:'fa-ticket-alt', label:'Queue Mgmt' },
-      { id:'prescriptions', icon:'fa-prescription-bottle', label:'Prescriptions' },
-      { id:'appointments', icon:'fa-calendar-alt', label:'Schedule' },
-      { id:'settings', icon:'fa-cog', label:'Settings' }
-    ],
-    admin: [
-      { id:'overview', icon:'fa-home', label:'Overview' },
-      { id:'admin', icon:'fa-chart-bar', label:'Analytics' },
-      { id:'appointments', icon:'fa-calendar-alt', label:'Appointments' },
-      { id:'doctors', icon:'fa-user-md', label:'Doctors' },
-      { id:'settings', icon:'fa-cog', label:'Settings' }
-    ]
-  };
+  const navItems = NAV_CONFIG[role] || NAV_CONFIG.patient;
+  const roleColors = { patient:'#0D9B82', doctor:'#7C3AED', admin:'#F59E0B' };
+  const roleColor = roleColors[role] || '#0D9B82';
+  const roleBgs = { patient:'#E6F7F4', doctor:'#EDE9FE', admin:'#FEF3C7' };
+  const roleBg = roleBgs[role] || '#E6F7F4';
+
   return (
-    <aside style={{width:250,background:'var(--surf)',borderRight:'1px solid var(--bdr)',height:'100vh',display:'flex',flexDirection:'column',flexShrink:0}}>
-      <div style={{padding:'18px 14px',borderBottom:'1px solid var(--bdr)',display:'flex',alignItems:'center',gap:9}}>
-        <div style={{width:32,height:32,background:tg,borderRadius:9,display:'flex',alignItems:'center',justifyContent:'center'}}><i className='fas fa-heart-pulse' style={{color:'#fff',fontSize:14}}/></div>
-        <span style={{fontFamily:'Syne,sans-serif',fontWeight:700,fontSize:16,background:tg,WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>MEDIQUEUE</span>
+    <aside style={{
+      width:260, background:'var(--surf)',
+      borderRight:'1px solid var(--bdr)',
+      height:'100vh', display:'flex',
+      flexDirection:'column', flexShrink:0,
+      position:'fixed', top:0, left:0, zIndex:100
+    }}>
+      {/* Logo */}
+      <div style={{padding:'20px 16px',borderBottom:'1px solid var(--bdr)',display:'flex',alignItems:'center',gap:10}}>
+        <div style={{width:36,height:36,background:tg,borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+          <i className='fas fa-heart-pulse' style={{color:'#fff',fontSize:16}}/>
+        </div>
+        <div>
+          <div style={{fontFamily:'Syne,sans-serif',fontWeight:800,fontSize:15,background:tg,WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',letterSpacing:.5}}>MEDIQUEUE</div>
+          <div style={{fontSize:9,color:'var(--txt3)',letterSpacing:.8,textTransform:'uppercase',fontWeight:600}}>Digital Queue System</div>
+        </div>
       </div>
-      <div style={{flex:1,padding:'10px 8px',overflowY:'auto'}}>
-        {(navs[role]||navs.patient).map(item=>(
-          <div key={item.id} onClick={()=>onNav(item.id)} style={{display:'flex',alignItems:'center',gap:9,padding:'9px 11px',borderRadius:10,cursor:'pointer',marginBottom:2,background:active===item.id?'var(--tealXL)':'transparent',color:active===item.id?'var(--teal)':'var(--txt2)',fontWeight:active===item.id?600:500,fontSize:13,transition:'all .2s'}}>
-            <div style={{width:30,height:30,borderRadius:8,background:active===item.id?tg:'transparent',display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,color:active===item.id?'#fff':'inherit'}}><i className={'fas '+item.icon}/></div>
+
+      {/* Role Badge */}
+      <div style={{padding:'10px 14px',borderBottom:'1px solid var(--bdr)'}}>
+        <div style={{display:'inline-flex',alignItems:'center',gap:6,padding:'5px 12px',borderRadius:99,background:roleBg,color:roleColor,fontSize:11,fontWeight:700,textTransform:'uppercase',letterSpacing:.5}}>
+          <i className={'fas '+(role==='patient'?'fa-user':role==='doctor'?'fa-user-md':'fa-crown')}/>
+          {role} Portal
+        </div>
+      </div>
+
+      {/* Nav Items */}
+      <div style={{flex:1,padding:'12px 8px',overflowY:'auto'}}>
+        {navItems.map(item => (
+          <div
+            key={item.id}
+            onClick={() => onNav(item.id)}
+            style={{
+              display:'flex', alignItems:'center', gap:10,
+              padding:'10px 12px', borderRadius:10,
+              cursor:'pointer', marginBottom:3,
+              background: active===item.id ? 'var(--tealXL)' : 'transparent',
+              color: active===item.id ? 'var(--teal)' : 'var(--txt2)',
+              fontWeight: active===item.id ? 600 : 500,
+              fontSize:13, transition:'all .2s'
+            }}
+            onMouseEnter={e => { if(active!==item.id) e.currentTarget.style.background='var(--surf2)'; }}
+            onMouseLeave={e => { if(active!==item.id) e.currentTarget.style.background='transparent'; }}
+          >
+            <div style={{
+              width:32, height:32, borderRadius:9, flexShrink:0,
+              background: active===item.id ? tg : 'var(--surf2)',
+              display:'flex', alignItems:'center', justifyContent:'center',
+              fontSize:13, color: active===item.id ? '#fff' : 'var(--txt3)'
+            }}>
+              <i className={'fas '+item.icon}/>
+            </div>
             {item.label}
           </div>
         ))}
       </div>
-      <div style={{padding:'10px 8px',borderTop:'1px solid var(--bdr)'}}>
-        <div onClick={onLogout} style={{display:'flex',alignItems:'center',gap:9,padding:'9px 11px',borderRadius:10,cursor:'pointer',color:'var(--txt2)',fontSize:13,transition:'all .2s'}} onMouseEnter={e=>e.currentTarget.style.background='var(--surf2)'} onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
-          <div style={{width:32,height:32,borderRadius:9,background:tg,display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',fontWeight:700,fontSize:13,flexShrink:0}}>{user?.name?.slice(0,2).toUpperCase()}</div>
-          <div style={{flex:1}}><div style={{fontSize:12,fontWeight:600}}>{user?.name}</div><div style={{fontSize:10,color:'var(--txt3)',textTransform:'capitalize'}}>{user?.role}</div></div>
-          <i className='fas fa-sign-out-alt' style={{fontSize:13}}/>
+
+      {/* User + Logout */}
+      <div style={{padding:'12px 8px',borderTop:'1px solid var(--bdr)'}}>
+        <div style={{display:'flex',alignItems:'center',gap:9,padding:'10px 12px',borderRadius:10,background:'var(--surf2)',marginBottom:6}}>
+          <div style={{width:34,height:34,borderRadius:9,background:tg,display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',fontWeight:700,fontSize:12,flexShrink:0}}>
+            {user?.name?.slice(0,2).toUpperCase()||'??'}
+          </div>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{fontSize:12,fontWeight:700,color:'var(--txt)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{user?.name}</div>
+            <div style={{fontSize:10,color:'var(--txt3)',textTransform:'capitalize'}}>{user?.email}</div>
+          </div>
         </div>
+        <button
+          onClick={onLogout}
+          style={{
+            width:'100%', display:'flex', alignItems:'center',
+            justifyContent:'center', gap:8, padding:'9px 12px',
+            borderRadius:10, cursor:'pointer', fontSize:13, fontWeight:600,
+            background:'#FFE4E6', color:'#9F1239', border:'none',
+            transition:'all .2s'
+          }}
+          onMouseEnter={e=>e.currentTarget.style.background='#FECDD3'}
+          onMouseLeave={e=>e.currentTarget.style.background='#FFE4E6'}
+        >
+          <i className='fas fa-sign-out-alt'/>
+          Sign Out
+        </button>
       </div>
     </aside>
   );
 }
 
-function MetricCard({ label, val, icon, color='#0D9B82', bg='#E6F7F4' }) {
-  return (
-    <div style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'visible'}}>
-      <div style={{fontSize:11,fontWeight:700,color:'var(--txt3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:7}}>{label}</div>
-      <div style={{fontFamily:'Syne,sans-serif',fontSize:28,fontWeight:700}}>{val}</div>
-      <div style={{position:'absolute',top:14,right:14,width:38,height:38,borderRadius:10,background:bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,color}}><i className={'fas fa-'+icon}/></div>
-    </div>
-  );
-}
-
-function OverviewPanel({ role }) {
+function OverviewPanel({ role, user }) {
   const [stats, setStats] = useState(null);
   const [appointments, setAppointments] = useState([]);
+  const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const load = async () => {
       try {
-        if (role==='admin') { const r=await adminAPI.getStats(); setStats(r.data.stats); }
-        const r2=await appointmentAPI.getAll(); setAppointments(r2.data.appointments||[]);
-      } catch(e){console.error(e);} finally{setLoading(false);}
+        if (role === 'admin') {
+          const r = await adminAPI.getStats();
+          setStats(r.data);
+        }
+        const r2 = await appointmentAPI.getAll();
+        setAppointments(r2.data.appointments || []);
+        if (role === 'patient') {
+          const r3 = await doctorAPI.getAll();
+          setDoctors(r3.data.doctors || []);
+        }
+      } catch(e) { console.error(e); }
+      finally { setLoading(false); }
     };
     load();
   }, [role]);
-  if (loading) return <div style={{padding:40,color:'var(--txt2)',fontSize:14}}>Loading...</div>;
-  return (
-    <div className='fu'>
-      <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:14,marginBottom:20}}>
-        {role==='admin'&&stats&&<>
-          <MetricCard label='Total Patients' val={stats.totalPatients} icon='users' color='#0D9B82' bg='#E6F7F4'/>
-          <MetricCard label='Active Doctors' val={stats.activeDoctors} icon='user-md' color='#7C3AED' bg='#EDE9FE'/>
-          <MetricCard label="Today's Appts" val={stats.todayAppointments} icon='calendar-check' color='#F59E0B' bg='#FEF3C7'/>
-          <MetricCard label='Queue Size' val={stats.currentQueueSize} icon='ticket-alt' color='#F43F5E' bg='#FFE4E6'/>
-        </>}
-        {role==='patient'&&<>
-          <MetricCard label='Total Appointments' val={appointments.length} icon='calendar-check' color='#0D9B82' bg='#E6F7F4'/>
-          <MetricCard label='Upcoming' val={appointments.filter(a=>a.status==='confirmed').length} icon='clock' color='#7C3AED' bg='#EDE9FE'/>
-          <MetricCard label='Completed' val={appointments.filter(a=>a.status==='completed').length} icon='check-circle' color='#10B981' bg='#D1FAE5'/>
-          <MetricCard label='Cancelled' val={appointments.filter(a=>a.status==='cancelled').length} icon='times-circle' color='#F43F5E' bg='#FFE4E6'/>
-        </>}
-        {role==='doctor'&&<>
-          <MetricCard label="Today's Patients" val={appointments.length} icon='users' color='#0D9B82' bg='#E6F7F4'/>
-          <MetricCard label='Confirmed' val={appointments.filter(a=>a.status==='confirmed').length} icon='calendar-check' color='#7C3AED' bg='#EDE9FE'/>
-          <MetricCard label='Completed' val={appointments.filter(a=>a.status==='completed').length} icon='check-circle' color='#10B981' bg='#D1FAE5'/>
-          <MetricCard label='Pending' val={appointments.filter(a=>a.status==='pending').length} icon='clock' color='#F59E0B' bg='#FEF3C7'/>
-        </>}
-      </div>
-      <div style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:22}}>
-        <div style={{fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700,marginBottom:16}}>Recent Appointments</div>
-        {appointments.length===0?(
-          <div style={{textAlign:'center',padding:'32px 0',color:'var(--txt3)',fontSize:14}}><i className='fas fa-calendar' style={{fontSize:36,display:'block',marginBottom:12}}/>No appointments yet</div>
-        ):(
-          <table style={{width:'100%',borderCollapse:'collapse'}}>
-            <thead><tr>{['Date & Time',role==='doctor'?'Patient':'Doctor','Type','Status'].map(h=>(
-              <th key={h} style={{fontSize:11,fontWeight:700,letterSpacing:.7,textTransform:'uppercase',color:'var(--txt3)',padding:'9px 12px',borderBottom:'1px solid var(--bdr)',textAlign:'left'}}>{h}</th>
-            ))}</tr></thead>
-            <tbody>{appointments.slice(0,6).map((a,i)=>(
-              <tr key={i} style={{borderBottom:'1px solid var(--bdr)'}} onMouseEnter={e=>e.currentTarget.style.background='var(--surf2)'} onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
-                <td style={{padding:'12px',fontSize:13,fontWeight:600}}>{new Date(a.appointment_time).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</td>
-                <td style={{padding:'12px',fontSize:13}}>{role==='doctor'?a.patient_name:a.doctor_name||'—'}</td>
-                <td style={{padding:'12px'}}><span style={{fontSize:11,padding:'3px 9px',borderRadius:99,fontWeight:700,background:a.type==='telehealth'?'#EDE9FE':'#DBEAFE',color:a.type==='telehealth'?'#5B21B6':'#1E40AF'}}>{a.type}</span></td>
-                <td style={{padding:'12px'}}><span style={{fontSize:11,padding:'3px 9px',borderRadius:99,fontWeight:700,background:a.status==='confirmed'?'#D1FAE5':a.status==='completed'?'#E6F7F4':'#FFE4E6',color:a.status==='confirmed'?'#065F46':a.status==='completed'?'#0A7A67':'#9F1239'}}>{a.status}</span></td>
-              </tr>
-            ))}</tbody>
-          </table>
-        )}
-      </div>
+
+  if (loading) return (
+    <div style={{padding:60,textAlign:'center'}}>
+      <i className='fas fa-spinner fa-spin' style={{fontSize:32,color:'var(--teal)',display:'block',marginBottom:12}}/>
+      <div style={{color:'var(--txt3)',fontSize:14}}>Loading dashboard...</div>
     </div>
   );
-}
 
-function DoctorsPanel() {
-  const [doctors, setDoctors] = useState([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(()=>{ doctorAPI.getAll().then(r=>setDoctors(r.data.doctors||[])).catch(console.error).finally(()=>setLoading(false)); },[]);
-  if (loading) return <div style={{padding:40,color:'var(--txt2)',fontSize:14}}>Loading doctors...</div>;
-  return (
-    <div className='fu' style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(210px,1fr))',gap:16}}>
-      {doctors.length===0?(
-        <div style={{gridColumn:'1/-1',textAlign:'center',padding:48,color:'var(--txt3)'}}><i className='fas fa-user-md' style={{fontSize:40,display:'block',marginBottom:12}}/>No doctors found</div>
-      ):doctors.map(d=>(
-        <div key={d.id} style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:22,textAlign:'center',transition:'all .2s'}} onMouseEnter={e=>e.currentTarget.style.boxShadow='0 8px 24px rgba(0,0,0,.1)'} onMouseLeave={e=>e.currentTarget.style.boxShadow='none'}>
-          <div style={{width:64,height:64,borderRadius:16,background:tg,display:'flex',alignItems:'center',justifyContent:'center',fontWeight:700,fontSize:22,color:'#fff',margin:'0 auto 12px'}}>{d.name?.slice(0,2).toUpperCase()}</div>
-          <div style={{fontWeight:700,fontSize:14,marginBottom:3}}>{d.name}</div>
-          <div style={{color:'var(--txt3)',fontSize:12,marginBottom:8}}>{d.speciality}</div>
-          <div style={{color:'#F59E0B',fontSize:12,marginBottom:10}}>★ {d.rating} · {d.experience_years} yrs</div>
-          <div style={{fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700,color:'var(--teal)',marginBottom:14}}>₹{d.consultation_fee}</div>
-          <div style={{display:'flex',gap:6}}>
-            <button style={{flex:1,padding:'8px',background:tg,color:'#fff',border:'none',borderRadius:8,fontFamily:'DM Sans,sans-serif',fontSize:12,fontWeight:700,cursor:'pointer'}}>Book</button>
-            <button style={{padding:'8px 10px',background:'var(--surf2)',color:'var(--txt2)',border:'1px solid var(--bdr)',borderRadius:8,fontFamily:'DM Sans,sans-serif',fontSize:12,cursor:'pointer'}}>View</button>
+  const upcoming = appointments.filter(a => a.status === 'confirmed').slice(0,3);
+  const today = new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+  // PATIENT DASHBOARD
+  if (role === 'patient') return (
+    <div className='fu'>
+      <div style={{marginBottom:24,padding:'20px 24px',background:tg,borderRadius:20,color:'white',position:'relative',overflow:'hidden'}}>
+        <div style={{position:'absolute',top:-30,right:-30,width:150,height:150,borderRadius:'50%',background:'rgba(255,255,255,.08)'}}/>
+        <div style={{position:'absolute',bottom:-40,right:40,width:100,height:100,borderRadius:'50%',background:'rgba(255,255,255,.06)'}}/>
+        <div style={{fontSize:12,opacity:.8,marginBottom:4}}>{today}</div>
+        <div style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:700,marginBottom:4}}>Good {new Date().getHours()<12?'Morning':new Date().getHours()<17?'Afternoon':'Evening'}, {user?.name?.split(' ')[0]}! ??</div>
+        <div style={{fontSize:13,opacity:.85}}>You have {upcoming.length} upcoming appointment{upcoming.length!==1?'s':''}</div>
+      </div>
+
+      <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16,marginBottom:24}}>
+        {[
+          {label:'Upcoming',val:upcoming.length,icon:'calendar-check',color:'#0D9B82',bg:'#E6F7F4'},
+          {label:'Total Visits',val:appointments.length,icon:'history',color:'#7C3AED',bg:'#EDE9FE'},
+          {label:'Prescriptions',val:'View',icon:'prescription-bottle',color:'#F59E0B',bg:'#FEF3C7'},
+        ].map(m=>(
+          <div key={m.label} style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'hidden'}}>
+            <div style={{fontSize:11,fontWeight:700,color:'var(--txt3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:6}}>{m.label}</div>
+            <div style={{fontFamily:'Syne,sans-serif',fontSize:28,fontWeight:700,color:m.color}}>{m.val}</div>
+            <div style={{position:'absolute',top:14,right:14,width:36,height:36,borderRadius:10,background:m.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,color:m.color}}>
+              <i className={'fas fa-'+m.icon}/>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{display:'grid',gridTemplateColumns:'2fr 1fr',gap:20}}>
+        <div style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:20}}>
+          <div style={{fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700,marginBottom:16,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+            Upcoming Appointments
+            <span style={{fontSize:11,padding:'3px 10px',borderRadius:99,background:'#E6F7F4',color:'#0D9B82',fontWeight:700}}>{upcoming.length}</span>
+          </div>
+          {upcoming.length === 0 ? (
+            <div style={{textAlign:'center',padding:'30px 0',color:'var(--txt3)'}}>
+              <i className='fas fa-calendar-plus' style={{fontSize:32,display:'block',marginBottom:10}}/>
+              <div style={{fontSize:13,marginBottom:12}}>No upcoming appointments</div>
+            </div>
+          ) : upcoming.map((a,i)=>(
+            <div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:'12px',background:'var(--surf2)',borderRadius:12,marginBottom:8}}>
+              <div style={{width:44,height:44,borderRadius:12,background:tg,display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700,fontSize:13,flexShrink:0}}>
+                {a.doctor_name?.slice(0,2)||'Dr'}
+              </div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:13,fontWeight:600}}>{a.doctor_name||'Doctor'}</div>
+                <div style={{fontSize:11,color:'var(--txt3)'}}>{new Date(a.appointment_time).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</div>
+              </div>
+              <span style={{fontSize:11,padding:'3px 9px',borderRadius:99,fontWeight:700,background:'#D1FAE5',color:'#065F46'}}>{a.status}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{display:'flex',flexDirection:'column',gap:16}}>
+          <div style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:20}}>
+            <div style={{fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700,marginBottom:12}}>Quick Actions</div>
+            {[
+              {icon:'fa-calendar-plus',label:'Book Appointment',color:'#0D9B82',bg:'#E6F7F4'},
+              {icon:'fa-ticket-alt',label:'Check Queue',color:'#7C3AED',bg:'#EDE9FE'},
+              {icon:'fa-prescription-bottle',label:'My Prescriptions',color:'#F59E0B',bg:'#FEF3C7'},
+            ].map(a=>(
+              <div key={a.label} style={{display:'flex',alignItems:'center',gap:10,padding:'10px',borderRadius:10,cursor:'pointer',marginBottom:6,border:'1px solid var(--bdr)',transition:'all .2s'}}
+                onMouseEnter={e=>e.currentTarget.style.background=a.bg}
+                onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+                <div style={{width:32,height:32,borderRadius:8,background:a.bg,display:'flex',alignItems:'center',justifyContent:'center',color:a.color}}>
+                  <i className={'fas '+a.icon}/>
+                </div>
+                <span style={{fontSize:13,fontWeight:500}}>{a.label}</span>
+              </div>
+            ))}
           </div>
         </div>
-      ))}
+      </div>
     </div>
   );
+
+  // DOCTOR DASHBOARD
+  if (role === 'doctor') return (
+    <div className='fu'>
+      <div style={{marginBottom:24,padding:'20px 24px',background:'linear-gradient(135deg,#7C3AED,#A78BFA)',borderRadius:20,color:'white',position:'relative',overflow:'hidden'}}>
+        <div style={{position:'absolute',top:-30,right:-30,width:150,height:150,borderRadius:'50%',background:'rgba(255,255,255,.08)'}}/>
+        <div style={{fontSize:12,opacity:.8,marginBottom:4}}>{today}</div>
+        <div style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:700,marginBottom:4}}>Welcome, {user?.name}! ?????</div>
+        <div style={{fontSize:13,opacity:.85}}>You have {appointments.length} appointment{appointments.length!==1?'s':''} scheduled</div>
+      </div>
+
+      <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16,marginBottom:24}}>
+        {[
+          {label:"Today's Patients",val:appointments.filter(a=>new Date(a.appointment_time).toDateString()===new Date().toDateString()).length,icon:'users',color:'#7C3AED',bg:'#EDE9FE'},
+          {label:'Confirmed',val:appointments.filter(a=>a.status==='confirmed').length,icon:'calendar-check',color:'#0D9B82',bg:'#E6F7F4'},
+          {label:'Completed',val:appointments.filter(a=>a.status==='completed').length,icon:'check-circle',color:'#F59E0B',bg:'#FEF3C7'},
+        ].map(m=>(
+          <div key={m.label} style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'hidden'}}>
+            <div style={{fontSize:11,fontWeight:700,color:'var(--txt3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:6}}>{m.label}</div>
+            <div style={{fontFamily:'Syne,sans-serif',fontSize:28,fontWeight:700,color:m.color}}>{m.val}</div>
+            <div style={{position:'absolute',top:14,right:14,width:36,height:36,borderRadius:10,background:m.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,color:m.color}}>
+              <i className={'fas fa-'+m.icon}/>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:20}}>
+        <div style={{fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700,marginBottom:16}}>Today Schedule</div>
+        {appointments.filter(a=>new Date(a.appointment_time).toDateString()===new Date().toDateString()).length === 0 ? (
+          <div style={{textAlign:'center',padding:'30px 0',color:'var(--txt3)'}}>
+            <i className='fas fa-calendar' style={{fontSize:32,display:'block',marginBottom:10}}/>
+            <div style={{fontSize:13}}>No appointments today</div>
+          </div>
+        ) : appointments.filter(a=>new Date(a.appointment_time).toDateString()===new Date().toDateString()).map((a,i)=>(
+          <div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:12,background:'var(--surf2)',borderRadius:12,marginBottom:8}}>
+            <div style={{width:44,height:44,borderRadius:12,background:'linear-gradient(135deg,#7C3AED,#A78BFA)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700,fontSize:13}}>
+              {a.patient_name?.slice(0,2)||'P'}
+            </div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:13,fontWeight:600}}>{a.patient_name}</div>
+              <div style={{fontSize:11,color:'var(--txt3)'}}>{new Date(a.appointment_time).toLocaleTimeString('en-IN',{timeStyle:'short'})} � {a.type}</div>
+            </div>
+            <span style={{fontSize:11,padding:'3px 9px',borderRadius:99,fontWeight:700,background:'#D1FAE5',color:'#065F46'}}>{a.status}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  // ADMIN DASHBOARD
+  if (role === 'admin') return (
+    <div className='fu'>
+      <div style={{marginBottom:24,padding:'20px 24px',background:'linear-gradient(135deg,#F59E0B,#FCD34D)',borderRadius:20,color:'#0A1628',position:'relative',overflow:'hidden'}}>
+        <div style={{position:'absolute',top:-30,right:-30,width:150,height:150,borderRadius:'50%',background:'rgba(0,0,0,.06)'}}/>
+        <div style={{fontSize:12,opacity:.7,marginBottom:4}}>{today}</div>
+        <div style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:700,marginBottom:4}}>Admin Dashboard ??</div>
+        <div style={{fontSize:13,opacity:.8}}>{stats?.totalPatients||0} patients � {stats?.activeDoctors||0} doctors � {stats?.todayAppointments||0} appointments today</div>
+      </div>
+
+      <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:24}}>
+        {[
+          {label:'Total Patients',val:stats?.totalPatients||0,icon:'users',color:'#0D9B82',bg:'#E6F7F4'},
+          {label:'Active Doctors',val:stats?.activeDoctors||0,icon:'user-md',color:'#7C3AED',bg:'#EDE9FE'},
+          {label:'Today Appts',val:stats?.todayAppointments||0,icon:'calendar',color:'#F59E0B',bg:'#FEF3C7'},
+          {label:'Revenue',val:'Rs.'+(stats?.totalRevenue?Math.round(stats.totalRevenue).toLocaleString():'0'),icon:'indian-rupee-sign',color:'#F43F5E',bg:'#FFE4E6'},
+        ].map(m=>(
+          <div key={m.label} style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'hidden'}}>
+            <div style={{fontSize:11,fontWeight:700,color:'var(--txt3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:6}}>{m.label}</div>
+            <div style={{fontFamily:'Syne,sans-serif',fontSize:24,fontWeight:700,color:m.color}}>{m.val}</div>
+            <div style={{position:'absolute',top:14,right:14,width:36,height:36,borderRadius:10,background:m.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,color:m.color}}>
+              <i className={'fas fa-'+m.icon}/>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:20}}>
+        <div style={{fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700,marginBottom:16}}>Recent Appointments</div>
+        {appointments.slice(0,5).map((a,i)=>(
+          <div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:12,borderBottom:'1px solid var(--bdr)'}}>
+            <div style={{flex:1}}>
+              <div style={{fontSize:13,fontWeight:600}}>{a.patient_name} ? {a.doctor_name}</div>
+              <div style={{fontSize:11,color:'var(--txt3)'}}>{new Date(a.appointment_time).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</div>
+            </div>
+            <span style={{fontSize:11,padding:'3px 9px',borderRadius:99,fontWeight:700,background:a.status==='confirmed'?'#D1FAE5':a.status==='cancelled'?'#FFE4E6':'#FEF3C7',color:a.status==='confirmed'?'#065F46':a.status==='cancelled'?'#9F1239':'#92400E'}}>{a.status}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  return null;
 }
 
 function SettingsPanel({ user }) {
   return (
-    <div className='fu' style={{maxWidth:500}}>
-      <div style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:28}}>
-        <div style={{fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700,marginBottom:20}}>Account Details</div>
-        {[['Full Name',user?.name],['Email',user?.email],['Role',user?.role]].map(([l,v])=>(
-          <div key={l} style={{marginBottom:16}}>
-            <label style={{display:'block',fontSize:12,fontWeight:700,color:'var(--txt2)',marginBottom:5,textTransform:'uppercase',letterSpacing:.4}}>{l}</label>
-            <input defaultValue={v} readOnly style={{width:'100%',padding:'11px 14px',background:'var(--surf2)',border:'1.5px solid var(--bdr)',borderRadius:10,fontSize:13,color:'var(--txt)',outline:'none'}}/>
+    <div className='fu'>
+      <div style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:24,maxWidth:600}}>
+        <div style={{fontFamily:'Syne,sans-serif',fontSize:16,fontWeight:700,marginBottom:20}}>Account Settings</div>
+        <div style={{display:'flex',alignItems:'center',gap:16,padding:20,background:'var(--surf2)',borderRadius:14,marginBottom:20}}>
+          <div style={{width:64,height:64,borderRadius:16,background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700,fontSize:24,flexShrink:0}}>
+            {user?.name?.slice(0,2).toUpperCase()}
+          </div>
+          <div>
+            <div style={{fontFamily:'Syne,sans-serif',fontSize:18,fontWeight:700}}>{user?.name}</div>
+            <div style={{fontSize:13,color:'var(--txt3)'}}>{user?.email}</div>
+            <span style={{fontSize:11,padding:'3px 10px',borderRadius:99,fontWeight:700,background:'#E6F7F4',color:'#0D9B82',textTransform:'capitalize',marginTop:4,display:'inline-block'}}>{user?.role}</span>
+          </div>
+        </div>
+        {[
+          {label:'Full Name',val:user?.name,type:'text'},
+          {label:'Email',val:user?.email,type:'email'},
+          {label:'Phone',val:user?.phone||'Not set',type:'tel'},
+        ].map(f=>(
+          <div key={f.label} style={{marginBottom:16}}>
+            <label style={{display:'block',fontSize:12,fontWeight:700,color:'var(--txt3)',marginBottom:5,textTransform:'uppercase',letterSpacing:.4}}>{f.label}</label>
+            <input defaultValue={f.val} type={f.type} style={{width:'100%',padding:'11px 14px',background:'var(--surf2)',border:'1.5px solid var(--bdr)',borderRadius:10,fontSize:14,color:'var(--txt)',outline:'none',fontFamily:'DM Sans,sans-serif'}}/>
           </div>
         ))}
-        <div style={{padding:'12px 14px',background:'var(--tealXL)',borderRadius:10,fontSize:13,color:'var(--tealDk)',display:'flex',alignItems:'center',gap:8}}>
-          <i className='fas fa-database'/> Connected to live PostgreSQL database
-        </div>
+        <button style={{padding:'11px 24px',background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',color:'white',border:'none',borderRadius:10,fontFamily:'DM Sans,sans-serif',fontSize:14,fontWeight:700,cursor:'pointer'}}>
+          Save Changes
+        </button>
       </div>
     </div>
   );
@@ -179,43 +379,141 @@ function SettingsPanel({ user }) {
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
+  const role = user?.role || 'patient';
   const [panel, setPanel] = useState('overview');
-  const titles = { overview:'Dashboard', appointments:'Appointments', queue:user?.role==='doctor'?'Queue Management':'Queue Status', doctors:'Find Doctors', admin:'Analytics', settings:'Settings', payments:'Payments' };
+  const [dark, setDark] = useState(false);
+
+  const toggleDark = () => {
+    const d = !dark;
+    setDark(d);
+    document.documentElement.setAttribute('data-theme', d ? 'dark' : 'light');
+  };
 
   const renderPanel = () => {
     switch(panel) {
-      case 'overview': return <OverviewPanel role={user?.role}/>;
-      case 'appointments': return <AppointmentsPanel role={user?.role}/>;
-      case 'queue': return <QueuePanel role={user?.role}/>;
-      case 'doctors': return <DoctorsPanel/>;
-      case 'admin': return <AdminPanel/>;
-      case 'payments': return <PaymentsPanel/>;
-      case 'prescriptions': return <PrescriptionsPanel role={user?.role}/> ;
-      case 'settings': return <SettingsPanel user={user}/>;
-      default: return <div style={{padding:40,color:'var(--txt2)'}}>Coming soon...</div>;
+      case 'overview':      return <OverviewPanel role={role} user={user}/>;
+      case 'appointments':  return <AppointmentsPanel role={role}/>;
+      case 'queue':         return <QueuePanel role={role}/>;
+      case 'payments':      return role==='patient' ? <PaymentsPanel/> : <div style={{padding:40,textAlign:'center',color:'var(--txt3)'}}>Access denied</div>;
+      case 'prescriptions': return <PrescriptionsPanel role={role}/>;
+      case 'admin':         return role==='admin' ? <AdminPanel/> : <div style={{padding:40,textAlign:'center',color:'var(--txt3)'}}>Access denied</div>;
+      case 'doctors':       return role==='admin' ? <AdminDoctorsPanel/> : <FindDoctorsPanel/>;
+      case 'settings':      return <SettingsPanel user={user}/>;
+      default:              return <OverviewPanel role={role} user={user}/>;
     }
   };
 
   return (
-    <div style={{display:'flex',height:'100vh'}}>
+    <div style={{display:'flex',minHeight:'100vh',background:'var(--bg)'}}>
       <ToastStack/>
-      <Sidebar role={user?.role} active={panel} onNav={setPanel} user={user} onLogout={logout}/>
-      <div style={{flex:1,display:'flex',flexDirection:'column',overflowY:'auto'}}>
-        <div style={{height:62,padding:'0 24px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--surf)',borderBottom:'1px solid var(--bdr)',flexShrink:0}}>
+      <Sidebar role={role} active={panel} onNav={setPanel} user={user} onLogout={logout}/>
+
+      <div style={{marginLeft:260,flex:1,display:'flex',flexDirection:'column',minHeight:'100vh'}}>
+        {/* Topbar */}
+        <div style={{height:60,padding:'0 24px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--surf)',borderBottom:'1px solid var(--bdr)',position:'sticky',top:0,zIndex:50}}>
           <div>
-            <div style={{fontFamily:'Syne,sans-serif',fontSize:18,fontWeight:700}}>{titles[panel]||panel}</div>
+            <div style={{fontFamily:'Syne,sans-serif',fontSize:18,fontWeight:700}}>{PAGE_TITLES[panel]||panel}</div>
             <div style={{fontSize:11,color:'var(--txt3)'}}>Welcome back, {user?.name}!</div>
           </div>
           <div style={{display:'flex',alignItems:'center',gap:10}}>
-            <span style={{fontSize:12,padding:'4px 12px',borderRadius:99,fontWeight:700,background:'#E6F7F4',color:'#0A7A67',textTransform:'capitalize'}}>{user?.role}</span>
-            <div style={{width:36,height:36,borderRadius:9,background:tg,display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',fontWeight:700,fontSize:13}}>{user?.name?.slice(0,2).toUpperCase()}</div>
+            <button onClick={toggleDark} style={{width:36,height:36,borderRadius:9,background:'var(--surf2)',border:'1px solid var(--bdr)',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',color:'var(--txt2)',fontSize:14}}>
+              <i className={'fas '+(dark?'fa-sun':'fa-moon')}/>
+            </button>
+            <div style={{display:'flex',alignItems:'center',gap:8,padding:'6px 12px',background:'var(--surf2)',border:'1px solid var(--bdr)',borderRadius:10}}>
+              <div style={{width:28,height:28,borderRadius:7,background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700,fontSize:11}}>
+                {user?.name?.slice(0,2).toUpperCase()}
+              </div>
+              <div>
+                <div style={{fontSize:12,fontWeight:600,color:'var(--txt)'}}>{user?.name}</div>
+                <div style={{fontSize:10,color:'var(--txt3)',textTransform:'capitalize'}}>{role}</div>
+              </div>
+            </div>
+            <button onClick={logout} style={{display:'flex',alignItems:'center',gap:6,padding:'8px 14px',background:'#FFE4E6',color:'#9F1239',border:'none',borderRadius:9,cursor:'pointer',fontSize:12,fontWeight:700}}>
+              <i className='fas fa-sign-out-alt'/> Logout
+            </button>
           </div>
         </div>
-        <div style={{flex:1,overflowY:'auto',padding:24}} key={panel}>
+
+        {/* Main Content */}
+        <div style={{flex:1,padding:24,overflowY:'auto'}}>
           {renderPanel()}
         </div>
       </div>
+
       <Chatbot/>
+    </div>
+  );
+}
+
+function FindDoctorsPanel() {
+  const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(()=>{
+    doctorAPI.getAll().then(r=>setDoctors(r.data.doctors||[])).catch(console.error).finally(()=>setLoading(false));
+  },[]);
+  if(loading) return <div style={{padding:40,textAlign:'center'}}><i className='fas fa-spinner fa-spin' style={{fontSize:32,color:'var(--teal)'}}/></div>;
+  return (
+    <div className='fu'>
+      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(240px,1fr))',gap:16}}>
+        {doctors.map(d=>(
+          <div key={d.id} style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:20,textAlign:'center',transition:'all .2s'}}
+            onMouseEnter={e=>e.currentTarget.style.transform='translateY(-4px)'}
+            onMouseLeave={e=>e.currentTarget.style.transform='none'}>
+            <div style={{width:64,height:64,borderRadius:18,background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700,fontSize:22,margin:'0 auto 12px'}}>
+              {d.name?.slice(0,2)||'Dr'}
+            </div>
+            <div style={{fontWeight:700,fontSize:15,marginBottom:4}}>{d.name}</div>
+            <div style={{fontSize:12,color:'var(--txt3)',marginBottom:8}}>{d.speciality}</div>
+            <div style={{display:'flex',justifyContent:'center',gap:6,marginBottom:12}}>
+              <span style={{fontSize:11,padding:'3px 9px',borderRadius:99,background:'#E6F7F4',color:'#0D9B82',fontWeight:700}}>Rs.{d.consultation_fee}</span>
+              <span style={{fontSize:11,padding:'3px 9px',borderRadius:99,background:'#FEF3C7',color:'#92400E',fontWeight:700}}>? {d.rating||'4.9'}</span>
+            </div>
+            <button style={{width:'100%',padding:'9px',background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',color:'white',border:'none',borderRadius:10,fontFamily:'DM Sans,sans-serif',fontSize:13,fontWeight:700,cursor:'pointer'}}>
+              Book Appointment
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AdminDoctorsPanel() {
+  const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(()=>{
+    doctorAPI.getAll().then(r=>setDoctors(r.data.doctors||[])).catch(console.error).finally(()=>setLoading(false));
+  },[]);
+  if(loading) return <div style={{padding:40,textAlign:'center'}}><i className='fas fa-spinner fa-spin' style={{fontSize:32,color:'var(--teal)'}}/></div>;
+  return (
+    <div className='fu'>
+      <div style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,overflow:'hidden'}}>
+        <div style={{padding:'16px 20px',borderBottom:'1px solid var(--bdr)',fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700}}>All Doctors ({doctors.length})</div>
+        <table style={{width:'100%',borderCollapse:'collapse'}}>
+          <thead>
+            <tr style={{background:'var(--surf2)'}}>
+              {['Name','Speciality','Fee','Rating','Status'].map(h=>(
+                <th key={h} style={{padding:'11px 16px',textAlign:'left',fontSize:11,fontWeight:700,color:'var(--txt3)',textTransform:'uppercase',letterSpacing:.6}}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {doctors.map((d,i)=>(
+              <tr key={i} style={{borderTop:'1px solid var(--bdr)'}}>
+                <td style={{padding:'13px 16px',fontWeight:600,fontSize:14}}>{d.name}</td>
+                <td style={{padding:'13px 16px',fontSize:13,color:'var(--txt2)'}}>{d.speciality}</td>
+                <td style={{padding:'13px 16px',fontSize:13}}>Rs.{d.consultation_fee}</td>
+                <td style={{padding:'13px 16px',fontSize:13}}>? {d.rating||'4.9'}</td>
+                <td style={{padding:'13px 16px'}}>
+                  <span style={{fontSize:11,padding:'3px 9px',borderRadius:99,fontWeight:700,background:d.is_available?'#D1FAE5':'#FFE4E6',color:d.is_available?'#065F46':'#9F1239'}}>
+                    {d.is_available?'Available':'Unavailable'}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
