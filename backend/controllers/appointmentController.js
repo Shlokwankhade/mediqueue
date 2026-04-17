@@ -1,3 +1,4 @@
+const { sendEmail, appointmentConfirmEmail } = require('../utils/email');
 const pool = require('../models/db');
 
 const getAppointments = async (req, res) => {
@@ -35,7 +36,22 @@ const bookAppointment = async (req, res) => {
       'INSERT INTO appointments (patient_id, doctor_id, appointment_time, type, chief_complaint, status) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *',
       [patient_id, doctor_id, appointment_time, type, chief_complaint, 'confirmed']
     );
-    res.status(201).json({ success: true, appointment: result.rows[0] });
+    const appt = result.rows[0];
+        // Send confirmation email
+        try {
+          const patientInfo = await pool.query('SELECT name, email FROM users WHERE id = $1', [patient_id]);
+          const doctorInfo = await pool.query('SELECT u.name FROM users u JOIN doctors d ON d.user_id = u.id WHERE d.id = $1', [doctor_id]);
+          if (patientInfo.rows[0]?.email) {
+            const emailContent = appointmentConfirmEmail(
+              patientInfo.rows[0].name,
+              doctorInfo.rows[0]?.name || 'Doctor',
+              appointment_time,
+              'MQ-' + appt.id.slice(0,6).toUpperCase()
+            );
+            await sendEmail({ to: patientInfo.rows[0].email, ...emailContent });
+          }
+        } catch(emailErr) { console.error('Email failed:', emailErr.message); }
+        res.status(201).json({ success: true, appointment: appt });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

@@ -34,6 +34,12 @@ app.use(express.json({ limit: '10mb' }));
 app.use('/api/', limiter);
 
 // Health check
+app.get('/api/test-email', async (req, res) => {
+  const { sendEmail } = require('./utils/email');
+  const ok = await sendEmail({ to: process.env.EMAIL_USER, subject: 'MEDIQUEUE Test Email', html: '<h1>Email is working! 🎉</h1><p>Your MEDIQUEUE email system is configured correctly.</p>' });
+  res.json({ success: ok, message: ok ? 'Test email sent!' : 'Email failed - check config' });
+});
+
 app.get('/health', (req, res) => {
   res.json({ status: '✅ MEDIQUEUE Backend Running', timestamp: new Date().toISOString() });
 });

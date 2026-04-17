@@ -61,7 +61,7 @@ function Sidebar({ role, active, onNav, user, onLogout }) {
 
 function MetricCard({ label, val, icon, color='#0D9B82', bg='#E6F7F4' }) {
   return (
-    <div style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'hidden'}}>
+    <div style={{background:'var(--surf)',border:'1px solid var(--bdr)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'visible'}}>
       <div style={{fontSize:11,fontWeight:700,color:'var(--txt3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:7}}>{label}</div>
       <div style={{fontFamily:'Syne,sans-serif',fontSize:28,fontWeight:700}}>{val}</div>
       <div style={{position:'absolute',top:14,right:14,width:38,height:38,borderRadius:10,background:bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,color}}><i className={'fas fa-'+icon}/></div>
@@ -193,10 +193,10 @@ export default function Dashboard() {
   };
 
   return (
-    <div style={{display:'flex',height:'100vh',overflow:'hidden'}}>
+    <div style={{display:'flex',height:'100vh'}}>
       <ToastStack/>
       <Sidebar role={user?.role} active={panel} onNav={setPanel} user={user} onLogout={logout}/>
-      <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
+      <div style={{flex:1,display:'flex',flexDirection:'column',overflowY:'auto'}}>
         <div style={{height:62,padding:'0 24px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--surf)',borderBottom:'1px solid var(--bdr)',flexShrink:0}}>
           <div>
             <div style={{fontFamily:'Syne,sans-serif',fontSize:18,fontWeight:700}}>{titles[panel]||panel}</div>
