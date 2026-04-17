@@ -95,9 +95,14 @@ export default function Login() {
             {loading ? 'Signing in...' : 'Sign In as ' + role.charAt(0).toUpperCase() + role.slice(1)}
           </button>
         </form>
+    <div style={{textAlign:'center',marginTop:16,fontSize:13,color:'#64748B'}}>
+      <Link to='/forgot-password' style={{color:'#0D9B82',fontWeight:600,textDecoration:'none'}}>Forgot Password?</Link>
+    </div>
+    <div style={{textAlign:'center',marginTop:10,fontSize:13,color:'#64748B'}}>
+      Don't have an account? <Link to='/register' style={{color:'#0D9B82',fontWeight:700,textDecoration:'none'}}>Register</Link>
+    </div>
 
         <div style={{textAlign:'center',marginTop:18,fontSize:13,color:'var(--txt2)'}}>
-          Don't have an account? <Link to='/register' style={{color:'var(--teal)',fontWeight:600}}>Register</Link>
         </div>
       </div>
     </div>
