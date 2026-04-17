@@ -74,11 +74,11 @@ const forgotPassword = async (req, res) => {
       'UPDATE users SET reset_token = $1, reset_token_expires = $2 WHERE email = $3',
       [token, expires, email]
     );
-    const resetUrl = (process.env.FRONTEND_URL || 'http://localhost:5173') + '/reset-password?token=' + token;
+    const resetUrl = (process.env.FRONTEND_URL || 'http://localhost:5173') + '/reset-password?token=' + encodeURIComponent(token);
     const { sendEmail } = require('../utils/email');
     await sendEmail({
       to: email,
-      subject: 'Reset Your Password - MEDIQUEUE',
+      subject: 'Reset Your Password - MEDIQUEUE [' + token.substring(0,8) + '...]',
       html: '<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto"><div style="background:linear-gradient(135deg,#0D9B82,#1DBEA0);padding:32px;text-align:center;border-radius:12px 12px 0 0"><h1 style="color:white;margin:0">Password Reset</h1></div><div style="background:#f8fafc;padding:32px;border-radius:0 0 12px 12px"><p>Hello <strong>' + user.rows[0].name + '</strong>,</p><p style="color:#64748B">Click below to reset your password. Expires in 1 hour.</p><div style="text-align:center;margin:28px 0"><a href="' + resetUrl + '" style="background:linear-gradient(135deg,#0D9B82,#1DBEA0);color:white;padding:14px 32px;border-radius:10px;text-decoration:none;font-weight:700;font-size:15px">Reset Password</a></div><p style="color:#94A3B8;font-size:12px">If you did not request this, ignore this email.</p></div></div>'
     });
     res.json({ success: true, message: 'Password reset email sent!' });
