@@ -51,6 +51,7 @@ app.use('/api/queue', require('./routes/queue'));
 app.use('/api/doctors', require('./routes/doctors'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/payments', require('./routes/payments'));
+app.use('/api/prescriptions', require('./routes/prescriptions'));
 
 // WebSocket
 require('./sockets/queueSocket')(io);

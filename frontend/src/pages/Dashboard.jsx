@@ -1,3 +1,4 @@
+import PrescriptionsPanel from './panels/PrescriptionsPanel';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { adminAPI, appointmentAPI, doctorAPI } from '../services/api';
@@ -18,11 +19,13 @@ function Sidebar({ role, active, onNav, user, onLogout }) {
       { id:'queue', icon:'fa-ticket-alt', label:'Queue Status' },
       { id:'doctors', icon:'fa-user-md', label:'Find Doctors' },
       { id:'payments', icon:'fa-credit-card', label:'Payments' },
+      { id:'prescriptions', icon:'fa-prescription-bottle', label:'Prescriptions' },
       { id:'settings', icon:'fa-cog', label:'Settings' }
     ],
     doctor: [
       { id:'overview', icon:'fa-home', label:'Dashboard' },
       { id:'queue', icon:'fa-ticket-alt', label:'Queue Mgmt' },
+      { id:'prescriptions', icon:'fa-prescription-bottle', label:'Prescriptions' },
       { id:'appointments', icon:'fa-calendar-alt', label:'Schedule' },
       { id:'settings', icon:'fa-cog', label:'Settings' }
     ],
@@ -187,6 +190,7 @@ export default function Dashboard() {
       case 'doctors': return <DoctorsPanel/>;
       case 'admin': return <AdminPanel/>;
       case 'payments': return <PaymentsPanel/>;
+      case 'prescriptions': return <PrescriptionsPanel role={user?.role}/> ;
       case 'settings': return <SettingsPanel user={user}/>;
       default: return <div style={{padding:40,color:'var(--txt2)'}}>Coming soon...</div>;
     }
