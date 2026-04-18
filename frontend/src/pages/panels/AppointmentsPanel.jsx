@@ -1,3 +1,5 @@
+import { useState as useVideoState } from 'react';
+import VideoCall from '../../components/VideoCall';
 import { useState, useEffect } from 'react';
 import { appointmentAPI, doctorAPI } from '../../services/api';
 import { toast } from '../../components/ToastStack';

@@ -29,6 +29,47 @@ module.exports = (io) => {
     });
   });
 
+  // -- VIDEO TELEMEDICINE --
+  socket.on('video:join', (roomId) => {
+    socket.join('video:' + roomId);
+    const room = io.sockets.adapter.rooms.get('video:' + roomId);
+    const numClients = room ? room.size : 0;
+    console.log('Video join:', roomId, 'clients:', numClients);
+    if (numClients === 1) {
+      socket.emit('video:created', roomId);
+    } else if (numClients === 2) {
+      socket.emit('video:joined', roomId);
+      socket.to('video:' + roomId).emit('video:ready');
+    } else {
+      socket.emit('video:full', roomId);
+    }
+  });
+
+  socket.on('video:offer', (data) => {
+    socket.to('video:' + data.roomId).emit('video:offer', data);
+  });
+
+  socket.on('video:answer', (data) => {
+    socket.to('video:' + data.roomId).emit('video:answer', data);
+  });
+
+  socket.on('video:ice-candidate', (data) => {
+    socket.to('video:' + data.roomId).emit('video:ice-candidate', data);
+  });
+
+  socket.on('video:leave', (roomId) => {
+    socket.leave('video:' + roomId);
+    socket.to('video:' + roomId).emit('video:peer-left');
+  });
+
+  socket.on('video:toggle-audio', (data) => {
+    socket.to('video:' + data.roomId).emit('video:peer-toggle-audio', data);
+  });
+
+  socket.on('video:toggle-video', (data) => {
+    socket.to('video:' + data.roomId).emit('video:peer-toggle-video', data);
+  });
+
   socket.on('disconnect', () => console.log('Client disconnected:', socket.id));
   });
 };

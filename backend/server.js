@@ -40,6 +40,18 @@ app.get('/api/test-email', async (req, res) => {
   res.json({ success: ok, message: ok ? 'Test email sent!' : 'Email failed - check config' });
 });
 
+// Video call room management
+app.post('/api/video/room', async (req, res) => {
+  const { appointmentId } = req.body;
+  const roomId = 'mq-' + appointmentId;
+  res.json({ success: true, roomId });
+});
+
+app.get('/api/video/room/:appointmentId', async (req, res) => {
+  const roomId = 'mq-' + req.params.appointmentId;
+  res.json({ success: true, roomId });
+});
+
 app.post('/api/ai/chat', async (req, res) => {
   const { message } = req.body;
   if (!message) return res.status(400).json({ success: false });

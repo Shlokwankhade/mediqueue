@@ -1,3 +1,4 @@
+import VideoPanel from './panels/VideoPanel';
 import DarkToggle from '../components/DarkToggle';
 import { useTheme } from '../context/ThemeContext';
 import ReviewsPanel from './panels/ReviewsPanel';
@@ -29,6 +30,7 @@ const NAV_CONFIG = {
     { id:'prescriptions',  icon:'fa-prescription-bottle', label:'Prescriptions' },
     { id:'health',         icon:'fa-heart',               label:'Health Records' },
     { id:'reviews',        icon:'fa-star',                label:'Reviews' },
+    { id:'video',          icon:'fa-video',               label:'Telemedicine' },
     { id:'messages',      icon:'fa-comments',             label:'Messages' },
     { id:'settings',       icon:'fa-cog',                 label:'Settings' },
   ],
@@ -40,6 +42,7 @@ const NAV_CONFIG = {
     { id:'messages',       icon:'fa-comments',            label:'Messages' },
     { id:'health',         icon:'fa-heart',               label:'Health Records' },
     { id:'reviews',        icon:'fa-star',                label:'My Reviews' },
+    { id:'video',          icon:'fa-video',               label:'Telemedicine' },
     { id:'settings',       icon:'fa-cog',                 label:'Settings' },
   ],
   admin: [
@@ -55,7 +58,7 @@ const NAV_CONFIG = {
 const PAGE_TITLES = {
   overview:'Dashboard', appointments:'Appointments', queue:'Queue',
   doctors:'Doctors', payments:'Payments', prescriptions:'Prescriptions',
-  settings:'Settings', messages:'Messages', health:'Health Records', reviews:'Reviews', admin:'Analytics'
+  settings:'Settings', messages:'Messages', health:'Health Records', reviews:'Reviews', video:'Telemedicine', admin:'Analytics'
 };
 
 function Sidebar({ role, active, onNav, user, onLogout }) {
@@ -461,6 +464,7 @@ export default function Dashboard() {
       case 'messages':      return <MessagesPanel/>;
       case 'health':        return <HealthPanel/>;
       case 'reviews':       return <ReviewsPanel role={role}/>;
+      case 'video':         return <VideoPanel role={role}/>;
       default:              return <OverviewPanel role={role} user={user}/>;
     }
   };
