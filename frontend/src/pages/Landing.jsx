@@ -489,7 +489,7 @@ export default function Landing() {
               }}>
                 {p.featured && (
                   <>
-                    <div style={{position:'absolute',top:0,left:0,right:0,height:3,background:tg}}/>
+                    <div style={{position:'absolute',top:0,left:0,right:0,height:3,background:tg,borderRadius:'3px 3px 0 0'}}/>
                     <div style={{display:'inline-block',background:tg,color:'white',fontSize:11,fontWeight:700,padding:'4px 14px',borderRadius:99,marginBottom:16,letterSpacing:.5}}>MOST POPULAR</div>
                   </>
                 )}

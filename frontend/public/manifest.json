@@ -1,0 +1,30 @@
+{
+  "name": "MEDIQUEUE - Digital Appointment & Queue System",
+  "short_name": "MEDIQUEUE",
+  "description": "AI-powered healthcare appointment and queue management",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080F1A",
+  "theme_color": "#0D9B82",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": [
+    "health",
+    "medical",
+    "productivity"
+  ],
+  "lang": "en-IN"
+}

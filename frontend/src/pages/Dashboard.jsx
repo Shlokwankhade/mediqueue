@@ -1,3 +1,4 @@
+import DarkToggle from '../components/DarkToggle';
 import { useTheme } from '../context/ThemeContext';
 import ReviewsPanel from './panels/ReviewsPanel';
 import React from 'react';
@@ -137,13 +138,14 @@ function Sidebar({ role, active, onNav, user, onLogout }) {
           onClick={onLogout}
           style={{
             width:'100%', display:'flex', alignItems:'center',
-            justifyContent:'center', gap:8, padding:'9px 12px',
-            borderRadius:10, cursor:'pointer', fontSize:13, fontWeight:600,
-            background:'#FFE4E6', color:'#9F1239', border:'none',
+            justifyContent:'center', gap:8, padding:'10px 12px',
+            borderRadius:12, cursor:'pointer', fontSize:13, fontWeight:700,
+            background:'linear-gradient(135deg,rgba(244,63,94,0.1),rgba(244,63,94,0.15))',
+            color:'#F43F5E', border:'1px solid rgba(244,63,94,0.2)',
             transition:'all .2s'
           }}
-          onMouseEnter={e=>e.currentTarget.style.background='#FECDD3'}
-          onMouseLeave={e=>e.currentTarget.style.background='#FFE4E6'}
+          onMouseEnter={e=>{e.currentTarget.style.background='linear-gradient(135deg,#F43F5E,#FB7185)';e.currentTarget.style.color='white';e.currentTarget.style.borderColor='transparent'}}
+          onMouseLeave={e=>{e.currentTarget.style.background='linear-gradient(135deg,rgba(244,63,94,0.1),rgba(244,63,94,0.15))';e.currentTarget.style.color='#F43F5E';e.currentTarget.style.borderColor='rgba(244,63,94,0.2)'}}
         >
           <i className='fas fa-sign-out-alt'/>
           Sign Out
@@ -444,6 +446,7 @@ export default function Dashboard() {
   const role = user?.role || 'patient';
   const [panel, setPanel] = useState('overview');
   const { dark, toggle: toggleDark } = useTheme();
+  const [mobileMenu, setMobileMenu] = useState(false);
 
   const renderPanel = () => {
     switch(panel) {
@@ -465,7 +468,10 @@ export default function Dashboard() {
   return (
     <div style={{display:'flex',minHeight:'100vh',background:'#F8FAFC'}}>
       <ToastStack/>
-      <Sidebar role={role} active={panel} onNav={setPanel} user={user} onLogout={logout}/>
+      {mobileMenu && <div onClick={()=>setMobileMenu(false)} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.5)',zIndex:99,backdropFilter:'blur(4px)'}}/>}
+      <div className={mobileMenu?'mobile-open':''}>
+        <Sidebar role={role} active={panel} onNav={(p)=>{setPanel(p);setMobileMenu(false);}} user={user} onLogout={logout}/>
+      </div>
 
       <div style={{marginLeft:260,flex:1,display:'flex',flexDirection:'column',minHeight:'100vh',background:'var(--bg)'}}>
         {/* Topbar */}

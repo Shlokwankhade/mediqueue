@@ -910,3 +910,161 @@ html,body,#root{height:100%;font-family:var(--font-body);background:var(--bg);co
 [data-theme="dark"] .fu {
   background: transparent !important;
 }
+
+/* ---------------------------------------
+   MOBILE RESPONSIVE - MEDIQUEUE
+   --------------------------------------- */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  /* Dashboard sidebar hidden on tablet */
+  aside { width: 220px !important; }
+  div[style*="marginLeft:260"] { margin-left: 220px !important; }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  /* Hide sidebar on mobile */
+  aside {
+    transform: translateX(-100%) !important;
+    position: fixed !important;
+    z-index: 200 !important;
+    width: 280px !important;
+    transition: transform 0.3s ease !important;
+    box-shadow: 4px 0 32px rgba(0,0,0,0.3) !important;
+  }
+  aside.mobile-open {
+    transform: translateX(0) !important;
+  }
+
+  /* Full width main on mobile */
+  div[style*="marginLeft:260"] {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Landing navbar */
+  nav[style*="padding:'0 60px'"] {
+    padding: 0 20px !important;
+  }
+
+  /* Landing hero */
+  section[style*="padding:'120px 60px'"] {
+    padding: 100px 20px 60px !important;
+  }
+
+  /* Grid to single column */
+  div[style*="gridTemplateColumns:'1fr 1fr'"] {
+    grid-template-columns: 1fr !important;
+  }
+  div[style*="gridTemplateColumns:'repeat(3,1fr)'"] {
+    grid-template-columns: 1fr !important;
+  }
+  div[style*="gridTemplateColumns:'repeat(4,1fr)'"] {
+    grid-template-columns: repeat(2,1fr) !important;
+  }
+  div[style*="gridTemplateColumns:'2fr 1fr 1fr 1fr'"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Font sizes */
+  h1[style*="fontSize:64"] { font-size: 38px !important; }
+  h2[style*="fontSize:48"] { font-size: 32px !important; }
+
+  /* Padding adjustments */
+  section[style*="padding:'100px 60px'"] {
+    padding: 60px 20px !important;
+  }
+  section[style*="padding:'80px 60px'"] {
+    padding: 50px 20px !important;
+  }
+
+  /* Chat window */
+  div[style*="width:380"][style*="height:560"] {
+    width: calc(100vw - 32px) !important;
+    right: 16px !important;
+    bottom: 80px !important;
+  }
+
+  /* Topbar */
+  div[style*="height:60,padding:'0 24px'"] {
+    padding: 0 16px !important;
+  }
+
+  /* Hide nav links on mobile */
+  nav div[style*="gap:32"] {
+    display: none !important;
+  }
+
+  /* Full width panels */
+  div[style*="padding:24,overflowY:'auto'"] {
+    padding: 16px !important;
+  }
+
+  /* Metric cards 2 col on mobile */
+  div[style*="gridTemplateColumns:'repeat(3,1fr)'"][style*="gap:16,marginBottom:24"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Queue panel grid */
+  div[style*="gridTemplateColumns:'1fr 1fr',gap:16"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Messages panel */
+  div[style*="height:'calc(100vh - 120px)'"][style*="display:'flex',gap:16"] {
+    flex-direction: column !important;
+    height: auto !important;
+  }
+  div[style*="width:300,flexShrink:0"] {
+    width: 100% !important;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  div[style*="gridTemplateColumns:'repeat(4,1fr)'"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Pricing */
+  div[style*="gridTemplateColumns:'repeat(3,1fr)'"][style*="alignItems:'center'"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Hero buttons */
+  div[style*="display:'flex',gap:14,marginBottom:48"] {
+    flex-direction: column !important;
+  }
+  div[style*="display:'flex',gap:14,marginBottom:48"] button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Stats */
+  div[style*="gridTemplateColumns:'repeat(4,1fr)'"][style*="gap:40"] {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 24px !important;
+  }
+}
+
+/* Remove any accidental bottom bars */
+#root > div > div > div:last-child:not(aside):not(nav) {
+  border-bottom: none !important;
+}
+body::after, #root::after {
+  display: none !important;
+}
+
+/* Hide any accidental green bars */
+html, body {
+  overflow-x: hidden !important;
+}
+::-webkit-scrollbar-corner {
+  background: transparent !important;
+  display: none !important;
+}
+::-webkit-scrollbar:horizontal {
+  height: 0 !important;
+  display: none !important;
+}

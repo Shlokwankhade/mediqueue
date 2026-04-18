@@ -2,111 +2,136 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="MEDIQUEUE - Digital Appointment and Queue Management System. AI-powered healthcare platform for patients, doctors and clinics." />
-    <meta name="theme-color" content="#0D9B82" />
-    <title>MEDIQUEUE - Digital Appointment & Queue System</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- SEO -->
+    <title>MEDIQUEUE - Digital Appointment & Queue Management System</title>
+    <meta name="description" content="MEDIQUEUE is an AI-powered digital appointment and queue management system for Indian healthcare. Book appointments, track real-time queue positions, manage prescriptions and health records."/>
+    <meta name="keywords" content="mediqueue, appointment booking, queue management, digital health, hospital queue, doctor appointment, telemedicine, e-prescription, health records, India healthcare"/>
+    <meta name="author" content="MEDIQUEUE"/>
+    <meta name="robots" content="index, follow"/>
+    <link rel="canonical" href="https://mediqueue-nine.vercel.app"/>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="https://mediqueue-nine.vercel.app"/>
+    <meta property="og:title" content="MEDIQUEUE - Digital Appointment & Queue System"/>
+    <meta property="og:description" content="AI-powered healthcare platform. Book appointments, track queues, manage prescriptions - all in one place."/>
+    <meta property="og:image" content="https://mediqueue-nine.vercel.app/og-image.png"/>
+    <meta property="og:locale" content="en_IN"/>
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content="MEDIQUEUE - Digital Appointment & Queue System"/>
+    <meta name="twitter:description" content="AI-powered healthcare platform for India."/>
+
+    <!-- PWA -->
+    <meta name="theme-color" content="#0D9B82"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+    <meta name="apple-mobile-web-app-title" content="MEDIQUEUE"/>
+    <link rel="manifest" href="/manifest.json"/>
+    <link rel="apple-touch-icon" href="/icon-192.svg"/>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+
+    <!-- Fonts - optimized loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 
     <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
 
     <!-- Razorpay -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
 
-    <!-- GSAP for animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "MEDIQUEUE",
+      "description": "AI-powered digital appointment and queue management system for Indian healthcare",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "ratingCount": "500"
+      }
+    }
+    </script>
 
     <style>
-      * { margin:0; padding:0; box-sizing:border-box; }
-      html { scroll-behavior: smooth; }
-      body { font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
-
-/* Default cursor */
-
-      /* Scrollbar */
-      ::-webkit-scrollbar { width: 6px; }
-      ::-webkit-scrollbar-track { background: #080F1A; }
-      ::-webkit-scrollbar-thumb { background: linear-gradient(#0D9B82, #1DBEA0); border-radius: 99px; }
-
-      /* Selection */
-      ::selection { background: rgba(13,155,130,0.3); color: white; }
+      *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+      html{scroll-behavior:smooth;scroll-padding-top:80px}
+      body{font-family:'DM Sans',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+      ::-webkit-scrollbar{width:5px}
+      ::-webkit-scrollbar-track{background:transparent}
+      ::-webkit-scrollbar-thumb{background:linear-gradient(#0D9B82,#1DBEA0);border-radius:99px}
+      ::selection{background:rgba(13,155,130,0.25);color:#0A1628}
 
       /* Loading screen */
-      #loading-screen {
-        position: fixed; inset: 0;
-        background: #080F1A;
-        display: flex; align-items: center; justify-content: center;
-        z-index: 999999;
-        transition: opacity 0.6s ease, visibility 0.6s ease;
+      #loading-screen{
+        position:fixed;inset:0;
+        background:#080F1A;
+        display:flex;align-items:center;justify-content:center;
+        z-index:999999;
+        transition:opacity 0.5s ease, visibility 0.5s ease;
       }
-      #loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-      .loader-logo {
-        display: flex; flex-direction: column; align-items: center; gap: 20px;
+      #loading-screen.gone{opacity:0;visibility:hidden;pointer-events:none}
+      .ld-wrap{display:flex;flex-direction:column;align-items:center;gap:20px}
+      .ld-icon{
+        width:72px;height:72px;
+        background:linear-gradient(135deg,#0D9B82,#1DBEA0);
+        border-radius:20px;
+        display:flex;align-items:center;justify-content:center;
+        animation:ldPulse 1.5s ease-in-out infinite;
+        box-shadow:0 0 40px rgba(13,155,130,0.4);
       }
-      .loader-icon {
-        width: 72px; height: 72px;
-        background: linear-gradient(135deg, #0D9B82, #1DBEA0);
-        border-radius: 20px;
-        display: flex; align-items: center; justify-content: center;
-        animation: loaderPulse 1.5s ease-in-out infinite;
+      .ld-name{
+        font-family:'Syne',sans-serif;font-weight:800;font-size:22px;
+        background:linear-gradient(135deg,#0D9B82,#1DBEA0);
+        -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+        letter-spacing:2px;
       }
-      .loader-bar {
-        width: 200px; height: 3px;
-        background: #1A2C4A;
-        border-radius: 99px;
-        overflow: hidden;
-      }
-      .loader-progress {
-        height: 100%;
-        background: linear-gradient(90deg, #0D9B82, #1DBEA0);
-        border-radius: 99px;
-        animation: loaderFill 1.5s ease forwards;
-      }
-      @keyframes loaderPulse {
-        0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(13,155,130,0.4); }
-        50% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(13,155,130,0); }
-      }
-      @keyframes loaderFill {
-        from { width: 0%; }
-        to { width: 100%; }
-      }
+      .ld-bar{width:180px;height:3px;background:#1A2C4A;border-radius:99px;overflow:hidden}
+      .ld-prog{height:100%;background:linear-gradient(90deg,#0D9B82,#1DBEA0);border-radius:99px;animation:ldFill 1.6s ease forwards}
+      .ld-txt{color:#3D5075;font-size:11px;letter-spacing:3px;font-family:'DM Sans',sans-serif}
+      @keyframes ldPulse{0%,100%{transform:scale(1);box-shadow:0 0 40px rgba(13,155,130,0.4)}50%{transform:scale(1.06);box-shadow:0 0 60px rgba(13,155,130,0.6)}}
+      @keyframes ldFill{from{width:0}to{width:100%}}
     </style>
   </head>
   <body>
-
-
-    <!-- Loading screen -->
+    <!-- Loading -->
     <div id="loading-screen">
-      <div class="loader-logo">
-        <div class="loader-icon">
+      <div class="ld-wrap">
+        <div class="ld-icon">
           <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
           </svg>
         </div>
-        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;background:linear-gradient(135deg,#0D9B82,#1DBEA0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">MEDIQUEUE</div>
-        <div class="loader-bar"><div class="loader-progress"></div></div>
-        <div style="color:#3D5075;font-size:12px;letter-spacing:2px;">LOADING...</div>
+        <div class="ld-name">MEDIQUEUE</div>
+        <div class="ld-bar"><div class="ld-prog"></div></div>
+        <div class="ld-txt">LOADING...</div>
       </div>
     </div>
 
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-
     <script>
-
-
-      // Loading screen
       window.addEventListener('load', () => {
         setTimeout(() => {
-          document.getElementById('loading-screen').classList.add('hidden');
-        }, 1800);
+          document.getElementById('loading-screen').classList.add('gone');
+        }, 1700);
       });
     </script>
   </body>
