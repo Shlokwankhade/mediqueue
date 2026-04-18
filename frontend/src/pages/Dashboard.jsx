@@ -1,3 +1,4 @@
+import MessagesPanel from './panels/MessagesPanel';
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
@@ -21,6 +22,7 @@ const NAV_CONFIG = {
     { id:'doctors',        icon:'fa-user-md',             label:'Find Doctors' },
     { id:'payments',       icon:'fa-credit-card',         label:'Payments' },
     { id:'prescriptions',  icon:'fa-prescription-bottle', label:'Prescriptions' },
+    { id:'messages',      icon:'fa-comments',             label:'Messages' },
     { id:'settings',       icon:'fa-cog',                 label:'Settings' },
   ],
   doctor: [
@@ -28,6 +30,7 @@ const NAV_CONFIG = {
     { id:'appointments',   icon:'fa-calendar-alt',        label:'My Schedule' },
     { id:'queue',          icon:'fa-ticket-alt',           label:'Queue Management' },
     { id:'prescriptions',  icon:'fa-prescription-bottle', label:'E-Prescriptions' },
+    { id:'messages',       icon:'fa-comments',            label:'Messages' },
     { id:'settings',       icon:'fa-cog',                 label:'Settings' },
   ],
   admin: [
@@ -35,6 +38,7 @@ const NAV_CONFIG = {
     { id:'admin',          icon:'fa-chart-bar',           label:'Analytics' },
     { id:'appointments',   icon:'fa-calendar-alt',        label:'All Appointments' },
     { id:'doctors',        icon:'fa-user-md',             label:'Manage Doctors' },
+    { id:'messages',      icon:'fa-comments',             label:'Messages' },
     { id:'settings',       icon:'fa-cog',                 label:'Settings' },
   ]
 };
@@ -42,7 +46,7 @@ const NAV_CONFIG = {
 const PAGE_TITLES = {
   overview:'Dashboard', appointments:'Appointments', queue:'Queue',
   doctors:'Doctors', payments:'Payments', prescriptions:'Prescriptions',
-  settings:'Settings', admin:'Analytics'
+  settings:'Settings', messages:'Messages', admin:'Analytics'
 };
 
 function Sidebar({ role, active, onNav, user, onLogout }) {
@@ -179,7 +183,7 @@ function OverviewPanel({ role, user }) {
   // PATIENT DASHBOARD
   if (role === 'patient') return (
     <div className='fu'>
-      <div style={{marginBottom:24,padding:'20px 24px',background:tg,borderRadius:20,color:'white',position:'relative',overflow:'hidden'}}>
+      <div style={{marginBottom:24,padding:'20px 24px',background:tg,borderRadius:20,color:'white',position:'relative',overflow:'visible'}}>
         <div style={{position:'absolute',top:-30,right:-30,width:150,height:150,borderRadius:'50%',background:'rgba(255,255,255,.08)'}}/>
         <div style={{position:'absolute',bottom:-40,right:40,width:100,height:100,borderRadius:'50%',background:'rgba(255,255,255,.06)'}}/>
         <div style={{fontSize:12,opacity:.8,marginBottom:4}}>{today}</div>
@@ -253,10 +257,10 @@ function OverviewPanel({ role, user }) {
   // DOCTOR DASHBOARD
   if (role === 'doctor') return (
     <div className='fu'>
-      <div style={{marginBottom:24,padding:'20px 24px',background:'linear-gradient(135deg,#7C3AED,#A78BFA)',borderRadius:20,color:'white',position:'relative',overflow:'hidden'}}>
+      <div style={{marginBottom:24,padding:'20px 24px',background:'linear-gradient(135deg,#7C3AED,#A78BFA)',borderRadius:20,color:'white',position:'relative',overflow:'visible'}}>
         <div style={{position:'absolute',top:-30,right:-30,width:150,height:150,borderRadius:'50%',background:'rgba(255,255,255,.08)'}}/>
         <div style={{fontSize:12,opacity:.8,marginBottom:4}}>{today}</div>
-        <div style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:700,marginBottom:4}}>Welcome, {user?.name?.split(' ')[0]}!</div>
+        <div style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:700,marginBottom:4}}>Welcome, {user?.name}!</div>
         <div style={{fontSize:13,opacity:.85}}>You have {appointments.length} appointment{appointments.length!==1?'s':''} scheduled</div>
       </div>
 
@@ -302,7 +306,7 @@ function OverviewPanel({ role, user }) {
   // ADMIN DASHBOARD
   if (role === 'admin') return (
     <div className='fu'>
-      <div style={{marginBottom:24,padding:'20px 24px',background:'linear-gradient(135deg,#F59E0B,#FCD34D)',borderRadius:20,color:'#0A1628',position:'relative',overflow:'hidden'}}>
+      <div style={{marginBottom:24,padding:'20px 24px',background:'linear-gradient(135deg,#F59E0B,#FCD34D)',borderRadius:20,color:'#0A1628',position:'relative',overflow:'visible'}}>
         <div style={{position:'absolute',top:-30,right:-30,width:150,height:150,borderRadius:'50%',background:'rgba(0,0,0,.06)'}}/>
         <div style={{fontSize:12,opacity:.7,marginBottom:4}}>{today}</div>
         <div style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:700,marginBottom:4}}>Admin Dashboard</div>
@@ -420,6 +424,7 @@ export default function Dashboard() {
       case 'admin':         return role==='admin' ? <AdminPanel/> : <div style={{padding:40,textAlign:'center',color:'var(--text-3)'}}>Access denied</div>;
       case 'doctors':       return role==='admin' ? <AdminDoctorsPanel/> : <FindDoctorsPanel/>;
       case 'settings':      return <SettingsPanel user={user}/>;
+      case 'messages':      return <MessagesPanel/>;
       default:              return <OverviewPanel role={role} user={user}/>;
     }
   };
@@ -508,7 +513,7 @@ function AdminDoctorsPanel() {
   if(loading) return <div style={{padding:40,textAlign:'center'}}><i className='fas fa-spinner fa-spin' style={{fontSize:32,color:'#0D9B82'}}/></div>;
   return (
     <div className='fu'>
-      <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,overflow:'hidden'}}>
+      <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,overflow:'visible'}}>
         <div style={{padding:'16px 20px',borderBottom:'1px solid var(--border)',fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700}}>All Doctors ({doctors.length})</div>
         <table style={{width:'100%',borderCollapse:'collapse'}}>
           <thead>

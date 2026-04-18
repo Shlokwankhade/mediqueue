@@ -13,3 +13,4 @@ export const offQueueUpdated = () => socket.off('queue_updated');
 export const emitCallNext = (data) => socket.emit('call_next_patient', data);
 
 export default socket;
+export const getSocket = () => socket;

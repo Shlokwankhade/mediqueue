@@ -37,11 +37,11 @@ export default function Chatbot() {
   };
   return (
     <>
-      <div onClick={()=>setOpen(v=>!v)} style={{position:'fixed',bottom:24,right:24,width:54,height:54,background:tg,borderRadius:15,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',boxShadow:'0 8px 24px rgba(13,155,130,.4)',zIndex:998,transition:'all .2s'}}>
+      <div onClick={()=>setOpen(v=>!v)} style={{position:'fixed',bottom:24,right:80,width:54,height:54,background:tg,borderRadius:15,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',boxShadow:'0 8px 24px rgba(13,155,130,.4)',zIndex:998,transition:'all .2s'}}>
         <i className={'fas fa-'+(open?'times':'comment-medical')} style={{color:'#fff',fontSize:20}}/>
       </div>
       {open && (
-        <div className='si' style={{position:'fixed',bottom:90,right:24,width:340,height:500,background:'var(--surface)',border:'1px solid var(--border)',borderRadius:20,display:'flex',flexDirection:'column',zIndex:999,boxShadow:'0 24px 64px rgba(0,0,0,.18)',overflow:'hidden'}}>
+        <div className='si' style={{position:'fixed',bottom:90,right:80,width:340,height:500,background:'var(--surface)',border:'1px solid var(--border)',borderRadius:20,display:'flex',flexDirection:'column',zIndex:999,boxShadow:'0 24px 64px rgba(0,0,0,.18)',overflow:'hidden'}}>
           <div style={{padding:'14px 16px',background:tg,display:'flex',alignItems:'center',justifyContent:'space-between',flexShrink:0}}>
             <div>
               <div style={{fontWeight:700,fontSize:14,color:'#fff'}}>MEDIQUEUE AI</div>

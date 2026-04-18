@@ -8,6 +8,27 @@ module.exports = (io) => {
     socket.on('patient_joined', (data) => {
       io.to('queue_' + data.doctorId).emit('queue_updated', { action: 'patient_joined', tokenNumber: data.tokenNumber, position: data.position, timestamp: new Date().toISOString() });
     });
-    socket.on('disconnect', () => console.log('Client disconnected:', socket.id));
+    // Real-time chat
+  socket.on('chat:join', (userId) => {
+    socket.join('user:' + userId);
+    console.log('User joined chat room:', userId);
+  });
+
+  socket.on('chat:message', (data) => {
+    // Emit to receiver
+    io.to('user:' + data.receiver_id).emit('chat:newMessage', {
+      ...data,
+      timestamp: new Date().toISOString()
+    });
+  });
+
+  socket.on('chat:typing', (data) => {
+    io.to('user:' + data.receiver_id).emit('chat:typing', {
+      sender_id: data.sender_id,
+      sender_name: data.sender_name
+    });
+  });
+
+  socket.on('disconnect', () => console.log('Client disconnected:', socket.id));
   });
 };
