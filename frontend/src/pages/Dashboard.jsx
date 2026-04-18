@@ -1,3 +1,4 @@
+import ReviewsPanel from './panels/ReviewsPanel';
 import React from 'react';
 import HealthPanel from './panels/HealthPanel';
 import MessagesPanel from './panels/MessagesPanel';
@@ -25,6 +26,7 @@ const NAV_CONFIG = {
     { id:'payments',       icon:'fa-credit-card',         label:'Payments' },
     { id:'prescriptions',  icon:'fa-prescription-bottle', label:'Prescriptions' },
     { id:'health',         icon:'fa-heart',               label:'Health Records' },
+    { id:'reviews',        icon:'fa-star',                label:'Reviews' },
     { id:'messages',      icon:'fa-comments',             label:'Messages' },
     { id:'settings',       icon:'fa-cog',                 label:'Settings' },
   ],
@@ -34,6 +36,8 @@ const NAV_CONFIG = {
     { id:'queue',          icon:'fa-ticket-alt',           label:'Queue Management' },
     { id:'prescriptions',  icon:'fa-prescription-bottle', label:'E-Prescriptions' },
     { id:'messages',       icon:'fa-comments',            label:'Messages' },
+    { id:'health',         icon:'fa-heart',               label:'Health Records' },
+    { id:'reviews',        icon:'fa-star',                label:'My Reviews' },
     { id:'settings',       icon:'fa-cog',                 label:'Settings' },
   ],
   admin: [
@@ -49,7 +53,7 @@ const NAV_CONFIG = {
 const PAGE_TITLES = {
   overview:'Dashboard', appointments:'Appointments', queue:'Queue',
   doctors:'Doctors', payments:'Payments', prescriptions:'Prescriptions',
-  settings:'Settings', messages:'Messages', health:'Health Records', admin:'Analytics'
+  settings:'Settings', messages:'Messages', health:'Health Records', reviews:'Reviews', admin:'Analytics'
 };
 
 function Sidebar({ role, active, onNav, user, onLogout }) {
@@ -268,38 +272,41 @@ function OverviewPanel({ role, user }) {
       </div>
 
       <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16,marginBottom:24}}>
-        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px',display:'flex',alignItems:'center',gap:14}}>
-          <div style={{width:48,height:48,borderRadius:14,background:'#EDE9FE',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-            <i className='fas fa-users' style={{color:'#7C3AED',fontSize:20}}/>
-          </div>
-          <div>
-            <div style={{fontSize:11,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.6,marginBottom:4}}>Today Patients</div>
-            <div style={{fontFamily:'Syne,sans-serif',fontSize:32,fontWeight:800,color:'#7C3AED',lineHeight:1}}>
-              {appointments.filter(a=>new Date(a.appointment_time).toDateString()===new Date().toDateString()).length}
+        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px'}}>
+          <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}>
+            <div style={{width:36,height:36,borderRadius:10,background:'#EDE9FE',display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <i className='fas fa-users' style={{color:'#7C3AED',fontSize:16}}/>
             </div>
+            <div style={{fontSize:12,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.5}}>Today</div>
           </div>
+          <div style={{fontSize:42,fontWeight:900,color:'#7C3AED',fontFamily:'DM Sans,sans-serif',letterSpacing:-1}}>
+            {String(appointments.filter(a=>new Date(a.appointment_time).toDateString()===new Date().toDateString()).length)}
+          </div>
+          <div style={{fontSize:12,color:'#94A3B8',marginTop:2}}>patients today</div>
         </div>
-        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px',display:'flex',alignItems:'center',gap:14}}>
-          <div style={{width:48,height:48,borderRadius:14,background:'#E6F7F4',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-            <i className='fas fa-calendar-check' style={{color:'#0D9B82',fontSize:20}}/>
-          </div>
-          <div>
-            <div style={{fontSize:11,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.6,marginBottom:4}}>Confirmed</div>
-            <div style={{fontFamily:'Syne,sans-serif',fontSize:32,fontWeight:800,color:'#0D9B82',lineHeight:1}}>
-              {appointments.filter(a=>a.status==='confirmed').length}
+        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px'}}>
+          <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}>
+            <div style={{width:36,height:36,borderRadius:10,background:'#E6F7F4',display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <i className='fas fa-calendar-check' style={{color:'#0D9B82',fontSize:16}}/>
             </div>
+            <div style={{fontSize:12,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.5}}>Confirmed</div>
           </div>
+          <div style={{fontSize:42,fontWeight:900,color:'#0D9B82',fontFamily:'DM Sans,sans-serif',letterSpacing:-1}}>
+            {String(appointments.filter(a=>a.status==='confirmed').length)}
+          </div>
+          <div style={{fontSize:12,color:'#94A3B8',marginTop:2}}>appointments</div>
         </div>
-        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px',display:'flex',alignItems:'center',gap:14}}>
-          <div style={{width:48,height:48,borderRadius:14,background:'#FEF3C7',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-            <i className='fas fa-check-circle' style={{color:'#F59E0B',fontSize:20}}/>
-          </div>
-          <div>
-            <div style={{fontSize:11,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.6,marginBottom:4}}>Completed</div>
-            <div style={{fontFamily:'Syne,sans-serif',fontSize:32,fontWeight:800,color:'#F59E0B',lineHeight:1}}>
-              {appointments.filter(a=>a.status==='completed').length}
+        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px'}}>
+          <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}>
+            <div style={{width:36,height:36,borderRadius:10,background:'#FEF3C7',display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <i className='fas fa-check-circle' style={{color:'#F59E0B',fontSize:16}}/>
             </div>
+            <div style={{fontSize:12,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.5}}>Completed</div>
           </div>
+          <div style={{fontSize:42,fontWeight:900,color:'#F59E0B',fontFamily:'DM Sans,sans-serif',letterSpacing:-1}}>
+            {String(appointments.filter(a=>a.status==='completed').length)}
+          </div>
+          <div style={{fontSize:12,color:'#94A3B8',marginTop:2}}>total done</div>
         </div>
       </div>
 
@@ -455,6 +462,7 @@ export default function Dashboard() {
       case 'settings':      return <SettingsPanel user={user}/>;
       case 'messages':      return <MessagesPanel/>;
       case 'health':        return <HealthPanel/>;
+      case 'reviews':       return <ReviewsPanel role={role}/>;
       default:              return <OverviewPanel role={role} user={user}/>;
     }
   };

@@ -379,18 +379,18 @@ export default function HealthPanel() {
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:16,marginBottom:16}}>
               <div>
                 <label style={lStyle}>Blood Group</label>
-                <select style={iStyle} value={form.blood_group} onChange={e=>set('blood_group',e.target.value)} disabled={user?.role==='doctor'}>
+                <select style={iStyle} value={form.blood_group || ''} onChange={e=>set('blood_group',e.target.value)} disabled={user?.role==='doctor'}>
                   <option value=''>Select</option>
                   {bloodGroups.map(g=><option key={g} value={g}>{g}</option>)}
                 </select>
               </div>
               <div>
                 <label style={lStyle}>Height (cm)</label>
-                <input style={iStyle} type='number' placeholder='170' value={form.height_cm} onChange={e=>set('height_cm',e.target.value)} disabled={user?.role==='doctor'}/>
+                <input style={iStyle} type='number' placeholder='170' value={form.height_cm || ''} onChange={e=>set('height_cm',e.target.value)} disabled={user?.role==='doctor'}/>
               </div>
               <div>
                 <label style={lStyle}>Weight (kg)</label>
-                <input style={iStyle} type='number' placeholder='70' value={form.weight_kg} onChange={e=>set('weight_kg',e.target.value)} disabled={user?.role==='doctor'}/>
+                <input style={iStyle} type='number' placeholder='70' value={form.weight_kg || ''} onChange={e=>set('weight_kg',e.target.value)} disabled={user?.role==='doctor'}/>
               </div>
             </div>
             {[
@@ -474,11 +474,11 @@ export default function HealthPanel() {
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16,marginBottom:16}}>
               <div>
                 <label style={lStyle}>Contact Name</label>
-                <input style={iStyle} placeholder='Full name' value={form.emergency_contact_name} onChange={e=>set('emergency_contact_name',e.target.value)} disabled={user?.role==='doctor'}/>
+                <input style={iStyle} placeholder='Full name' value={form.emergency_contact_name || ''} onChange={e=>set('emergency_contact_name',e.target.value)} disabled={user?.role==='doctor'}/>
               </div>
               <div>
                 <label style={lStyle}>Relationship</label>
-                <select style={iStyle} value={form.emergency_contact_relation} onChange={e=>set('emergency_contact_relation',e.target.value)} disabled={user?.role==='doctor'}>
+                <select style={iStyle} value={form.emergency_contact_relation || ''} onChange={e=>set('emergency_contact_relation',e.target.value)} disabled={user?.role==='doctor'}>
                   <option value=''>Select</option>
                   {['Spouse','Parent','Child','Sibling','Friend','Other'].map(r=><option key={r} value={r}>{r}</option>)}
                 </select>
@@ -486,7 +486,7 @@ export default function HealthPanel() {
             </div>
             <div>
               <label style={lStyle}>Contact Phone</label>
-              <input style={iStyle} placeholder='+91 98765 43210' value={form.emergency_contact_phone} onChange={e=>set('emergency_contact_phone',e.target.value)} disabled={user?.role==='doctor'}/>
+              <input style={iStyle} placeholder='+91 98765 43210' value={form.emergency_contact_phone || ''} onChange={e=>set('emergency_contact_phone',e.target.value)} disabled={user?.role==='doctor'}/>
             </div>
           </div>
         )}
@@ -497,11 +497,11 @@ export default function HealthPanel() {
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
               <div>
                 <label style={lStyle}>Insurance Provider</label>
-                <input style={iStyle} placeholder='e.g. Star Health' value={form.insurance_provider} onChange={e=>set('insurance_provider',e.target.value)} disabled={user?.role==='doctor'}/>
+                <input style={iStyle} placeholder='e.g. Star Health' value={form.insurance_provider || ''} onChange={e=>set('insurance_provider',e.target.value)} disabled={user?.role==='doctor'}/>
               </div>
               <div>
                 <label style={lStyle}>Policy Number</label>
-                <input style={iStyle} placeholder='e.g. SH1234567890' value={form.insurance_number} onChange={e=>set('insurance_number',e.target.value)} disabled={user?.role==='doctor'}/>
+                <input style={iStyle} placeholder='e.g. SH1234567890' value={form.insurance_number || ''} onChange={e=>set('insurance_number',e.target.value)} disabled={user?.role==='doctor'}/>
               </div>
             </div>
           </div>
