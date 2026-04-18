@@ -161,7 +161,7 @@ export default function QueuePanel({ role }) {
               </div>
               <div style={{background:'#FEF3C7',borderRadius:16,padding:16,marginBottom:16}}>
                 <div style={{fontFamily:'Syne,sans-serif',fontSize:36,fontWeight:800,color:'#D97706',lineHeight:1,marginBottom:4}}>
-                  ~{myEntry.estimated_wait_minutes || (myPosition * 8)} min
+                  ~{Math.abs(myEntry.estimated_wait_minutes || (myPosition * 8))} min
                 </div>
                 <div style={{color:'#92400E',fontSize:13,fontWeight:600}}>Estimated wait time</div>
               </div>
