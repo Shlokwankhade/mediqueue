@@ -137,7 +137,7 @@ export default function MessagesPanel() {
   const getRoleColor = (role) => role === 'doctor' ? '#7C3AED' : '#0D9B82';
 
   if (loading) return (
-    <div style={{padding:60,textAlign:'center',color:'#94A3B8'}}>
+    <div style={{padding:60,textAlign:'center',color:'var(--text-3)'}}>
       <i className='fas fa-spinner fa-spin' style={{fontSize:32,display:'block',marginBottom:12,color:'#0D9B82'}}/>
       Loading messages...
     </div>
@@ -147,20 +147,20 @@ export default function MessagesPanel() {
     <div className='fu' style={{height:'calc(100vh - 120px)',display:'flex',gap:16}}>
       
       {/* Contacts Sidebar */}
-      <div style={{width:300,flexShrink:0,background:'white',border:'1px solid #E2E8F0',borderRadius:16,display:'flex',flexDirection:'column',overflow:'hidden'}}>
+      <div style={{width:300,flexShrink:0,background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,display:'flex',flexDirection:'column',overflow:'hidden'}}>
         <div style={{padding:'18px 16px',borderBottom:'1px solid #E2E8F0'}}>
           <div style={{fontFamily:'Syne,sans-serif',fontSize:16,fontWeight:700,marginBottom:12}}>Messages</div>
-          <div style={{display:'flex',alignItems:'center',gap:8,background:'#F8FAFC',border:'1px solid #E2E8F0',borderRadius:10,padding:'8px 12px'}}>
-            <i className='fas fa-search' style={{color:'#94A3B8',fontSize:13}}/>
-            <input placeholder='Search contacts...' style={{background:'none',border:'none',outline:'none',fontSize:13,color:'#0A1628',width:'100%',fontFamily:'DM Sans,sans-serif'}}/>
+          <div style={{display:'flex',alignItems:'center',gap:8,background:'var(--surface-2)',border:'1px solid var(--border)',borderRadius:10,padding:'8px 12px'}}>
+            <i className='fas fa-search' style={{color:'var(--text-3)',fontSize:13}}/>
+            <input placeholder='Search contacts...' style={{background:'none',border:'none',outline:'none',fontSize:13,color:'var(--text)',width:'100%',fontFamily:'DM Sans,sans-serif'}}/>
           </div>
         </div>
         
         <div style={{flex:1,overflowY:'auto'}}>
           {contacts.length === 0 ? (
-            <div style={{textAlign:'center',padding:'40px 20px',color:'#94A3B8'}}>
+            <div style={{textAlign:'center',padding:'40px 20px',color:'var(--text-3)'}}>
               <i className='fas fa-comments' style={{fontSize:36,display:'block',marginBottom:12}}/>
-              <div style={{fontSize:14,fontWeight:600,marginBottom:6,color:'#0A1628'}}>No contacts yet</div>
+              <div style={{fontSize:14,fontWeight:600,marginBottom:6,color:'var(--text)'}}>No contacts yet</div>
               <div style={{fontSize:12}}>You can message doctors after booking appointments</div>
             </div>
           ) : contacts.map(c => {
@@ -187,8 +187,8 @@ export default function MessagesPanel() {
                   <div style={{position:'absolute',bottom:2,right:2,width:10,height:10,background:'#10B981',borderRadius:'50%',border:'2px solid white'}}/>
                 </div>
                 <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontSize:14,fontWeight:600,color:'#0A1628',marginBottom:2}}>{c.name}</div>
-                  <div style={{fontSize:12,color:'#94A3B8',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>
+                  <div style={{fontSize:14,fontWeight:600,color:'var(--text)',marginBottom:2}}>{c.name}</div>
+                  <div style={{fontSize:12,color:'var(--text-3)',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>
                     {getLastMessage(c.id) || (c.speciality ? c.speciality : c.role)}
                   </div>
                 </div>
@@ -204,13 +204,13 @@ export default function MessagesPanel() {
       </div>
 
       {/* Chat Area */}
-      <div style={{flex:1,background:'white',border:'1px solid #E2E8F0',borderRadius:16,display:'flex',flexDirection:'column',overflow:'hidden'}}>
+      <div style={{flex:1,background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,display:'flex',flexDirection:'column',overflow:'hidden'}}>
         {!selectedUser ? (
-          <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',color:'#94A3B8'}}>
+          <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',color:'var(--text-3)'}}>
             <div style={{width:80,height:80,borderRadius:'50%',background:'#E6F7F4',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:16}}>
               <i className='fas fa-comments' style={{fontSize:36,color:'#0D9B82'}}/>
             </div>
-            <div style={{fontFamily:'Syne,sans-serif',fontSize:18,fontWeight:700,color:'#0A1628',marginBottom:8}}>Select a conversation</div>
+            <div style={{fontFamily:'Syne,sans-serif',fontSize:18,fontWeight:700,color:'var(--text)',marginBottom:8}}>Select a conversation</div>
             <div style={{fontSize:14}}>Choose a contact to start chatting</div>
           </div>
         ) : (
@@ -222,13 +222,13 @@ export default function MessagesPanel() {
               </div>
               <div>
                 <div style={{fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700}}>{selectedUser.name}</div>
-                <div style={{fontSize:12,color:'#94A3B8',display:'flex',alignItems:'center',gap:5}}>
+                <div style={{fontSize:12,color:'var(--text-3)',display:'flex',alignItems:'center',gap:5}}>
                   <span style={{width:6,height:6,borderRadius:'50%',background:'#10B981',display:'inline-block'}}/>
                   {selectedUser.speciality || selectedUser.role} - Online
                 </div>
               </div>
               <div style={{marginLeft:'auto',display:'flex',gap:8}}>
-                <button style={{width:36,height:36,borderRadius:10,background:'#F8FAFC',border:'1px solid #E2E8F0',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',color:'#64748B'}}>
+                <button style={{width:36,height:36,borderRadius:10,background:'var(--surface-2)',border:'1px solid var(--border)',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',color:'var(--text-2)'}}>
                   <i className='fas fa-phone'/>
                 </button>
                 <button style={{width:36,height:36,borderRadius:10,background:'#E6F7F4',border:'1px solid #0D9B82',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',color:'#0D9B82'}}>
@@ -238,9 +238,9 @@ export default function MessagesPanel() {
             </div>
 
             {/* Messages */}
-            <div style={{flex:1,overflowY:'auto',padding:'16px 20px',display:'flex',flexDirection:'column',gap:12,background:'#F8FAFC'}}>
+            <div style={{flex:1,overflowY:'auto',padding:'16px 20px',display:'flex',flexDirection:'column',gap:12,background:'var(--surface-2)'}}>
               {messages.length === 0 ? (
-                <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',color:'#94A3B8'}}>
+                <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',color:'var(--text-3)'}}>
                   <i className='fas fa-comment-medical' style={{fontSize:32,marginBottom:10,color:'#0D9B82'}}/>
                   <div style={{fontSize:14}}>Start the conversation!</div>
                 </div>
@@ -250,7 +250,7 @@ export default function MessagesPanel() {
                 return (
                   <div key={msg.id || i} style={{display:'flex',flexDirection:'column',alignItems:isMe?'flex-end':'flex-start'}}>
                     {showName && !isMe && (
-                      <div style={{fontSize:11,color:'#94A3B8',marginBottom:4,marginLeft:8}}>{msg.sender_name}</div>
+                      <div style={{fontSize:11,color:'var(--text-3)',marginBottom:4,marginLeft:8}}>{msg.sender_name}</div>
                     )}
                     <div style={{
                       maxWidth:'70%',
@@ -265,7 +265,7 @@ export default function MessagesPanel() {
                     }}>
                       {msg.content}
                     </div>
-                    <div style={{fontSize:10,color:'#94A3B8',marginTop:3,marginLeft:isMe?0:8,marginRight:isMe?8:0}}>
+                    <div style={{fontSize:10,color:'var(--text-3)',marginTop:3,marginLeft:isMe?0:8,marginRight:isMe?8:0}}>
                       {new Date(msg.created_at).toLocaleTimeString('en-IN',{timeStyle:'short'})}
                       {isMe && <i className={'fas fa-check'+(msg.is_read?'-double':'')} style={{marginLeft:4,color:msg.is_read?'#0D9B82':'#94A3B8'}}/>}
                     </div>
@@ -273,8 +273,8 @@ export default function MessagesPanel() {
                 );
               })}
               {typing && (
-                <div style={{display:'flex',alignItems:'center',gap:8,color:'#94A3B8',fontSize:12}}>
-                  <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:12,padding:'8px 14px'}}>
+                <div style={{display:'flex',alignItems:'center',gap:8,color:'var(--text-3)',fontSize:12}}>
+                  <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:12,padding:'8px 14px'}}>
                     <span>{typingUser} is typing</span>
                     <span style={{marginLeft:4}}>...</span>
                   </div>
@@ -284,16 +284,16 @@ export default function MessagesPanel() {
             </div>
 
             {/* Input */}
-            <div style={{padding:'12px 16px',borderTop:'1px solid #E2E8F0',background:'white'}}>
+            <div style={{padding:'12px 16px',borderTop:'1px solid #E2E8F0',background:'var(--surface)'}}>
               <form onSubmit={sendMessage} style={{display:'flex',gap:10,alignItems:'center'}}>
-                <button type='button' style={{width:36,height:36,borderRadius:10,background:'#F8FAFC',border:'1px solid #E2E8F0',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',color:'#64748B',flexShrink:0}}>
+                <button type='button' style={{width:36,height:36,borderRadius:10,background:'var(--surface-2)',border:'1px solid var(--border)',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',color:'var(--text-2)',flexShrink:0}}>
                   <i className='fas fa-paperclip'/>
                 </button>
                 <input
                   value={newMsg}
                   onChange={e => { setNewMsg(e.target.value); handleTyping(); }}
                   placeholder={'Message ' + selectedUser.name + '...'}
-                  style={{flex:1,padding:'10px 14px',background:'#F8FAFC',border:'1.5px solid #E2E8F0',borderRadius:12,fontSize:14,color:'#0A1628',outline:'none',fontFamily:'DM Sans,sans-serif'}}
+                  style={{flex:1,padding:'10px 14px',background:'var(--surface-2)',border:'1.5px solid #E2E8F0',borderRadius:12,fontSize:14,color:'var(--text)',outline:'none',fontFamily:'DM Sans,sans-serif'}}
                   onFocus={e=>e.target.style.borderColor='#0D9B82'}
                   onBlur={e=>e.target.style.borderColor='#E2E8F0'}
                 />

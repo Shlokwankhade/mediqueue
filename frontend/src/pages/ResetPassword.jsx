@@ -1,3 +1,5 @@
+import DarkToggle from '../components/DarkToggle';
+import { useTheme } from '../context/ThemeContext';
 
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -46,6 +48,7 @@ export default function ResetPassword() {
 
   return (
     <div style={{minHeight:'100vh',background:'linear-gradient(135deg,#060E1A,#0D1B2E)',display:'flex',alignItems:'center',justifyContent:'center',padding:20}}>
+      <div style={{position:'fixed',top:16,right:16,zIndex:999}}><DarkToggle/></div>
       <div style={{background:'white',borderRadius:24,padding:'40px 36px',width:'100%',maxWidth:420,boxShadow:'0 24px 64px rgba(0,0,0,.3)'}}>
         <div style={{textAlign:'center',marginBottom:28}}>
           <div style={{width:48,height:48,background:tg,borderRadius:14,display:'inline-flex',alignItems:'center',justifyContent:'center',marginBottom:14}}>

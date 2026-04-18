@@ -1,3 +1,4 @@
+import { useTheme } from '../context/ThemeContext';
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -5,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Landing() {
   const nav = useNavigate();
   const [scrolled, setScrolled] = useState(false);
-  const [dark, setDark] = useState(false);
+  const { dark, toggle } = useTheme();
   const [count, setCount] = useState({patients:0,doctors:0,clinics:0,rating:0});
 
   useEffect(() => {
@@ -34,11 +35,7 @@ export default function Landing() {
     return () => clearInterval(timer);
   }, []);
 
-  const toggleDark = () => {
-    const d = !dark;
-    setDark(d);
-    document.documentElement.setAttribute('data-theme', d ? 'dark' : 'light');
-  };
+  const toggleDark = toggle;
 
   const tg = 'linear-gradient(135deg,#0D9B82,#1DBEA0)';
 
@@ -50,7 +47,7 @@ export default function Landing() {
         position:'fixed',top:0,left:0,right:0,zIndex:999,
         height:68,padding:'0 48px',
         display:'flex',alignItems:'center',justifyContent:'space-between',
-        background:scrolled?'rgba(255,255,255,.97)':'rgba(255,255,255,.0)',
+        background:scrolled?(dark?'rgba(8,15,26,.97)':'rgba(255,255,255,.97)'):(dark?'rgba(8,15,26,.3)':'rgba(255,255,255,.0)'),
         backdropFilter:scrolled?'blur(20px)':'none',
         borderBottom:scrolled?'1px solid rgba(0,0,0,.08)':'none',
         transition:'all .3s'
@@ -66,7 +63,7 @@ export default function Landing() {
         </div>
         <div style={{display:'flex',alignItems:'center',gap:28}}>
           {['Features','How It Works','Pricing','About'].map(l=>(
-            <a key={l} href={'#'+l.toLowerCase().replace(/ /g,'-')} style={{fontSize:14,fontWeight:500,color:'var(--txt2)',textDecoration:'none',transition:'color .2s'}}
+            <a key={l} href={'#'+l.toLowerCase().replace(/ /g,'-')} style={{fontSize:14,fontWeight:500,color:dark?'#8B9EC7':'var(--txt2)',textDecoration:'none',transition:'color .2s'}}
               onMouseEnter={e=>e.target.style.color='#0D9B82'}
               onMouseLeave={e=>e.target.style.color='var(--txt2)'}>{l}</a>
           ))}
@@ -85,14 +82,14 @@ export default function Landing() {
       </nav>
 
       {/* -- HERO -- */}
-      <section style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',padding:'130px 48px 80px',background:'linear-gradient(160deg,#f0fdf9 0%,#f8fafc 50%,#fdf4ff 100%)'}}>
+      <section style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',padding:'130px 48px 80px',background:dark?'linear-gradient(160deg,#080F1A 0%,#0A1628 50%,#0D1635 100%)':'linear-gradient(160deg,#f0fdf9 0%,#f8fafc 50%,#fdf4ff 100%)'}}>
         <div style={{maxWidth:1200,width:'100%',display:'grid',gridTemplateColumns:'1fr 1fr',gap:80,alignItems:'center'}}>
           <div>
             <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'#E6F7F4',color:'#0A7A67',padding:'6px 14px',borderRadius:99,fontSize:12,fontWeight:700,letterSpacing:.8,textTransform:'uppercase',marginBottom:24}}>
               <span style={{width:7,height:7,borderRadius:'50%',background:'#0D9B82',display:'inline-block',animation:'pulse 2s infinite'}}/>
               AI-Powered Healthcare System
             </div>
-            <h1 style={{fontFamily:'Syne,sans-serif',fontSize:58,fontWeight:800,lineHeight:1.08,marginBottom:20,letterSpacing:-1.5,color:'#0A1628'}}>
+            <h1 style={{fontFamily:'Syne,sans-serif',fontSize:58,fontWeight:800,lineHeight:1.08,marginBottom:20,letterSpacing:-1.5,color:dark?'#F0F4FF':'#0A1628'}}>
               Mediqueue:<br/>
               <span style={{background:tg,WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>Digital Appointment</span><br/>
               & Queue System
@@ -106,7 +103,7 @@ export default function Landing() {
                 onMouseLeave={e=>{e.currentTarget.style.transform='none';e.currentTarget.style.boxShadow='0 8px 24px rgba(13,155,130,.35)'}}>
                 <i className='fas fa-calendar-check'/> Book Appointment
               </button>
-              <button onClick={()=>nav('/login')} style={{display:'inline-flex',alignItems:'center',gap:9,padding:'14px 28px',background:'white',border:'2px solid #E2E8F0',borderRadius:14,fontFamily:'DM Sans,sans-serif',fontWeight:600,fontSize:16,cursor:'pointer',color:'#0A1628',transition:'all .2s'}}
+              <button onClick={()=>nav('/login')} style={{display:'inline-flex',alignItems:'center',gap:9,padding:'14px 28px',background:dark?'#0F1923':'white',border:dark?'2px solid #1E2D45':'2px solid #E2E8F0',borderRadius:14,fontFamily:'DM Sans,sans-serif',fontWeight:600,fontSize:16,cursor:'pointer',color:dark?'#F0F4FF':'#0A1628',transition:'all .2s'}}
                 onMouseEnter={e=>e.currentTarget.style.borderColor='#0D9B82'}
                 onMouseLeave={e=>e.currentTarget.style.borderColor='#E2E8F0'}>
                 <i className='fas fa-sign-in-alt' style={{color:'#0D9B82'}}/> Sign In
@@ -124,7 +121,7 @@ export default function Landing() {
           {/* Hero Visual */}
           <div style={{position:'relative'}}>
             {/* Main Card */}
-            <div style={{background:'white',borderRadius:24,padding:24,boxShadow:'0 24px 64px rgba(0,0,0,.1)',border:'1px solid #E2E8F0',animation:'float 4s ease-in-out infinite'}}>
+            <div style={{background:dark?'#0F1923':'white',borderRadius:24,padding:24,boxShadow:'0 24px 64px rgba(0,0,0,.1)',border:'1px solid #E2E8F0',animation:'float 4s ease-in-out infinite'}}>
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:20}}>
                 <div>
                   <div style={{fontSize:11,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.8}}>Live Queue</div>
@@ -135,7 +132,7 @@ export default function Landing() {
                   Live
                 </div>
               </div>
-              <div style={{display:'flex',alignItems:'center',gap:12,padding:14,background:'#F8FAFC',borderRadius:14,marginBottom:12}}>
+              <div style={{display:'flex',alignItems:'center',gap:12,padding:14,background:dark?'#161F2E':'#F8FAFC',borderRadius:14,marginBottom:12}}>
                 <div style={{width:44,height:44,borderRadius:12,background:tg,display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontFamily:'Syne,sans-serif',fontWeight:800,fontSize:14}}>34</div>
                 <div>
                   <div style={{fontSize:11,color:'#94A3B8',marginBottom:2}}>YOUR TOKEN</div>
@@ -170,12 +167,12 @@ export default function Landing() {
             </div>
 
             {/* Floating badge 1 */}
-            <div style={{position:'absolute',top:-20,right:-20,background:'white',borderRadius:16,padding:'14px 18px',boxShadow:'0 8px 32px rgba(0,0,0,.12)',border:'1px solid #E2E8F0',animation:'float 4s ease-in-out infinite .5s'}}>
+            <div style={{position:'absolute',top:-20,right:-20,background:dark?'#0F1923':'white',borderRadius:16,padding:'14px 18px',boxShadow:'0 8px 32px rgba(0,0,0,.12)',border:dark?'1px solid #1E2D45':'1px solid #E2E8F0',animation:'float 4s ease-in-out infinite .5s'}}>
               <div style={{display:'flex',alignItems:'center',gap:8}}>
                 <span style={{width:8,height:8,borderRadius:'50%',background:'#10B981',display:'inline-block'}}/>
                 <span style={{fontSize:11,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.5}}>AI Prediction</span>
               </div>
-              <div style={{fontFamily:'Syne,sans-serif',fontSize:20,fontWeight:800,color:'#0A1628',marginTop:2}}>97.3% Accurate</div>
+              <div style={{fontFamily:'Syne,sans-serif',fontSize:20,fontWeight:800,color:dark?'#F0F4FF':'#0A1628',marginTop:2}}>97.3% Accurate</div>
             </div>
 
             {/* Floating badge 2 */}
@@ -191,13 +188,13 @@ export default function Landing() {
       </section>
 
       {/* -- FEATURES -- */}
-      <section id='features' style={{padding:'96px 48px',background:'var(--bg)'}}>
+      <section id='features' style={{padding:'96px 48px',background:dark?'#080F1A':'var(--bg)'}}>
         <div style={{maxWidth:1200,margin:'0 auto'}}>
           <div style={{textAlign:'center',marginBottom:64}}>
             <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'#E6F7F4',color:'#0A7A67',padding:'6px 14px',borderRadius:99,fontSize:12,fontWeight:700,letterSpacing:.8,textTransform:'uppercase',marginBottom:16}}>
               Everything You Need
             </div>
-            <h2 style={{fontFamily:'Syne,sans-serif',fontSize:44,fontWeight:800,marginBottom:14,letterSpacing:-1,color:'#0A1628'}}>Built for Modern Healthcare</h2>
+            <h2 style={{fontFamily:'Syne,sans-serif',fontSize:44,fontWeight:800,marginBottom:14,letterSpacing:-1,color:dark?'#F0F4FF':'#0A1628'}}>Built for Modern Healthcare</h2>
             <p style={{fontSize:17,color:'#64748B',maxWidth:540,margin:'0 auto',lineHeight:1.7}}>A complete digital healthcare ecosystem  from booking to billing, all in one powerful platform.</p>
           </div>
 
@@ -210,7 +207,7 @@ export default function Landing() {
               {icon:'chart-line',emoji:'??',title:'Live Analytics',desc:'Real-time dashboards for revenue, appointments, and patient flow.',color:'#F59E0B',bg:'#FEF3C7',span:1},
             ].map(f=>(
               <div key={f.title} style={{
-                background:f.span===2?'#0A1628':'var(--surf)',
+                background:f.span===2?'#0A1628':(dark?'#0F1923':'white'),
                 border:f.span===2?'none':'1px solid #E2E8F0',
                 borderRadius:20,padding:32,
                 gridColumn:f.span===2?'span 2':'span 1',
@@ -237,10 +234,10 @@ export default function Landing() {
       </section>
 
       {/* -- HOW IT WORKS -- */}
-      <section id='how-it-works' style={{padding:'96px 48px',background:'#F8FAFC'}}>
+      <section id='how-it-works' style={{padding:'96px 48px',background:dark?'#0A1628':'#F8FAFC'}}>
         <div style={{maxWidth:1100,margin:'0 auto'}}>
           <div style={{textAlign:'center',marginBottom:64}}>
-            <h2 style={{fontFamily:'Syne,sans-serif',fontSize:44,fontWeight:800,marginBottom:14,letterSpacing:-1,color:'#0A1628'}}>Book in 60 Seconds</h2>
+            <h2 style={{fontFamily:'Syne,sans-serif',fontSize:44,fontWeight:800,marginBottom:14,letterSpacing:-1,color:dark?'#F0F4FF':'#0A1628'}}>Book in 60 Seconds</h2>
             <p style={{fontSize:17,color:'#64748B',lineHeight:1.7}}>Four simple steps to quality healthcare</p>
           </div>
           <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:24,position:'relative'}}>
@@ -256,7 +253,7 @@ export default function Landing() {
                   <i className={s.icon} style={{color:'white',fontSize:24}}/>
                 </div>
                 <div style={{fontFamily:'Syne,sans-serif',fontSize:11,fontWeight:800,color:'#94A3B8',letterSpacing:1,marginBottom:6}}>STEP {s.n}</div>
-                <h4 style={{fontFamily:'Syne,sans-serif',fontSize:17,fontWeight:700,marginBottom:8,color:'#0A1628'}}>{s.title}</h4>
+                <h4 style={{fontFamily:'Syne,sans-serif',fontSize:17,fontWeight:700,marginBottom:8,color:dark?'#F0F4FF':'#0A1628'}}>{s.title}</h4>
                 <p style={{fontSize:13,color:'#64748B',lineHeight:1.6}}>{s.desc}</p>
               </div>
             ))}
@@ -268,7 +265,7 @@ export default function Landing() {
       <section style={{padding:'96px 48px',background:'var(--bg)'}}>
         <div style={{maxWidth:1200,margin:'0 auto'}}>
           <div style={{textAlign:'center',marginBottom:64}}>
-            <h2 style={{fontFamily:'Syne,sans-serif',fontSize:44,fontWeight:800,marginBottom:14,letterSpacing:-1,color:'#0A1628'}}>Built for Everyone</h2>
+            <h2 style={{fontFamily:'Syne,sans-serif',fontSize:44,fontWeight:800,marginBottom:14,letterSpacing:-1,color:dark?'#F0F4FF':'#0A1628'}}>Built for Everyone</h2>
             <p style={{fontSize:17,color:'#64748B',lineHeight:1.7}}>Separate powerful portals for patients, doctors and administrators</p>
           </div>
           <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:24}}>
@@ -287,9 +284,9 @@ export default function Landing() {
                   <div style={{fontFamily:'Syne,sans-serif',fontSize:24,fontWeight:800,marginBottom:6}}>{r.role} Portal</div>
                   <div style={{fontSize:13,opacity:.85}}>{r.desc}</div>
                 </div>
-                <div style={{background:'white',padding:'24px 28px'}}>
+                <div style={{background:dark?'#0F1923':'white',padding:'24px 28px'}}>
                   {r.features.map(f=>(
-                    <div key={f} style={{display:'flex',alignItems:'center',gap:10,marginBottom:10,fontSize:13,color:'#475569'}}>
+                    <div key={f} style={{display:'flex',alignItems:'center',gap:10,marginBottom:10,fontSize:13,color:dark?'#94A3B8':'#475569'}}>
                       <i className='fas fa-check' style={{color:r.color,fontSize:11,flexShrink:0}}/>
                       {f}
                     </div>
@@ -305,7 +302,7 @@ export default function Landing() {
       </section>
 
       {/* -- TESTIMONIALS -- */}
-      <section id='about' style={{padding:'96px 48px',background:'#0A1628'}}>
+      <section id='about' style={{padding:'96px 48px',background:dark?'#040810':'#0A1628'}}>
         <div style={{maxWidth:1200,margin:'0 auto'}}>
           <div style={{textAlign:'center',marginBottom:64}}>
             <h2 style={{fontFamily:'Syne,sans-serif',fontSize:44,fontWeight:800,marginBottom:14,letterSpacing:-1,color:'white'}}>Trusted by 500+ Clinics</h2>
@@ -336,17 +333,17 @@ export default function Landing() {
       <section id='pricing' style={{padding:'96px 48px',background:'#F8FAFC'}}>
         <div style={{maxWidth:1000,margin:'0 auto'}}>
           <div style={{textAlign:'center',marginBottom:64}}>
-            <h2 style={{fontFamily:'Syne,sans-serif',fontSize:44,fontWeight:800,marginBottom:14,letterSpacing:-1,color:'#0A1628'}}>Simple, Transparent Pricing</h2>
+            <h2 style={{fontFamily:'Syne,sans-serif',fontSize:44,fontWeight:800,marginBottom:14,letterSpacing:-1,color:dark?'#F0F4FF':'#0A1628'}}>Simple, Transparent Pricing</h2>
             <p style={{fontSize:17,color:'#64748B',lineHeight:1.7}}>No hidden fees. Start free, scale as you grow.</p>
           </div>
           <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:24,alignItems:'center'}}>
             {[
-              {name:'Starter',price:'Free',period:'Forever  1 doctor',features:['30 patients/day','Basic queue management','QR check-in','Email notifications'],featured:false,color:'#475569'},
+              {name:'Starter',price:'Free',period:'Forever  1 doctor',features:['30 patients/day','Basic queue management','QR check-in','Email notifications'],featured:false,color:dark?'#94A3B8':'#475569'},
               {name:'Pro',price:'INR 4,999',period:'/month per clinic',features:['Unlimited patients','AI wait prediction','Full analytics','HD Telehealth','E-prescriptions','Priority support'],featured:true,color:'white'},
-              {name:'Enterprise',price:'Custom',period:'Multi-clinic networks',features:['Everything in Pro','ABDM integration','Custom integrations','Dedicated support','SLA guarantee'],featured:false,color:'#475569'},
+              {name:'Enterprise',price:'Custom',period:'Multi-clinic networks',features:['Everything in Pro','ABDM integration','Custom integrations','Dedicated support','SLA guarantee'],featured:false,color:dark?'#94A3B8':'#475569'},
             ].map(p=>(
               <div key={p.name} style={{
-                background:p.featured?'#0A1628':'white',
+                background:p.featured?'#0A1628':(dark?'#0F1923':'white'),
                 border:p.featured?'none':'1px solid #E2E8F0',
                 borderRadius:24,padding:32,
                 transform:p.featured?'scale(1.05)':'none',
@@ -360,7 +357,7 @@ export default function Landing() {
                 <div style={{fontFamily:'Syne,sans-serif',fontSize:44,fontWeight:800,color:p.featured?'white':'#0A1628',lineHeight:1,marginBottom:4}}>{p.price}</div>
                 <div style={{fontSize:13,color:p.featured?'#64748B':'#94A3B8',marginBottom:24}}>{p.period}</div>
                 {p.features.map(f=>(
-                  <div key={f} style={{display:'flex',alignItems:'center',gap:10,marginBottom:10,fontSize:13,color:p.featured?'#CBD5E1':'#475569'}}>
+                  <div key={f} style={{display:'flex',alignItems:'center',gap:10,marginBottom:10,fontSize:13,color:p.featured?'#CBD5E1':(dark?'#8B9EC7':'#475569')}}>
                     <i className='fas fa-check' style={{color:'#0D9B82',fontSize:11,flexShrink:0}}/>
                     {f}
                   </div>
@@ -405,10 +402,10 @@ export default function Landing() {
                 </div>
                 <div>
                   <div style={{fontFamily:'Syne,sans-serif',fontWeight:800,fontSize:16,color:'white'}}>MEDIQUEUE</div>
-                  <div style={{fontSize:9,color:'#475569',letterSpacing:.8,textTransform:'uppercase'}}>Digital Queue System</div>
+                  <div style={{fontSize:9,color:dark?'#94A3B8':'#475569',letterSpacing:.8,textTransform:'uppercase'}}>Digital Queue System</div>
                 </div>
               </div>
-              <p style={{fontSize:14,color:'#475569',lineHeight:1.7,maxWidth:260}}>Next-generation AI-powered appointment and queue management system for Indian healthcare.</p>
+              <p style={{fontSize:14,color:dark?'#94A3B8':'#475569',lineHeight:1.7,maxWidth:260}}>Next-generation AI-powered appointment and queue management system for Indian healthcare.</p>
             </div>
             {[
               ['Product',['Features','Pricing','Integrations','Changelog','API Docs']],
@@ -418,12 +415,12 @@ export default function Landing() {
               <div key={h}>
                 <h5 style={{fontSize:12,fontWeight:700,letterSpacing:1,textTransform:'uppercase',color:'#64748B',marginBottom:16}}>{h}</h5>
                 <ul style={{listStyle:'none',padding:0}}>
-                  {ls.map(l=><li key={l} style={{marginBottom:10}}><a href='#' style={{fontSize:14,color:'#475569',textDecoration:'none',transition:'color .2s'}} onMouseEnter={e=>e.target.style.color='#0D9B82'} onMouseLeave={e=>e.target.style.color='#475569'}>{l}</a></li>)}
+                  {ls.map(l=><li key={l} style={{marginBottom:10}}><a href='#' style={{fontSize:14,color:dark?'#94A3B8':'#475569',textDecoration:'none',transition:'color .2s'}} onMouseEnter={e=>e.target.style.color='#0D9B82'} onMouseLeave={e=>e.target.style.color='#475569'}>{l}</a></li>)}
                 </ul>
               </div>
             ))}
           </div>
-          <div style={{borderTop:'1px solid #1E293B',paddingTop:28,display:'flex',justifyContent:'space-between',alignItems:'center',fontSize:13,color:'#334155'}}>
+          <div style={{borderTop:'1px solid #1E293B',paddingTop:28,display:'flex',justifyContent:'space-between',alignItems:'center',fontSize:13,color:dark?'#94A3B8':'#334155'}}>
             <span> 2025 MEDIQUEUE  Mediqueue: Digital Appointment and Queue System. All rights reserved.</span>
             <span>Made with ?? for better Indian healthcare</span>
           </div>

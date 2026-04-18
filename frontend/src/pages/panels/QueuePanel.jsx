@@ -103,7 +103,7 @@ export default function QueuePanel({ role }) {
   );
 
   if (loading) return (
-    <div style={{padding:60,textAlign:'center',color:'#94A3B8'}}>
+    <div style={{padding:60,textAlign:'center',color:'var(--text-3)'}}>
       <i className='fas fa-spinner fa-spin' style={{fontSize:32,display:'block',marginBottom:12,color:'#0D9B82'}}/>
       Loading queue...
     </div>
@@ -118,22 +118,22 @@ export default function QueuePanel({ role }) {
             <div style={{fontFamily:'Syne,sans-serif',fontSize:16,fontWeight:700}}>Join Queue</div>
             <LiveBadge/>
           </div>
-          <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:24}}>
+          <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:24}}>
             {appts.length === 0 ? (
-              <div style={{textAlign:'center',padding:'40px 0',color:'#94A3B8'}}>
+              <div style={{textAlign:'center',padding:'40px 0',color:'var(--text-3)'}}>
                 <i className='fas fa-ticket-alt' style={{fontSize:40,display:'block',marginBottom:14,color:'#0D9B82'}}/>
-                <div style={{fontSize:15,fontWeight:600,marginBottom:6,color:'#0A1628'}}>No confirmed appointments</div>
+                <div style={{fontSize:15,fontWeight:600,marginBottom:6,color:'var(--text)'}}>No confirmed appointments</div>
                 <div style={{fontSize:13}}>Book and confirm an appointment first to join the queue</div>
               </div>
             ) : appts.map(a => (
-              <div key={a.id} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:16,background:'#F8FAFC',borderRadius:14,marginBottom:10,border:'1px solid #E2E8F0'}}>
+              <div key={a.id} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:16,background:'var(--surface-2)',borderRadius:14,marginBottom:10,border:'1px solid var(--border)'}}>
                 <div style={{display:'flex',alignItems:'center',gap:12}}>
                   <div style={{width:44,height:44,borderRadius:12,background:tg,display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700,fontSize:14}}>
                     {a.doctor_name?.slice(0,2) || 'Dr'}
                   </div>
                   <div>
                     <div style={{fontWeight:600,fontSize:14,marginBottom:3}}>{a.doctor_name || 'Doctor'}</div>
-                    <div style={{fontSize:12,color:'#94A3B8'}}>{new Date(a.appointment_time).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</div>
+                    <div style={{fontSize:12,color:'var(--text-3)'}}>{new Date(a.appointment_time).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</div>
                   </div>
                 </div>
                 <button onClick={() => joinQueue(a.id, a.doctor_id)} disabled={joining}
@@ -151,8 +151,8 @@ export default function QueuePanel({ role }) {
             <LiveBadge/>
           </div>
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
-            <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:20,padding:28,textAlign:'center'}}>
-              <div style={{fontSize:11,fontWeight:700,textTransform:'uppercase',letterSpacing:.8,color:'#94A3B8',marginBottom:8}}>Your Token</div>
+            <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:20,padding:28,textAlign:'center'}}>
+              <div style={{fontSize:11,fontWeight:700,textTransform:'uppercase',letterSpacing:.8,color:'var(--text-3)',marginBottom:8}}>Your Token</div>
               <div style={{fontFamily:'Syne,sans-serif',fontSize:88,fontWeight:900,color:'#0D9B82',lineHeight:1,marginBottom:10}}>
                 {myEntry.token_number?.split('-')[1] || myEntry.token_number}
               </div>
@@ -168,7 +168,7 @@ export default function QueuePanel({ role }) {
               {myPosition > 0 && (
                 <div style={{background:'#E6F7F4',borderRadius:12,padding:12,marginBottom:16}}>
                   <div style={{fontFamily:'Syne,sans-serif',fontSize:28,fontWeight:800,color:'#0D9B82'}}>#{myPosition}</div>
-                  <div style={{color:'#94A3B8',fontSize:12}}>Your position in queue</div>
+                  <div style={{color:'var(--text-3)',fontSize:12}}>Your position in queue</div>
                 </div>
               )}
               {current && (
@@ -187,13 +187,13 @@ export default function QueuePanel({ role }) {
                 style={{width:'100%',padding:'10px',background:tg,color:'#fff',border:'none',borderRadius:10,fontFamily:'DM Sans,sans-serif',fontSize:13,fontWeight:700,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:7}}>
                 <i className='fas fa-sync-alt'/> Refresh
               </button>
-              <div style={{fontSize:11,color:'#94A3B8',marginTop:8}}>
+              <div style={{fontSize:11,color:'var(--text-3)',marginTop:8}}>
                 Last updated: {lastUpdated.toLocaleTimeString('en-IN',{timeStyle:'short'})}
               </div>
             </div>
-            <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:20,padding:22}}>
+            <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:20,padding:22}}>
               <div style={{fontFamily:'Syne,sans-serif',fontSize:14,fontWeight:700,marginBottom:6}}>Live Queue</div>
-              <div style={{fontSize:12,color:'#94A3B8',marginBottom:14}}>{queue.length} total patients</div>
+              <div style={{fontSize:12,color:'var(--text-3)',marginBottom:14}}>{queue.length} total patients</div>
               {queue.map((q, i) => {
                 const isMe = q.token_number === myEntry.token_number;
                 const isCurrent = q.status === 'in_progress';
@@ -213,7 +213,7 @@ export default function QueuePanel({ role }) {
                         {isMe ? 'You' : q.patient_name}
                         {isMe && <span style={{marginLeft:6,fontSize:10,background:'#0D9B82',color:'white',padding:'1px 6px',borderRadius:99}}>YOU</span>}
                       </div>
-                      <div style={{fontSize:11,color:'#94A3B8'}}>{q.token_number}</div>
+                      <div style={{fontSize:11,color:'var(--text-3)'}}>{q.token_number}</div>
                     </div>
                     <span style={{fontSize:10,padding:'3px 8px',borderRadius:99,fontWeight:700,
                       background:isDone?'#D1FAE5':isCurrent?'#DBEAFE':'#FEF3C7',
@@ -239,20 +239,20 @@ export default function QueuePanel({ role }) {
       </div>
 
       {!doctorId ? (
-        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:40,textAlign:'center'}}>
+        <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:40,textAlign:'center'}}>
           <i className='fas fa-exclamation-circle' style={{fontSize:40,display:'block',marginBottom:14,color:'#F59E0B'}}/>
           <div style={{fontSize:15,fontWeight:600,marginBottom:8}}>Doctor profile not found</div>
-          <div style={{fontSize:13,color:'#94A3B8'}}>Please complete your doctor profile in Settings</div>
+          <div style={{fontSize:13,color:'var(--text-3)'}}>Please complete your doctor profile in Settings</div>
         </div>
       ) : (
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
-          <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:20,padding:28,textAlign:'center'}}>
-            <div style={{fontSize:11,fontWeight:700,textTransform:'uppercase',letterSpacing:.8,color:'#94A3B8',marginBottom:8}}>Now Serving</div>
+          <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:20,padding:28,textAlign:'center'}}>
+            <div style={{fontSize:11,fontWeight:700,textTransform:'uppercase',letterSpacing:.8,color:'var(--text-3)',marginBottom:8}}>Now Serving</div>
             <div style={{fontFamily:'Syne,sans-serif',fontSize:72,fontWeight:900,color:'#0D9B82',lineHeight:1,marginBottom:8,letterSpacing:-2}}>
               {current ? current.token_number?.split('-')[1] : '--'}
             </div>
-            <div style={{fontWeight:600,fontSize:15,marginBottom:4,color:'#0A1628'}}>{current?.patient_name || 'Queue Empty'}</div>
-            <div style={{fontSize:12,color:'#94A3B8',marginBottom:24}}>
+            <div style={{fontWeight:600,fontSize:15,marginBottom:4,color:'var(--text)'}}>{current?.patient_name || 'Queue Empty'}</div>
+            <div style={{fontSize:12,color:'var(--text-3)',marginBottom:24}}>
               Waiting: {waiting.length} | Done: {done.length}
             </div>
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:16}}>
@@ -262,7 +262,7 @@ export default function QueuePanel({ role }) {
                 </div>
                 <div>
                   <div style={{fontFamily:'Syne,sans-serif',fontSize:28,fontWeight:800,color:'#0D9B82',lineHeight:1}}>{waiting.length}</div>
-                  <div style={{fontSize:11,color:'#64748B',fontWeight:600}}>Waiting</div>
+                  <div style={{fontSize:11,color:'var(--text-2)',fontWeight:600}}>Waiting</div>
                 </div>
               </div>
               <div style={{background:'#D1FAE5',borderRadius:14,padding:14,display:'flex',alignItems:'center',gap:10}}>
@@ -271,7 +271,7 @@ export default function QueuePanel({ role }) {
                 </div>
                 <div>
                   <div style={{fontFamily:'Syne,sans-serif',fontSize:28,fontWeight:800,color:'#065F46',lineHeight:1}}>{done.length}</div>
-                  <div style={{fontSize:11,color:'#64748B',fontWeight:600}}>Completed</div>
+                  <div style={{fontSize:11,color:'var(--text-2)',fontWeight:600}}>Completed</div>
                 </div>
               </div>
             </div>
@@ -281,32 +281,32 @@ export default function QueuePanel({ role }) {
               {waiting.length===0 ? 'No Patients Waiting' : 'Call Next Patient'}
             </button>
             <button onClick={() => loadQueue(doctorId)}
-              style={{width:'100%',padding:'10px',background:'#F1F5F9',color:'#0A1628',border:'1px solid #E2E8F0',borderRadius:10,fontFamily:'DM Sans,sans-serif',fontSize:13,fontWeight:600,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:7}}>
+              style={{width:'100%',padding:'10px',background:'var(--surface-2)',color:'var(--text)',border:'1px solid var(--border)',borderRadius:10,fontFamily:'DM Sans,sans-serif',fontSize:13,fontWeight:600,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:7}}>
               <i className='fas fa-sync-alt'/> Refresh
             </button>
-            <div style={{fontSize:11,color:'#94A3B8',marginTop:8}}>
+            <div style={{fontSize:11,color:'var(--text-3)',marginTop:8}}>
               Last updated: {lastUpdated.toLocaleTimeString('en-IN',{timeStyle:'short'})}
             </div>
           </div>
-          <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:20,padding:22}}>
+          <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:20,padding:22}}>
             <div style={{fontFamily:'Syne,sans-serif',fontSize:14,fontWeight:700,marginBottom:14}}>
               Waiting List
               <span style={{marginLeft:8,fontSize:12,padding:'2px 10px',borderRadius:99,background:'#FEF3C7',color:'#92400E',fontWeight:700}}>{waiting.length}</span>
             </div>
             {waiting.length === 0 ? (
-              <div style={{textAlign:'center',padding:'32px 0',color:'#94A3B8'}}>
+              <div style={{textAlign:'center',padding:'32px 0',color:'var(--text-3)'}}>
                 <i className='fas fa-check-circle' style={{fontSize:36,display:'block',marginBottom:10,color:'#10B981'}}/>
                 <div style={{fontSize:13,fontWeight:600}}>All caught up!</div>
                 <div style={{fontSize:12}}>No patients waiting</div>
               </div>
             ) : waiting.map((q, i) => (
-              <div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'12px',background:'#F8FAFC',borderRadius:12,marginBottom:8,border:'1px solid #E2E8F0'}}>
-                <div style={{width:38,height:38,borderRadius:10,background:'#E2E8F0',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:700,color:'#94A3B8',flexShrink:0}}>
+              <div key={i} style={{display:'flex',alignItems:'center',gap:10,padding:'12px',background:'var(--surface-2)',borderRadius:12,marginBottom:8,border:'1px solid var(--border)'}}>
+                <div style={{width:38,height:38,borderRadius:10,background:'#E2E8F0',display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:700,color:'var(--text-3)',flexShrink:0}}>
                   {q.token_number?.split('-')[1]}
                 </div>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:13,fontWeight:600,color:'#0A1628'}}>{q.patient_name}</div>
-                  <div style={{fontSize:11,color:'#94A3B8'}}>~{q.estimated_wait_minutes || ((i+1)*8)} min wait</div>
+                  <div style={{fontSize:13,fontWeight:600,color:'var(--text)'}}>{q.patient_name}</div>
+                  <div style={{fontSize:11,color:'var(--text-3)'}}>~{q.estimated_wait_minutes || ((i+1)*8)} min wait</div>
                 </div>
                 <span style={{fontSize:11,padding:'3px 9px',borderRadius:99,fontWeight:700,background:'#FEF3C7',color:'#92400E'}}>#{i+1}</span>
               </div>

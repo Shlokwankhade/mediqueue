@@ -36,8 +36,8 @@ export default function AdminPanel() {
     return () => clearInterval(interval);
   }, []);
 
-  const xAxis = { grid:{display:false}, ticks:{color:'#94A3B8',font:{size:11}} };
-  const yAxis = { grid:{color:'rgba(148,163,184,.1)'}, ticks:{color:'#94A3B8',font:{size:11}} };
+  const xAxis = { grid:{display:false}, ticks:{color:'var(--text-3)',font:{size:11}} };
+  const yAxis = { grid:{color:'rgba(148,163,184,.1)'}, ticks:{color:'var(--text-3)',font:{size:11}} };
   const baseOpts = { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:xAxis,y:yAxis} };
 
   // Volume chart  live from DB
@@ -155,7 +155,7 @@ export default function AdminPanel() {
           <div style={{height:220}}>
             {specValues.length === 0 || (specValues.length===1 && specValues[0]===1)
               ? <div style={{height:'100%',display:'flex',alignItems:'center',justifyContent:'center',color:'var(--text-3)',flexDirection:'column',gap:8}}><i className='fas fa-chart-pie' style={{fontSize:32}}/><span>No appointment data yet</span></div>
-              : <Doughnut data={specialityData} options={{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'right',labels:{color:'#94A3B8',font:{size:11},boxWidth:12}}}}}/>
+              : <Doughnut data={specialityData} options={{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'right',labels:{color:'var(--text-3)',font:{size:11},boxWidth:12}}}}}/>
             }
           </div>
         </div>

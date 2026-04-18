@@ -1,3 +1,4 @@
+import { useTheme } from '../context/ThemeContext';
 import ReviewsPanel from './panels/ReviewsPanel';
 import React from 'react';
 import HealthPanel from './panels/HealthPanel';
@@ -272,41 +273,41 @@ function OverviewPanel({ role, user }) {
       </div>
 
       <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16,marginBottom:24}}>
-        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px'}}>
+        <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'20px'}}>
           <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}>
             <div style={{width:36,height:36,borderRadius:10,background:'#EDE9FE',display:'flex',alignItems:'center',justifyContent:'center'}}>
               <i className='fas fa-users' style={{color:'#7C3AED',fontSize:16}}/>
             </div>
-            <div style={{fontSize:12,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.5}}>Today</div>
+            <div style={{fontSize:12,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.5}}>Today</div>
           </div>
           <div style={{fontSize:42,fontWeight:900,color:'#7C3AED',fontFamily:'DM Sans,sans-serif',letterSpacing:-1}}>
             {String(appointments.filter(a=>new Date(a.appointment_time).toDateString()===new Date().toDateString()).length)}
           </div>
-          <div style={{fontSize:12,color:'#94A3B8',marginTop:2}}>patients today</div>
+          <div style={{fontSize:12,color:'var(--text-3)',marginTop:2}}>patients today</div>
         </div>
-        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px'}}>
+        <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'20px'}}>
           <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}>
             <div style={{width:36,height:36,borderRadius:10,background:'#E6F7F4',display:'flex',alignItems:'center',justifyContent:'center'}}>
               <i className='fas fa-calendar-check' style={{color:'#0D9B82',fontSize:16}}/>
             </div>
-            <div style={{fontSize:12,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.5}}>Confirmed</div>
+            <div style={{fontSize:12,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.5}}>Confirmed</div>
           </div>
           <div style={{fontSize:42,fontWeight:900,color:'#0D9B82',fontFamily:'DM Sans,sans-serif',letterSpacing:-1}}>
             {String(appointments.filter(a=>a.status==='confirmed').length)}
           </div>
-          <div style={{fontSize:12,color:'#94A3B8',marginTop:2}}>appointments</div>
+          <div style={{fontSize:12,color:'var(--text-3)',marginTop:2}}>appointments</div>
         </div>
-        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px'}}>
+        <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'20px'}}>
           <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}>
             <div style={{width:36,height:36,borderRadius:10,background:'#FEF3C7',display:'flex',alignItems:'center',justifyContent:'center'}}>
               <i className='fas fa-check-circle' style={{color:'#F59E0B',fontSize:16}}/>
             </div>
-            <div style={{fontSize:12,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.5}}>Completed</div>
+            <div style={{fontSize:12,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.5}}>Completed</div>
           </div>
           <div style={{fontSize:42,fontWeight:900,color:'#F59E0B',fontFamily:'DM Sans,sans-serif',letterSpacing:-1}}>
             {String(appointments.filter(a=>a.status==='completed').length)}
           </div>
-          <div style={{fontSize:12,color:'#94A3B8',marginTop:2}}>total done</div>
+          <div style={{fontSize:12,color:'var(--text-3)',marginTop:2}}>total done</div>
         </div>
       </div>
 
@@ -336,7 +337,7 @@ function OverviewPanel({ role, user }) {
   // ADMIN DASHBOARD
   if (role === 'admin') return (
     <div className='fu'>
-      <div style={{marginBottom:24,padding:'20px 24px',background:'linear-gradient(135deg,#F59E0B,#FCD34D)',borderRadius:20,color:'#0A1628',position:'relative',overflow:'visible'}}>
+      <div style={{marginBottom:24,padding:'20px 24px',background:'linear-gradient(135deg,#F59E0B,#FCD34D)',borderRadius:20,color:'var(--text)',position:'relative',overflow:'visible'}}>
         <div style={{position:'absolute',top:-30,right:-30,width:150,height:150,borderRadius:'50%',background:'rgba(0,0,0,.06)'}}/>
         <div style={{fontSize:12,opacity:.7,marginBottom:4}}>{today}</div>
         <div style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:700,marginBottom:4}}>Admin Dashboard</div>
@@ -344,24 +345,24 @@ function OverviewPanel({ role, user }) {
       </div>
 
       <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:24}}>
-        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px',display:'flex',alignItems:'center',gap:14}}>
+        <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'20px',display:'flex',alignItems:'center',gap:14}}>
           <div style={{width:48,height:48,borderRadius:14,background:'#E6F7F4',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><i className='fas fa-users' style={{color:'#0D9B82',fontSize:20}}/></div>
-          <div><div style={{fontSize:11,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.6,marginBottom:4}}>Total Patients</div>
+          <div><div style={{fontSize:11,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:4}}>Total Patients</div>
           <div style={{fontFamily:'Syne,sans-serif',fontSize:32,fontWeight:800,color:'#0D9B82',lineHeight:1}}>{stats?.totalPatients||0}</div></div>
         </div>
-        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px',display:'flex',alignItems:'center',gap:14}}>
+        <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'20px',display:'flex',alignItems:'center',gap:14}}>
           <div style={{width:48,height:48,borderRadius:14,background:'#EDE9FE',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><i className='fas fa-user-md' style={{color:'#7C3AED',fontSize:20}}/></div>
-          <div><div style={{fontSize:11,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.6,marginBottom:4}}>Active Doctors</div>
+          <div><div style={{fontSize:11,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:4}}>Active Doctors</div>
           <div style={{fontFamily:'Syne,sans-serif',fontSize:32,fontWeight:800,color:'#7C3AED',lineHeight:1}}>{stats?.activeDoctors||0}</div></div>
         </div>
-        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px',display:'flex',alignItems:'center',gap:14}}>
+        <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'20px',display:'flex',alignItems:'center',gap:14}}>
           <div style={{width:48,height:48,borderRadius:14,background:'#FEF3C7',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><i className='fas fa-calendar' style={{color:'#F59E0B',fontSize:20}}/></div>
-          <div><div style={{fontSize:11,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.6,marginBottom:4}}>Today Appts</div>
+          <div><div style={{fontSize:11,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:4}}>Today Appts</div>
           <div style={{fontFamily:'Syne,sans-serif',fontSize:32,fontWeight:800,color:'#F59E0B',lineHeight:1}}>{stats?.todayAppointments||0}</div></div>
         </div>
-        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px',display:'flex',alignItems:'center',gap:14}}>
+        <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'20px',display:'flex',alignItems:'center',gap:14}}>
           <div style={{width:48,height:48,borderRadius:14,background:'#FFE4E6',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><i className='fas fa-indian-rupee-sign' style={{color:'#F43F5E',fontSize:20}}/></div>
-          <div><div style={{fontSize:11,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.6,marginBottom:4}}>Revenue</div>
+          <div><div style={{fontSize:11,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:4}}>Revenue</div>
           <div style={{fontFamily:'Syne,sans-serif',fontSize:28,fontWeight:800,color:'#F43F5E',lineHeight:1}}>Rs.{stats?.totalRevenue?Math.round(stats.totalRevenue).toLocaleString():'0'}</div></div>
         </div>
       </div>
@@ -405,30 +406,30 @@ function SettingsPanel({ user }) {
 
   return (
     <div className='fu'>
-      <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:24,maxWidth:600}}>
+      <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:24,maxWidth:600}}>
         <div style={{fontFamily:'Syne,sans-serif',fontSize:16,fontWeight:700,marginBottom:20}}>Account Settings</div>
-        <div style={{display:'flex',alignItems:'center',gap:16,padding:20,background:'#F8FAFC',borderRadius:14,marginBottom:24}}>
+        <div style={{display:'flex',alignItems:'center',gap:16,padding:20,background:'var(--surface-2)',borderRadius:14,marginBottom:24}}>
           <div style={{width:64,height:64,borderRadius:16,background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700,fontSize:24,flexShrink:0}}>
             {user?.name?.slice(0,2).toUpperCase()}
           </div>
           <div>
             <div style={{fontFamily:'Syne,sans-serif',fontSize:18,fontWeight:700}}>{user?.name}</div>
-            <div style={{fontSize:13,color:'#64748B'}}>{user?.email}</div>
+            <div style={{fontSize:13,color:'var(--text-2)'}}>{user?.email}</div>
             <span style={{fontSize:11,padding:'3px 10px',borderRadius:99,fontWeight:700,background:'#E6F7F4',color:'#0D9B82',textTransform:'capitalize',marginTop:4,display:'inline-block'}}>{user?.role}</span>
           </div>
         </div>
         <div style={{marginBottom:16}}>
-          <label style={{display:'block',fontSize:12,fontWeight:700,color:'#64748B',marginBottom:5,textTransform:'uppercase',letterSpacing:.4}}>Full Name</label>
-          <input value={name} onChange={e=>setName(e.target.value)} type='text' style={{width:'100%',padding:'11px 14px',background:'#F8FAFC',border:'1.5px solid #E2E8F0',borderRadius:10,fontSize:14,color:'#0A1628',outline:'none',fontFamily:'DM Sans,sans-serif'}}/>
+          <label style={{display:'block',fontSize:12,fontWeight:700,color:'var(--text-2)',marginBottom:5,textTransform:'uppercase',letterSpacing:.4}}>Full Name</label>
+          <input value={name} onChange={e=>setName(e.target.value)} type='text' style={{width:'100%',padding:'11px 14px',background:'#F8FAFC',border:'1.5px solid #E2E8F0',borderRadius:10,fontSize:14,color:'var(--text)',outline:'none',fontFamily:'DM Sans,sans-serif'}}/>
         </div>
         <div style={{marginBottom:16}}>
-          <label style={{display:'block',fontSize:12,fontWeight:700,color:'#64748B',marginBottom:5,textTransform:'uppercase',letterSpacing:.4}}>Email</label>
-          <input value={user?.email} disabled type='email' style={{width:'100%',padding:'11px 14px',background:'#F1F5F9',border:'1.5px solid #E2E8F0',borderRadius:10,fontSize:14,color:'#94A3B8',outline:'none',fontFamily:'DM Sans,sans-serif',cursor:'not-allowed'}}/>
-          <div style={{fontSize:11,color:'#94A3B8',marginTop:4}}>Email cannot be changed</div>
+          <label style={{display:'block',fontSize:12,fontWeight:700,color:'var(--text-2)',marginBottom:5,textTransform:'uppercase',letterSpacing:.4}}>Email</label>
+          <input value={user?.email} disabled type='email' style={{width:'100%',padding:'11px 14px',background:'#F1F5F9',border:'1.5px solid #E2E8F0',borderRadius:10,fontSize:14,color:'var(--text-3)',outline:'none',fontFamily:'DM Sans,sans-serif',cursor:'not-allowed'}}/>
+          <div style={{fontSize:11,color:'var(--text-3)',marginTop:4}}>Email cannot be changed</div>
         </div>
         <div style={{marginBottom:24}}>
-          <label style={{display:'block',fontSize:12,fontWeight:700,color:'#64748B',marginBottom:5,textTransform:'uppercase',letterSpacing:.4}}>Phone</label>
-          <input value={phone} onChange={e=>setPhone(e.target.value)} type='tel' placeholder='+91 98765 43210' style={{width:'100%',padding:'11px 14px',background:'#F8FAFC',border:'1.5px solid #E2E8F0',borderRadius:10,fontSize:14,color:'#0A1628',outline:'none',fontFamily:'DM Sans,sans-serif'}}/>
+          <label style={{display:'block',fontSize:12,fontWeight:700,color:'var(--text-2)',marginBottom:5,textTransform:'uppercase',letterSpacing:.4}}>Phone</label>
+          <input value={phone} onChange={e=>setPhone(e.target.value)} type='tel' placeholder='+91 98765 43210' style={{width:'100%',padding:'11px 14px',background:'#F8FAFC',border:'1.5px solid #E2E8F0',borderRadius:10,fontSize:14,color:'var(--text)',outline:'none',fontFamily:'DM Sans,sans-serif'}}/>
         </div>
         <button onClick={save} disabled={saving} style={{padding:'11px 28px',background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',color:'white',border:'none',borderRadius:10,fontFamily:'DM Sans,sans-serif',fontSize:14,fontWeight:700,cursor:'pointer',opacity:saving?0.7:1}}>
           {saving ? 'Saving...' : 'Save Changes'}
@@ -442,13 +443,7 @@ export default function Dashboard() {
   const { user, logout } = useAuth();
   const role = user?.role || 'patient';
   const [panel, setPanel] = useState('overview');
-  const [dark, setDark] = useState(false);
-
-  const toggleDark = () => {
-    const d = !dark;
-    setDark(d);
-    document.documentElement.setAttribute('data-theme', d ? 'dark' : 'light');
-  };
+  const { dark, toggle: toggleDark } = useTheme();
 
   const renderPanel = () => {
     switch(panel) {
@@ -472,7 +467,7 @@ export default function Dashboard() {
       <ToastStack/>
       <Sidebar role={role} active={panel} onNav={setPanel} user={user} onLogout={logout}/>
 
-      <div style={{marginLeft:260,flex:1,display:'flex',flexDirection:'column',minHeight:'100vh'}}>
+      <div style={{marginLeft:260,flex:1,display:'flex',flexDirection:'column',minHeight:'100vh',background:'var(--bg)'}}>
         {/* Topbar */}
         <div style={{height:60,padding:'0 24px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--surface)',borderBottom:'1px solid var(--border)',position:'sticky',top:0,zIndex:50}}>
           <div>
@@ -481,7 +476,7 @@ export default function Dashboard() {
           </div>
           <div style={{display:'flex',alignItems:'center',gap:10}}>
             <button onClick={toggleDark} style={{width:36,height:36,borderRadius:9,background:'var(--surface-2)',border:'1px solid var(--border)',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',color:'var(--text-2)',fontSize:14}}>
-              <i className={'fas '+(dark?'fa-sun':'fa-moon')}/>
+              <span style={{fontSize:18}}>{dark ? '☀' : '☽'}</span>
             </button>
             <div style={{display:'flex',alignItems:'center',gap:8,padding:'6px 12px',background:'var(--surface-2)',border:'1px solid var(--border)',borderRadius:10}}>
               <div style={{width:28,height:28,borderRadius:7,background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700,fontSize:11}}>
@@ -499,7 +494,7 @@ export default function Dashboard() {
         </div>
 
         {/* Main Content */}
-        <div style={{flex:1,padding:24,overflowY:'auto'}}>
+        <div style={{flex:1,padding:24,overflowY:'auto',background:'var(--bg)'}}>
           {renderPanel()}
         </div>
       </div>
@@ -552,7 +547,7 @@ function FindDoctorsPanel() {
     <div className='fu'>
       <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))',gap:16}}>
         {doctors.map(d=>(
-          <div key={d.id} style={{background:'white',border:'1px solid #E2E8F0',borderRadius:20,overflow:'hidden',transition:'all .2s',boxShadow:'0 2px 8px rgba(0,0,0,.06)'}}
+          <div key={d.id} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:20,overflow:'hidden',transition:'all .2s',boxShadow:'0 2px 8px rgba(0,0,0,.06)'}}
             onMouseEnter={e=>e.currentTarget.style.transform='translateY(-4px)'}
             onMouseLeave={e=>e.currentTarget.style.transform='none'}>
             <div style={{background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',padding:'24px',textAlign:'center'}}>
@@ -566,17 +561,17 @@ function FindDoctorsPanel() {
               <div style={{display:'flex',justifyContent:'space-between',marginBottom:14}}>
                 <div style={{textAlign:'center',flex:1}}>
                   <div style={{fontFamily:'Syne,sans-serif',fontSize:16,fontWeight:700,color:'#0D9B82'}}>Rs.{d.consultation_fee}</div>
-                  <div style={{fontSize:11,color:'#94A3B8'}}>Fee</div>
+                  <div style={{fontSize:11,color:'var(--text-3)'}}>Fee</div>
                 </div>
                 <div style={{width:1,background:'#E2E8F0'}}/>
                 <div style={{textAlign:'center',flex:1}}>
                   <div style={{fontFamily:'Syne,sans-serif',fontSize:16,fontWeight:700,color:'#F59E0B'}}>{d.rating||'4.9'}</div>
-                  <div style={{fontSize:11,color:'#94A3B8'}}>Rating</div>
+                  <div style={{fontSize:11,color:'var(--text-3)'}}>Rating</div>
                 </div>
                 <div style={{width:1,background:'#E2E8F0'}}/>
                 <div style={{textAlign:'center',flex:1}}>
                   <div style={{fontFamily:'Syne,sans-serif',fontSize:16,fontWeight:700,color:'#7C3AED'}}>{d.experience_years||'5'}yr</div>
-                  <div style={{fontSize:11,color:'#94A3B8'}}>Exp</div>
+                  <div style={{fontSize:11,color:'var(--text-3)'}}>Exp</div>
                 </div>
               </div>
               <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:14}}>
@@ -610,18 +605,18 @@ function FindDoctorsPanel() {
               </div>
             </div>
             <div style={{padding:24}}>
-              <div style={{display:'flex',alignItems:'center',gap:12,padding:'14px',background:'#F8FAFC',borderRadius:12,marginBottom:20}}>
+              <div style={{display:'flex',alignItems:'center',gap:12,padding:'14px',background:'var(--surface-2)',borderRadius:12,marginBottom:20}}>
                 <div style={{width:44,height:44,borderRadius:12,background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700,fontSize:16}}>
                   {booking.name?.slice(0,2)}
                 </div>
                 <div>
                   <div style={{fontWeight:600,fontSize:14}}>{booking.name}</div>
-                  <div style={{fontSize:12,color:'#94A3B8'}}>{booking.speciality} - Rs.{booking.consultation_fee}</div>
+                  <div style={{fontSize:12,color:'var(--text-3)'}}>{booking.speciality} - Rs.{booking.consultation_fee}</div>
                 </div>
               </div>
 
               <div style={{marginBottom:16}}>
-                <label style={{display:'block',fontSize:12,fontWeight:700,color:'#64748B',marginBottom:6,textTransform:'uppercase',letterSpacing:.4}}>Appointment Type</label>
+                <label style={{display:'block',fontSize:12,fontWeight:700,color:'var(--text-2)',marginBottom:6,textTransform:'uppercase',letterSpacing:.4}}>Appointment Type</label>
                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
                   {[{val:'in_person',label:'In Person',icon:'fa-hospital'},{val:'telehealth',label:'Telehealth',icon:'fa-video'}].map(t=>(
                     <button key={t.val} onClick={()=>setApptType(t.val)} style={{padding:'10px',border:'2px solid',borderColor:apptType===t.val?'#0D9B82':'#E2E8F0',borderRadius:10,background:apptType===t.val?'#E6F7F4':'white',color:apptType===t.val?'#0D9B82':'#64748B',fontFamily:'DM Sans,sans-serif',fontSize:13,fontWeight:600,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:7}}>
@@ -632,13 +627,13 @@ function FindDoctorsPanel() {
               </div>
 
               <div style={{marginBottom:16}}>
-                <label style={{display:'block',fontSize:12,fontWeight:700,color:'#64748B',marginBottom:6,textTransform:'uppercase',letterSpacing:.4}}>Select Date</label>
+                <label style={{display:'block',fontSize:12,fontWeight:700,color:'var(--text-2)',marginBottom:6,textTransform:'uppercase',letterSpacing:.4}}>Select Date</label>
                 <input type='date' min={today} value={apptDate} onChange={e=>setApptDate(e.target.value)}
-                  style={{width:'100%',padding:'11px 14px',background:'#F8FAFC',border:'1.5px solid #E2E8F0',borderRadius:10,fontSize:14,color:'#0A1628',outline:'none',fontFamily:'DM Sans,sans-serif'}}/>
+                  style={{width:'100%',padding:'11px 14px',background:'#F8FAFC',border:'1.5px solid #E2E8F0',borderRadius:10,fontSize:14,color:'var(--text)',outline:'none',fontFamily:'DM Sans,sans-serif'}}/>
               </div>
 
               <div style={{marginBottom:20}}>
-                <label style={{display:'block',fontSize:12,fontWeight:700,color:'#64748B',marginBottom:6,textTransform:'uppercase',letterSpacing:.4}}>Select Time</label>
+                <label style={{display:'block',fontSize:12,fontWeight:700,color:'var(--text-2)',marginBottom:6,textTransform:'uppercase',letterSpacing:.4}}>Select Time</label>
                 <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:6}}>
                   {timeSlots.map(t=>(
                     <button key={t} onClick={()=>setApptTime(t)} style={{padding:'8px 4px',border:'1.5px solid',borderColor:apptTime===t?'#0D9B82':'#E2E8F0',borderRadius:8,background:apptTime===t?'#E6F7F4':'white',color:apptTime===t?'#0D9B82':'#64748B',fontFamily:'DM Sans,sans-serif',fontSize:12,fontWeight:600,cursor:'pointer'}}>
@@ -649,7 +644,7 @@ function FindDoctorsPanel() {
               </div>
 
               <div style={{display:'flex',gap:10}}>
-                <button onClick={()=>setBooking(null)} style={{flex:1,padding:'12px',background:'#F1F5F9',color:'#64748B',border:'none',borderRadius:12,fontFamily:'DM Sans,sans-serif',fontSize:14,fontWeight:600,cursor:'pointer'}}>
+                <button onClick={()=>setBooking(null)} style={{flex:1,padding:'12px',background:'#F1F5F9',color:'var(--text-2)',border:'none',borderRadius:12,fontFamily:'DM Sans,sans-serif',fontSize:14,fontWeight:600,cursor:'pointer'}}>
                   Cancel
                 </button>
                 <button onClick={bookAppointment} disabled={submitting||!apptDate||!apptTime}

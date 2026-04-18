@@ -13,8 +13,8 @@ import { useAuth } from '../../context/AuthContext';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, Filler);
 
 const tg = 'linear-gradient(135deg,#0D9B82,#1DBEA0)';
-const iStyle = { width:'100%', padding:'10px 14px', background:'#F8FAFC', border:'1.5px solid #E2E8F0', borderRadius:10, fontSize:14, color:'#0A1628', outline:'none', fontFamily:'DM Sans,sans-serif' };
-const lStyle = { display:'block', fontSize:11, fontWeight:700, color:'#64748B', marginBottom:5, textTransform:'uppercase', letterSpacing:.4 };
+const iStyle = { width:'100%', padding:'10px 14px', background:'var(--surface-2)', border:'1.5px solid var(--border)', borderRadius:10, fontSize:14, color:'var(--text)', outline:'none', fontFamily:'DM Sans,sans-serif' };
+const lStyle = { display:'block', fontSize:11, fontWeight:700, color:'var(--text-2)', marginBottom:5, textTransform:'uppercase', letterSpacing:.4 };
 
 export default function HealthPanel() {
   const { user } = useAuth();
@@ -292,7 +292,7 @@ export default function HealthPanel() {
           <div style={{fontFamily:'Syne,sans-serif',fontSize:18,fontWeight:700}}>
             {user?.role === 'doctor' ? 'Patient Health Records' : 'My Health Records'}
           </div>
-          <div style={{fontSize:13,color:'#94A3B8'}}>
+          <div style={{fontSize:13,color:'var(--text-3)'}}>
             {user?.role === 'doctor' ? 'View patient medical profiles' : 'Your complete medical profile'}
           </div>
         </div>
@@ -326,19 +326,19 @@ export default function HealthPanel() {
 
       {/* Doctor: Patient selector */}
       {user?.role === 'doctor' && patients.length > 0 && (
-        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:12,padding:'14px 16px',marginBottom:16}}>
+        <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:12,padding:'14px 16px',marginBottom:16}}>
           <label style={lStyle}>Select Patient</label>
           <select style={iStyle} onChange={e=>loadPatientRecord(e.target.value)}>
             {patients.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}
           </select>
           {selectedPatient && (
-            <div style={{marginTop:10,display:'flex',alignItems:'center',gap:10,padding:'10px',background:'#F8FAFC',borderRadius:9}}>
+            <div style={{marginTop:10,display:'flex',alignItems:'center',gap:10,padding:'10px',background:'var(--surface-2)',borderRadius:9}}>
               <div style={{width:36,height:36,borderRadius:9,background:tg,display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700,fontSize:13}}>
                 {selectedPatient.name?.slice(0,2).toUpperCase()}
               </div>
               <div>
                 <div style={{fontSize:13,fontWeight:600}}>{selectedPatient.name}</div>
-                <div style={{fontSize:11,color:'#94A3B8'}}>{selectedPatient.email}</div>
+                <div style={{fontSize:11,color:'var(--text-3)'}}>{selectedPatient.email}</div>
               </div>
             </div>
           )}
@@ -354,9 +354,9 @@ export default function HealthPanel() {
             {label:'Weight',val:form.weight_kg?form.weight_kg+'kg':'--',color:'#7C3AED'},
             {label:'Blood Group',val:form.blood_group||'--',color:'#F43F5E'},
           ].map(c=>(
-            <div key={c.label} style={{background:'white',border:'1px solid #E2E8F0',borderRadius:14,padding:'16px',textAlign:'center'}}>
+            <div key={c.label} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:14,padding:'16px',textAlign:'center'}}>
               <div style={{fontFamily:'Syne,sans-serif',fontSize:26,fontWeight:800,color:c.color}}>{c.val}</div>
-              <div style={{fontSize:11,color:'#94A3B8',fontWeight:600,textTransform:'uppercase',letterSpacing:.5,marginTop:4}}>{c.label}</div>
+              <div style={{fontSize:11,color:'var(--text-3)',fontWeight:600,textTransform:'uppercase',letterSpacing:.5,marginTop:4}}>{c.label}</div>
               {c.sub && <div style={{fontSize:11,color:c.color,fontWeight:600}}>{c.sub}</div>}
             </div>
           ))}
@@ -364,7 +364,7 @@ export default function HealthPanel() {
       )}
 
       {/* Tabs */}
-      <div style={{display:'flex',gap:4,background:'#F1F5F9',borderRadius:12,padding:4,marginBottom:20}}>
+      <div style={{display:'flex',gap:4,background:'var(--surface-2)',borderRadius:12,padding:4,marginBottom:20}}>
         {tabs.map(t=>(
           <button key={t.id} onClick={()=>setActiveTab(t.id)} style={{flex:1,padding:'9px',border:'none',borderRadius:9,fontFamily:'DM Sans,sans-serif',fontSize:12,fontWeight:600,cursor:'pointer',background:activeTab===t.id?'white':'transparent',color:activeTab===t.id?'#0D9B82':'#64748B',boxShadow:activeTab===t.id?'0 1px 4px rgba(0,0,0,.1)':'none',transition:'all .2s',display:'flex',alignItems:'center',justifyContent:'center',gap:5}}>
             <i className={'fas '+t.icon}/>{t.label}
@@ -372,7 +372,7 @@ export default function HealthPanel() {
         ))}
       </div>
 
-      <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:24}}>
+      <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:24}}>
         {activeTab === 'profile' && (
           <div>
             <div style={{fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700,marginBottom:20}}>Basic Health Info</div>
@@ -411,20 +411,20 @@ export default function HealthPanel() {
           <div>
             <div style={{fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700,marginBottom:20}}>Vitals & Charts</div>
             {vitals.length === 0 ? (
-              <div style={{textAlign:'center',padding:'40px',color:'#94A3B8'}}>
+              <div style={{textAlign:'center',padding:'40px',color:'var(--text-3)'}}>
                 <i className='fas fa-heartbeat' style={{fontSize:40,display:'block',marginBottom:12,color:'#0D9B82'}}/>
-                <div style={{fontSize:14,fontWeight:600,marginBottom:6,color:'#0A1628'}}>No vitals recorded yet</div>
+                <div style={{fontSize:14,fontWeight:600,marginBottom:6,color:'var(--text)'}}>No vitals recorded yet</div>
                 <div style={{fontSize:13}}>Doctor will record vitals during visits</div>
               </div>
             ) : (
               <>
                 {/* Charts */}
                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16,marginBottom:24}}>
-                  <div style={{background:'#F8FAFC',borderRadius:12,padding:16}}>
+                  <div style={{background:'var(--surface-2)',borderRadius:12,padding:16}}>
                     <div style={{fontSize:13,fontWeight:700,marginBottom:12,color:'#0D9B82'}}>Pulse Rate Trend</div>
                     <Line data={pulseData} options={chartOptions}/>
                   </div>
-                  <div style={{background:'#F8FAFC',borderRadius:12,padding:16}}>
+                  <div style={{background:'var(--surface-2)',borderRadius:12,padding:16}}>
                     <div style={{fontSize:13,fontWeight:700,marginBottom:12,color:'#7C3AED'}}>Blood Sugar Trend</div>
                     <Line data={sugarData} options={chartOptions}/>
                   </div>
@@ -433,10 +433,10 @@ export default function HealthPanel() {
                 {/* Vitals table */}
                 <div style={{fontFamily:'Syne,sans-serif',fontSize:14,fontWeight:700,marginBottom:12}}>Vitals History</div>
                 {vitals.map((v,i) => (
-                  <div key={i} style={{padding:'14px',background:'#F8FAFC',borderRadius:12,marginBottom:10,border:'1px solid #E2E8F0'}}>
+                  <div key={i} style={{padding:'14px',background:'var(--surface-2)',borderRadius:12,marginBottom:10,border:'1px solid var(--border)'}}>
                     <div style={{display:'flex',justifyContent:'space-between',marginBottom:10}}>
                       <div style={{fontSize:13,fontWeight:600}}>By {v.recorded_by_name||'Doctor'}</div>
-                      <div style={{fontSize:12,color:'#94A3B8'}}>{new Date(v.recorded_at).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</div>
+                      <div style={{fontSize:12,color:'var(--text-3)'}}>{new Date(v.recorded_at).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</div>
                     </div>
                     <div style={{display:'grid',gridTemplateColumns:'repeat(5,1fr)',gap:8}}>
                       {[
@@ -446,9 +446,9 @@ export default function HealthPanel() {
                         {label:'SpO2',val:v.oxygen_saturation,unit:'%',color:'#0EA5E9'},
                         {label:'Sugar',val:v.blood_sugar,unit:'mg/dL',color:'#7C3AED'},
                       ].map(m=>(
-                        <div key={m.label} style={{textAlign:'center',background:'white',borderRadius:9,padding:'10px',border:'1px solid #E2E8F0'}}>
+                        <div key={m.label} style={{textAlign:'center',background:'var(--surface)',borderRadius:9,padding:'10px',border:'1px solid var(--border)'}}>
                           <div style={{fontFamily:'Syne,sans-serif',fontSize:16,fontWeight:700,color:m.color}}>{m.val||'--'}</div>
-                          <div style={{fontSize:10,color:'#94A3B8'}}>{m.label}</div>
+                          <div style={{fontSize:10,color:'var(--text-3)'}}>{m.label}</div>
                           <div style={{fontSize:9,color:'#CBD5E1'}}>{m.unit}</div>
                         </div>
                       ))}
@@ -529,7 +529,7 @@ function AddVitalsForm({ patientId, onSaved }) {
     finally { setSaving(false); }
   };
 
-  const iS = { width:'100%', padding:'9px 12px', background:'white', border:'1.5px solid #E2E8F0', borderRadius:9, fontSize:13, outline:'none', fontFamily:'DM Sans,sans-serif' };
+  const iS = { width:'100%', padding:'9px 12px', background:'var(--surface)', border:'1.5px solid var(--border)', borderRadius:9, fontSize:13, outline:'none', fontFamily:'DM Sans,sans-serif' };
 
   return (
     <div style={{marginTop:20,background:'#EDE9FE',borderRadius:14,padding:20,border:'1px solid #C4B5FD'}}>
