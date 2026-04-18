@@ -40,6 +40,13 @@ app.get('/api/test-email', async (req, res) => {
   res.json({ success: ok, message: ok ? 'Test email sent!' : 'Email failed - check config' });
 });
 
+app.post('/api/ai/predict', async (req, res) => {
+  const { predictWaitTime } = require('./utils/aiPredictor');
+  const { position, appointmentType, completedToday, doctorSpeedFactor } = req.body;
+  const prediction = predictWaitTime({ position, appointmentType, completedToday, doctorSpeedFactor });
+  res.json({ success: true, prediction });
+});
+
 app.get('/health', (req, res) => {
   res.json({ status: '✅ MEDIQUEUE Backend Running', timestamp: new Date().toISOString() });
 });

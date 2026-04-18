@@ -1,3 +1,4 @@
+import AIPredictor from '../../components/AIPredictor';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { queueAPI, appointmentAPI } from '../../services/api';
@@ -176,6 +177,12 @@ export default function QueuePanel({ role }) {
                   <div style={{fontSize:13,color:'#1E40AF'}}>Now serving: <strong>{current.token_number}</strong></div>
                 </div>
               )}
+              <AIPredictor 
+                position={myPosition || 1}
+                appointmentType="in_person"
+                completedToday={done.length}
+                show={true}
+              />
               <button onClick={() => loadQueue(myEntry.doctor_id)}
                 style={{width:'100%',padding:'10px',background:tg,color:'#fff',border:'none',borderRadius:10,fontFamily:'DM Sans,sans-serif',fontSize:13,fontWeight:700,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:7}}>
                 <i className='fas fa-sync-alt'/> Refresh

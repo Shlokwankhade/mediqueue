@@ -1,3 +1,4 @@
+const { predictWaitTime, predictQueueWaitTimes } = require('../utils/aiPredictor');
 const pool = require('../models/db');
 
 const generateQueueToken = async (doctorId) => {
