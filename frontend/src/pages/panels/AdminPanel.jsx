@@ -40,7 +40,7 @@ export default function AdminPanel() {
   const yAxis = { grid:{color:'rgba(148,163,184,.1)'}, ticks:{color:'#94A3B8',font:{size:11}} };
   const baseOpts = { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:xAxis,y:yAxis} };
 
-  // Volume chart � live from DB
+  // Volume chart  live from DB
   const volumeLabels = stats?.volumeData?.length 
     ? stats.volumeData.map(d=>d.day)
     : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
@@ -65,7 +65,7 @@ export default function AdminPanel() {
     }]
   };
 
-  // Speciality chart � live from DB
+  // Speciality chart  live from DB
   const specLabels = stats?.specialityData?.length
     ? stats.specialityData.map(d=>d.speciality)
     : ['No Data'];
@@ -82,7 +82,7 @@ export default function AdminPanel() {
     }]
   };
 
-  // Revenue chart � live from DB
+  // Revenue chart  live from DB
   const revLabels = stats?.revenueData?.length
     ? stats.revenueData.map(d=>d.month)
     : ['Jan','Feb','Mar','Apr','May','Jun'];
@@ -122,7 +122,7 @@ export default function AdminPanel() {
       {/* LIVE BADGE */}
       <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:18}}>
         <div style={{width:8,height:8,borderRadius:'50%',background:'#10B981',animation:'pulse 2s infinite'}}/>
-        <span style={{fontSize:12,fontWeight:600,color:'#10B981'}}>Live Data � Updates every 30s</span>
+        <span style={{fontSize:12,fontWeight:600,color:'#10B981'}}>Live Data  Updates every 30s</span>
       </div>
 
       {/* METRICS */}
@@ -137,7 +137,7 @@ export default function AdminPanel() {
       <div style={{display:'grid',gridTemplateColumns:'2fr 1fr',gap:20,marginBottom:20}}>
         <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:22}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16}}>
-            <div style={{fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700}}>Patient Volume � Last 7 Days</div>
+            <div style={{fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700}}>Patient Volume  Last 7 Days</div>
             <span style={{fontSize:11,padding:'3px 10px',borderRadius:99,background:'#E6F7F4',color:'#0D9B82',fontWeight:700}}>Live</span>
           </div>
           <div style={{height:220}}>
@@ -164,14 +164,14 @@ export default function AdminPanel() {
       {/* REVENUE CHART */}
       <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:22,marginBottom:20}}>
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16}}>
-          <div style={{fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700}}>Revenue Trend � Live from Payments</div>
+          <div style={{fontFamily:'Syne,sans-serif',fontSize:15,fontWeight:700}}>Revenue Trend  Live from Payments</div>
           <div style={{fontFamily:'Syne,sans-serif',fontSize:20,fontWeight:700,color:'#0D9B82'}}>
             Rs.{stats?.totalRevenue?Math.round(stats.totalRevenue).toLocaleString():'0'}
           </div>
         </div>
         <div style={{height:200}}>
           {revValues.every(v=>v===0)
-            ? <div style={{height:'100%',display:'flex',alignItems:'center',justifyContent:'center',color:'var(--text-3)',flexDirection:'column',gap:8}}><i className='fas fa-chart-line' style={{fontSize:32}}/><span>No payment data yet � make some payments!</span></div>
+            ? <div style={{height:'100%',display:'flex',alignItems:'center',justifyContent:'center',color:'var(--text-3)',flexDirection:'column',gap:8}}><i className='fas fa-chart-line' style={{fontSize:32}}/><span>No payment data yet  make some payments!</span></div>
             : <Line data={revenueData} options={{...baseOpts,plugins:{legend:{display:false}},scales:{x:{...xAxis},y:{...yAxis,ticks:{...yAxis.ticks,callback:v=>'Rs.'+Math.round(v/1000)+'k'}}}}}/>
           }
         </div>

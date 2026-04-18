@@ -83,7 +83,7 @@ export default function QueuePanel({ role }) {
       const r = await queueAPI.callNext(doctorId);
       if (r.data.next) {
         emitCallNext({ doctorId, tokenNumber: r.data.next.token_number, patientName: r.data.next.patient_name });
-        toast('Called: ' + r.data.next.token_number + ' - ' + r.data.next.patient_name, 'success');
+        toast('Called: ' + r.data.next.token_number + ' ? ' + r.data.next.patient_name, 'success');
         loadQueue(doctorId);
       } else { toast('No more patients in queue', 'info'); }
     } catch(e) { toast('Failed to call next', 'error'); }

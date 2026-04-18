@@ -2,6 +2,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
+  --surf:var(--white);
+  --surf2:#F1F5F9;
+  --bdr:#E2E8F0;
+  --txt:var(--ink);
+  --txt2:var(--slate);
+  --txt3:var(--mist);
+  --tealXL:#E6F7F4;
+  --tealDk:#0A7A67;
   --teal:#0D9B82;--teal-dark:#0A7A67;--teal-light:#1DBEA0;--teal-xlight:#E6F7F4;
   --emerald:#10B981;--gold:#F59E0B;--rose:#F43F5E;--violet:#7C3AED;--sky:#0EA5E9;
   --ink:#0A1628;--ink-2:#1E3A5F;--slate:#64748B;--mist:#94A3B8;--ghost:#E2E8F0;

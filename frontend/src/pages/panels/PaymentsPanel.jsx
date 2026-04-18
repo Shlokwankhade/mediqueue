@@ -33,7 +33,7 @@ export default function PaymentsPanel() {
         handler: async (response) => {
           try {
             await api.post('/payments/verify', response);
-            toast('Payment successful! 🎉', 'success');
+            toast('Payment successful! ', 'success');
           } catch(e) { toast('Verification failed', 'error'); }
         },
         prefill: { name: 'Patient', email: 'patient@mediqueue.com' },
@@ -48,7 +48,7 @@ export default function PaymentsPanel() {
   return (
     <div className='fu'>
       <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:14,marginBottom:20}}>
-        <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:14,padding:18}}><div style={{fontSize:11,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:7}}>Total Paid</div><div style={{fontFamily:'Syne,sans-serif',fontSize:26,fontWeight:700,color:'#0D9B82'}}>₹{payments.filter(p=>p.status==='paid').reduce((a,p)=>a+parseFloat(p.amount||0),0).toLocaleString()}</div></div>
+        <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:14,padding:18}}><div style={{fontSize:11,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:7}}>Total Paid</div><div style={{fontFamily:'Syne,sans-serif',fontSize:26,fontWeight:700,color:'#0D9B82'}}>{payments.filter(p=>p.status==='paid').reduce((a,p)=>a+parseFloat(p.amount||0),0).toLocaleString()}</div></div>
         <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:14,padding:18}}><div style={{fontSize:11,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:7}}>Transactions</div><div style={{fontFamily:'Syne,sans-serif',fontSize:26,fontWeight:700}}>{payments.length}</div></div>
         <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:14,padding:18}}><div style={{fontSize:11,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:7}}>Pending</div><div style={{fontFamily:'Syne,sans-serif',fontSize:26,fontWeight:700,color:'#F59E0B'}}>{payments.filter(p=>p.status==='pending').length}</div></div>
       </div>
@@ -59,7 +59,7 @@ export default function PaymentsPanel() {
             <div key={a.id} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px',background:'var(--surface-2)',borderRadius:12,marginBottom:10}}>
               <div><div style={{fontWeight:600,fontSize:14,marginBottom:3}}>{a.doctor_name||'Doctor'}</div><div style={{fontSize:12,color:'var(--text-3)'}}>{new Date(a.appointment_time).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</div></div>
               <div style={{display:'flex',alignItems:'center',gap:12}}>
-                <div style={{fontFamily:'Syne,sans-serif',fontSize:16,fontWeight:700,color:'#0D9B82'}}>₹{a.consultation_fee||500}</div>
+                <div style={{fontFamily:'Syne,sans-serif',fontSize:16,fontWeight:700,color:'#0D9B82'}}>{a.consultation_fee||500}</div>
                 <button onClick={()=>payNow(a)} disabled={paying} style={{padding:'8px 18px',background:tg,color:'#fff',border:'none',borderRadius:9,fontFamily:'DM Sans,sans-serif',fontSize:13,fontWeight:700,cursor:'pointer'}}>{paying?'Processing...':'Pay Now'}</button>
               </div>
             </div>
@@ -75,8 +75,8 @@ export default function PaymentsPanel() {
             <thead><tr>{['Date','Amount','Status'].map(h=>(<th key={h} style={{fontSize:11,fontWeight:700,letterSpacing:.7,textTransform:'uppercase',color:'var(--text-3)',padding:'10px 14px',borderBottom:'1px solid var(--border)',textAlign:'left'}}>{h}</th>))}</tr></thead>
             <tbody>{payments.map((p,i)=>(
               <tr key={i} style={{borderBottom:'1px solid var(--border)'}} onMouseEnter={e=>e.currentTarget.style.background='var(--surface-2)'} onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
-                <td style={{padding:'12px 14px',fontSize:13}}>{p.paid_at?new Date(p.paid_at).toLocaleDateString('en-IN'):'—'}</td>
-                <td style={{padding:'12px 14px',fontSize:13,fontWeight:700,color:'#0D9B82'}}>₹{parseFloat(p.amount||0).toLocaleString()}</td>
+                <td style={{padding:'12px 14px',fontSize:13}}>{p.paid_at?new Date(p.paid_at).toLocaleDateString('en-IN'):''}</td>
+                <td style={{padding:'12px 14px',fontSize:13,fontWeight:700,color:'#0D9B82'}}>{parseFloat(p.amount||0).toLocaleString()}</td>
                 <td style={{padding:'12px 14px'}}><span style={{fontSize:11,padding:'3px 9px',borderRadius:99,fontWeight:700,background:p.status==='paid'?'#D1FAE5':'#FEF3C7',color:p.status==='paid'?'#065F46':'#92400E'}}>{p.status}</span></td>
               </tr>
             ))}</tbody>

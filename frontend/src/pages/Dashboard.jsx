@@ -183,7 +183,7 @@ function OverviewPanel({ role, user }) {
         <div style={{position:'absolute',top:-30,right:-30,width:150,height:150,borderRadius:'50%',background:'rgba(255,255,255,.08)'}}/>
         <div style={{position:'absolute',bottom:-40,right:40,width:100,height:100,borderRadius:'50%',background:'rgba(255,255,255,.06)'}}/>
         <div style={{fontSize:12,opacity:.8,marginBottom:4}}>{today}</div>
-        <div style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:700,marginBottom:4}}>Good {new Date().getHours()<12?'Morning':new Date().getHours()<17?'Afternoon':'Evening'}, {user?.name?.split(' ')[0]}!??</div>
+        <div style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:700,marginBottom:4}}>Good {new Date().getHours()<12?'Morning':new Date().getHours()<17?'Afternoon':'Evening'}, {user?.name?.split(' ')[0]}!!</div>
         <div style={{fontSize:13,opacity:.85}}>You have {upcoming.length} upcoming appointment{upcoming.length!==1?'s':''}</div>
       </div>
 
@@ -193,9 +193,9 @@ function OverviewPanel({ role, user }) {
           {label:'Total Visits',val:appointments.length,icon:'history',color:'#7C3AED',bg:'#EDE9FE'},
           {label:'Prescriptions',val:'View',icon:'prescription-bottle',color:'#F59E0B',bg:'#FEF3C7'},
         ].map(m=>(
-          <div key={m.label} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'hidden'}}>
+          <div key={m.label} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'visible'}}>
             <div style={{fontSize:11,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:6}}>{m.label}</div>
-            <div style={{fontFamily:'Syne,sans-serif',fontSize:28,fontWeight:700,color:m.color}}>{m.val}</div>
+            <div style={{fontFamily:'Syne,sans-serif',fontSize:36,fontWeight:800,color:m.color,lineHeight:1,marginBottom:4}}>{m.val}</div>
             <div style={{position:'absolute',top:14,right:14,width:36,height:36,borderRadius:10,background:m.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,color:m.color}}>
               <i className={'fas fa-'+m.icon}/>
             </div>
@@ -256,17 +256,17 @@ function OverviewPanel({ role, user }) {
       <div style={{marginBottom:24,padding:'20px 24px',background:'linear-gradient(135deg,#7C3AED,#A78BFA)',borderRadius:20,color:'white',position:'relative',overflow:'hidden'}}>
         <div style={{position:'absolute',top:-30,right:-30,width:150,height:150,borderRadius:'50%',background:'rgba(255,255,255,.08)'}}/>
         <div style={{fontSize:12,opacity:.8,marginBottom:4}}>{today}</div>
-        <div style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:700,marginBottom:4}}>Welcome, {user?.name}!</div>
+        <div style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:700,marginBottom:4}}>Welcome, {user?.name?.split(' ')[0]}!</div>
         <div style={{fontSize:13,opacity:.85}}>You have {appointments.length} appointment{appointments.length!==1?'s':''} scheduled</div>
       </div>
 
       <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16,marginBottom:24}}>
         {[
-          {label:"Today's Patients",val:appointments.filter(a=>new Date(a.appointment_time).toDateString()===new Date().toDateString()).length,icon:'users',color:'#7C3AED',bg:'#EDE9FE'},
-          {label:'Confirmed',val:appointments.filter(a=>a.status==='confirmed').length,icon:'calendar-check',color:'#0D9B82',bg:'#E6F7F4'},
-          {label:'Completed',val:appointments.filter(a=>a.status==='completed').length,icon:'check-circle',color:'#F59E0B',bg:'#FEF3C7'},
+          {label:"Today's Patients",val:String(appointments.filter(a=>new Date(a.appointment_time).toDateString()===new Date().toDateString()).length),icon:'users',color:'#7C3AED',bg:'#EDE9FE'},
+          {label:'Confirmed',val:String(appointments.filter(a=>a.status==='confirmed').length),icon:'calendar-check',color:'#0D9B82',bg:'#E6F7F4'},
+          {label:'Completed',val:String(appointments.filter(a=>a.status==='completed').length),icon:'check-circle',color:'#F59E0B',bg:'#FEF3C7'},
         ].map(m=>(
-          <div key={m.label} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'hidden'}}>
+          <div key={m.label} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'visible'}}>
             <div style={{fontSize:11,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:6}}>{m.label}</div>
             <div style={{fontFamily:'Syne,sans-serif',fontSize:28,fontWeight:700,color:m.color}}>{m.val}</div>
             <div style={{position:'absolute',top:14,right:14,width:36,height:36,borderRadius:10,background:m.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,color:m.color}}>
@@ -305,18 +305,18 @@ function OverviewPanel({ role, user }) {
       <div style={{marginBottom:24,padding:'20px 24px',background:'linear-gradient(135deg,#F59E0B,#FCD34D)',borderRadius:20,color:'#0A1628',position:'relative',overflow:'hidden'}}>
         <div style={{position:'absolute',top:-30,right:-30,width:150,height:150,borderRadius:'50%',background:'rgba(0,0,0,.06)'}}/>
         <div style={{fontSize:12,opacity:.7,marginBottom:4}}>{today}</div>
-        <div style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:700,marginBottom:4}}>Admin Dashboard ??</div>
+        <div style={{fontFamily:'Syne,sans-serif',fontSize:22,fontWeight:700,marginBottom:4}}>Admin Dashboard</div>
         <div style={{fontSize:13,opacity:.8}}>{stats?.totalPatients||0} patients  {stats?.activeDoctors||0} doctors  {stats?.todayAppointments||0} appointments today</div>
       </div>
 
       <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:24}}>
         {[
-          {label:'Total Patients',val:stats?.totalPatients||0,icon:'users',color:'#0D9B82',bg:'#E6F7F4'},
-          {label:'Active Doctors',val:stats?.activeDoctors||0,icon:'user-md',color:'#7C3AED',bg:'#EDE9FE'},
-          {label:'Today Appts',val:stats?.todayAppointments||0,icon:'calendar',color:'#F59E0B',bg:'#FEF3C7'},
+          {label:'Total Patients',val:String(stats?.totalPatients||0),icon:'users',color:'#0D9B82',bg:'#E6F7F4'},
+          {label:'Active Doctors',val:String(stats?.activeDoctors||0),icon:'user-md',color:'#7C3AED',bg:'#EDE9FE'},
+          {label:'Today Appts',val:String(stats?.todayAppointments||0),icon:'calendar',color:'#F59E0B',bg:'#FEF3C7'},
           {label:'Revenue',val:'Rs.'+(stats?.totalRevenue?Math.round(stats.totalRevenue).toLocaleString():'0'),icon:'indian-rupee-sign',color:'#F43F5E',bg:'#FFE4E6'},
         ].map(m=>(
-          <div key={m.label} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'hidden'}}>
+          <div key={m.label} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'visible'}}>
             <div style={{fontSize:11,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:6}}>{m.label}</div>
             <div style={{fontFamily:'Syne,sans-serif',fontSize:24,fontWeight:700,color:m.color}}>{m.val}</div>
             <div style={{position:'absolute',top:14,right:14,width:36,height:36,borderRadius:10,background:m.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,color:m.color}}>
@@ -331,7 +331,7 @@ function OverviewPanel({ role, user }) {
         {appointments.slice(0,5).map((a,i)=>(
           <div key={i} style={{display:'flex',alignItems:'center',gap:12,padding:12,borderBottom:'1px solid var(--border)'}}>
             <div style={{flex:1}}>
-              <div style={{fontSize:13,fontWeight:600}}>{a.patient_name} ? {a.doctor_name}</div>
+              <div style={{fontSize:13,fontWeight:600}}>{a.patient_name} to {a.doctor_name}</div>
               <div style={{fontSize:11,color:'var(--text-3)'}}>{new Date(a.appointment_time).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</div>
             </div>
             <span style={{fontSize:11,padding:'3px 9px',borderRadius:99,fontWeight:700,background:a.status==='confirmed'?'#D1FAE5':a.status==='cancelled'?'#FFE4E6':'#FEF3C7',color:a.status==='confirmed'?'#065F46':a.status==='cancelled'?'#9F1239':'#92400E'}}>{a.status}</span>

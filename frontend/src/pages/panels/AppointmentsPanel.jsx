@@ -138,7 +138,7 @@ export default function AppointmentsPanel({ role }) {
                   onMouseEnter={e=>e.currentTarget.style.background='var(--surface-2)'}
                   onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
                   <td style={{padding:'13px 14px',fontSize:13,fontWeight:600}}>{new Date(a.appointment_time).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})}</td>
-                  <td style={{padding:'13px 14px',fontSize:13}}>{role==='doctor'?a.patient_name:(a.doctor_name||'—')}</td>
+                  <td style={{padding:'13px 14px',fontSize:13}}>{role==='doctor'?a.patient_name:(a.doctor_name||'')}</td>
                   <td style={{padding:'13px 14px'}}><span style={{fontSize:11,padding:'3px 9px',borderRadius:99,fontWeight:700,background:a.type==='telehealth'?'#EDE9FE':'#DBEAFE',color:a.type==='telehealth'?'#5B21B6':'#1E40AF'}}>{a.type}</span></td>
                   <td style={{padding:'13px 14px'}}><span style={{fontSize:11,padding:'3px 9px',borderRadius:99,fontWeight:700,...(statusColor[a.status]||{bg:'#F1F5F9',c:'#64748B'})}}>{a.status}</span></td>
                   <td style={{padding:'13px 14px'}}>
@@ -165,7 +165,7 @@ export default function AppointmentsPanel({ role }) {
             style={inputStyle}
           >
             <option value="">-- Choose a doctor --</option>
-            {doctors.map(d=><option key={d.id} value={d.id}>{d.name} — {d.speciality} (₹{d.consultation_fee})</option>)}
+            {doctors.map(d=><option key={d.id} value={d.id}>{d.name}  {d.speciality} ({d.consultation_fee})</option>)}
           </select>
         </div>
 

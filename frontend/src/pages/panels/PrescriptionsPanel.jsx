@@ -110,7 +110,7 @@ export default function PrescriptionsPanel({ role }) {
           }} style={iStyle}>
             <option value=''>-- Select appointment --</option>
             {appointments.map(a => (
-              <option key={a.id} value={a.id}>{a.patient_name} � {new Date(a.appointment_time).toLocaleDateString('en-IN')}</option>
+              <option key={a.id} value={a.id}>{a.patient_name}  {new Date(a.appointment_time).toLocaleDateString('en-IN')}</option>
             ))}
           </select>
         </div>
