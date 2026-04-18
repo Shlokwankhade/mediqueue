@@ -1,3 +1,5 @@
+import React from 'react';
+import HealthPanel from './panels/HealthPanel';
 import MessagesPanel from './panels/MessagesPanel';
 
 import { useState, useEffect } from 'react';
@@ -22,6 +24,7 @@ const NAV_CONFIG = {
     { id:'doctors',        icon:'fa-user-md',             label:'Find Doctors' },
     { id:'payments',       icon:'fa-credit-card',         label:'Payments' },
     { id:'prescriptions',  icon:'fa-prescription-bottle', label:'Prescriptions' },
+    { id:'health',         icon:'fa-heart',               label:'Health Records' },
     { id:'messages',      icon:'fa-comments',             label:'Messages' },
     { id:'settings',       icon:'fa-cog',                 label:'Settings' },
   ],
@@ -46,7 +49,7 @@ const NAV_CONFIG = {
 const PAGE_TITLES = {
   overview:'Dashboard', appointments:'Appointments', queue:'Queue',
   doctors:'Doctors', payments:'Payments', prescriptions:'Prescriptions',
-  settings:'Settings', messages:'Messages', admin:'Analytics'
+  settings:'Settings', messages:'Messages', health:'Health Records', admin:'Analytics'
 };
 
 function Sidebar({ role, active, onNav, user, onLogout }) {
@@ -265,19 +268,39 @@ function OverviewPanel({ role, user }) {
       </div>
 
       <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16,marginBottom:24}}>
-        {[
-          {label:"Today's Patients",val:String(appointments.filter(a=>new Date(a.appointment_time).toDateString()===new Date().toDateString()).length),icon:'users',color:'#7C3AED',bg:'#EDE9FE'},
-          {label:'Confirmed',val:String(appointments.filter(a=>a.status==='confirmed').length),icon:'calendar-check',color:'#0D9B82',bg:'#E6F7F4'},
-          {label:'Completed',val:String(appointments.filter(a=>a.status==='completed').length),icon:'check-circle',color:'#F59E0B',bg:'#FEF3C7'},
-        ].map(m=>(
-          <div key={m.label} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'visible'}}>
-            <div style={{fontSize:11,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:6}}>{m.label}</div>
-            <div style={{fontFamily:'Syne,sans-serif',fontSize:28,fontWeight:700,color:m.color}}>{m.val}</div>
-            <div style={{position:'absolute',top:14,right:14,width:36,height:36,borderRadius:10,background:m.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,color:m.color}}>
-              <i className={'fas fa-'+m.icon}/>
+        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px',display:'flex',alignItems:'center',gap:14}}>
+          <div style={{width:48,height:48,borderRadius:14,background:'#EDE9FE',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+            <i className='fas fa-users' style={{color:'#7C3AED',fontSize:20}}/>
+          </div>
+          <div>
+            <div style={{fontSize:11,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.6,marginBottom:4}}>Today Patients</div>
+            <div style={{fontFamily:'Syne,sans-serif',fontSize:32,fontWeight:800,color:'#7C3AED',lineHeight:1}}>
+              {appointments.filter(a=>new Date(a.appointment_time).toDateString()===new Date().toDateString()).length}
             </div>
           </div>
-        ))}
+        </div>
+        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px',display:'flex',alignItems:'center',gap:14}}>
+          <div style={{width:48,height:48,borderRadius:14,background:'#E6F7F4',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+            <i className='fas fa-calendar-check' style={{color:'#0D9B82',fontSize:20}}/>
+          </div>
+          <div>
+            <div style={{fontSize:11,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.6,marginBottom:4}}>Confirmed</div>
+            <div style={{fontFamily:'Syne,sans-serif',fontSize:32,fontWeight:800,color:'#0D9B82',lineHeight:1}}>
+              {appointments.filter(a=>a.status==='confirmed').length}
+            </div>
+          </div>
+        </div>
+        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px',display:'flex',alignItems:'center',gap:14}}>
+          <div style={{width:48,height:48,borderRadius:14,background:'#FEF3C7',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+            <i className='fas fa-check-circle' style={{color:'#F59E0B',fontSize:20}}/>
+          </div>
+          <div>
+            <div style={{fontSize:11,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.6,marginBottom:4}}>Completed</div>
+            <div style={{fontFamily:'Syne,sans-serif',fontSize:32,fontWeight:800,color:'#F59E0B',lineHeight:1}}>
+              {appointments.filter(a=>a.status==='completed').length}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:20}}>
@@ -314,20 +337,26 @@ function OverviewPanel({ role, user }) {
       </div>
 
       <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,marginBottom:24}}>
-        {[
-          {label:'Total Patients',val:String(stats?.totalPatients||0),icon:'users',color:'#0D9B82',bg:'#E6F7F4'},
-          {label:'Active Doctors',val:String(stats?.activeDoctors||0),icon:'user-md',color:'#7C3AED',bg:'#EDE9FE'},
-          {label:'Today Appts',val:String(stats?.todayAppointments||0),icon:'calendar',color:'#F59E0B',bg:'#FEF3C7'},
-          {label:'Revenue',val:'Rs.'+(stats?.totalRevenue?Math.round(stats.totalRevenue).toLocaleString():'0'),icon:'indian-rupee-sign',color:'#F43F5E',bg:'#FFE4E6'},
-        ].map(m=>(
-          <div key={m.label} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'18px 20px',position:'relative',overflow:'visible'}}>
-            <div style={{fontSize:11,fontWeight:700,color:'var(--text-3)',textTransform:'uppercase',letterSpacing:.6,marginBottom:6}}>{m.label}</div>
-            <div style={{fontFamily:'Syne,sans-serif',fontSize:24,fontWeight:700,color:m.color}}>{m.val}</div>
-            <div style={{position:'absolute',top:14,right:14,width:36,height:36,borderRadius:10,background:m.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,color:m.color}}>
-              <i className={'fas fa-'+m.icon}/>
-            </div>
-          </div>
-        ))}
+        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px',display:'flex',alignItems:'center',gap:14}}>
+          <div style={{width:48,height:48,borderRadius:14,background:'#E6F7F4',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><i className='fas fa-users' style={{color:'#0D9B82',fontSize:20}}/></div>
+          <div><div style={{fontSize:11,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.6,marginBottom:4}}>Total Patients</div>
+          <div style={{fontFamily:'Syne,sans-serif',fontSize:32,fontWeight:800,color:'#0D9B82',lineHeight:1}}>{stats?.totalPatients||0}</div></div>
+        </div>
+        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px',display:'flex',alignItems:'center',gap:14}}>
+          <div style={{width:48,height:48,borderRadius:14,background:'#EDE9FE',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><i className='fas fa-user-md' style={{color:'#7C3AED',fontSize:20}}/></div>
+          <div><div style={{fontSize:11,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.6,marginBottom:4}}>Active Doctors</div>
+          <div style={{fontFamily:'Syne,sans-serif',fontSize:32,fontWeight:800,color:'#7C3AED',lineHeight:1}}>{stats?.activeDoctors||0}</div></div>
+        </div>
+        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px',display:'flex',alignItems:'center',gap:14}}>
+          <div style={{width:48,height:48,borderRadius:14,background:'#FEF3C7',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><i className='fas fa-calendar' style={{color:'#F59E0B',fontSize:20}}/></div>
+          <div><div style={{fontSize:11,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.6,marginBottom:4}}>Today Appts</div>
+          <div style={{fontFamily:'Syne,sans-serif',fontSize:32,fontWeight:800,color:'#F59E0B',lineHeight:1}}>{stats?.todayAppointments||0}</div></div>
+        </div>
+        <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:16,padding:'20px',display:'flex',alignItems:'center',gap:14}}>
+          <div style={{width:48,height:48,borderRadius:14,background:'#FFE4E6',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><i className='fas fa-indian-rupee-sign' style={{color:'#F43F5E',fontSize:20}}/></div>
+          <div><div style={{fontSize:11,fontWeight:700,color:'#94A3B8',textTransform:'uppercase',letterSpacing:.6,marginBottom:4}}>Revenue</div>
+          <div style={{fontFamily:'Syne,sans-serif',fontSize:28,fontWeight:800,color:'#F43F5E',lineHeight:1}}>Rs.{stats?.totalRevenue?Math.round(stats.totalRevenue).toLocaleString():'0'}</div></div>
+        </div>
       </div>
 
       <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:20}}>
@@ -425,6 +454,7 @@ export default function Dashboard() {
       case 'doctors':       return role==='admin' ? <AdminDoctorsPanel/> : <FindDoctorsPanel/>;
       case 'settings':      return <SettingsPanel user={user}/>;
       case 'messages':      return <MessagesPanel/>;
+      case 'health':        return <HealthPanel/>;
       default:              return <OverviewPanel role={role} user={user}/>;
     }
   };
@@ -472,38 +502,161 @@ export default function Dashboard() {
 }
 
 function FindDoctorsPanel() {
-  const [doctors, setDoctors] = useState([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(()=>{
+  const [doctors, setDoctors] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [booking, setBooking] = React.useState(null);
+  const [apptDate, setApptDate] = React.useState('');
+  const [apptTime, setApptTime] = React.useState('');
+  const [apptType, setApptType] = React.useState('in_person');
+  const [submitting, setSubmitting] = React.useState(false);
+
+  React.useEffect(()=>{
     doctorAPI.getAll().then(r=>setDoctors(r.data.doctors||[])).catch(console.error).finally(()=>setLoading(false));
   },[]);
+
+  const bookAppointment = async () => {
+    if (!apptDate || !apptTime) { alert('Please select date and time'); return; }
+    setSubmitting(true);
+    try {
+      const { appointmentAPI } = await import('../services/api');
+      const { toast } = await import('../components/ToastStack');
+      await appointmentAPI.book({
+        doctor_id: booking.id,
+        appointment_time: apptDate + 'T' + apptTime + ':00',
+        type: apptType,
+        notes: ''
+      });
+      toast('Appointment booked successfully!', 'success');
+      setBooking(null);
+      setApptDate('');
+      setApptTime('');
+    } catch(e) {
+      const { toast } = await import('../components/ToastStack');
+      toast(e.response?.data?.message || 'Booking failed', 'error');
+    } finally { setSubmitting(false); }
+  };
+
+  const timeSlots = ['09:00','09:30','10:00','10:30','11:00','11:30','12:00','14:00','14:30','15:00','15:30','16:00','16:30'];
+  const today = new Date().toISOString().split('T')[0];
+
   if(loading) return <div style={{padding:40,textAlign:'center'}}><i className='fas fa-spinner fa-spin' style={{fontSize:32,color:'#0D9B82'}}/></div>;
   return (
     <div className='fu'>
-      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(240px,1fr))',gap:16}}>
+      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))',gap:16}}>
         {doctors.map(d=>(
-          <div key={d.id} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:20,textAlign:'center',transition:'all .2s'}}
+          <div key={d.id} style={{background:'white',border:'1px solid #E2E8F0',borderRadius:20,overflow:'hidden',transition:'all .2s',boxShadow:'0 2px 8px rgba(0,0,0,.06)'}}
             onMouseEnter={e=>e.currentTarget.style.transform='translateY(-4px)'}
             onMouseLeave={e=>e.currentTarget.style.transform='none'}>
-            <div style={{width:64,height:64,borderRadius:18,background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700,fontSize:22,margin:'0 auto 12px'}}>
-              {d.name?.slice(0,2)||'Dr'}
+            <div style={{background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',padding:'24px',textAlign:'center'}}>
+              <div style={{width:64,height:64,borderRadius:18,background:'rgba(255,255,255,.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700,fontSize:22,margin:'0 auto 12px'}}>
+                {d.name?.slice(0,2)||'Dr'}
+              </div>
+              <div style={{fontWeight:700,fontSize:16,color:'white',marginBottom:4}}>{d.name}</div>
+              <div style={{fontSize:13,color:'rgba(255,255,255,.8)'}}>{d.speciality}</div>
             </div>
-            <div style={{fontWeight:700,fontSize:15,marginBottom:4}}>{d.name}</div>
-            <div style={{fontSize:12,color:'var(--text-3)',marginBottom:8}}>{d.speciality}</div>
-            <div style={{display:'flex',justifyContent:'center',gap:6,marginBottom:12}}>
-              <span style={{fontSize:11,padding:'3px 9px',borderRadius:99,background:'#E6F7F4',color:'#0D9B82',fontWeight:700}}>Rs.{d.consultation_fee}</span>
-              <span style={{fontSize:11,padding:'3px 9px',borderRadius:99,background:'#FEF3C7',color:'#92400E',fontWeight:700}}>? {d.rating||'4.9'}</span>
+            <div style={{padding:'16px'}}>
+              <div style={{display:'flex',justifyContent:'space-between',marginBottom:14}}>
+                <div style={{textAlign:'center',flex:1}}>
+                  <div style={{fontFamily:'Syne,sans-serif',fontSize:16,fontWeight:700,color:'#0D9B82'}}>Rs.{d.consultation_fee}</div>
+                  <div style={{fontSize:11,color:'#94A3B8'}}>Fee</div>
+                </div>
+                <div style={{width:1,background:'#E2E8F0'}}/>
+                <div style={{textAlign:'center',flex:1}}>
+                  <div style={{fontFamily:'Syne,sans-serif',fontSize:16,fontWeight:700,color:'#F59E0B'}}>{d.rating||'4.9'}</div>
+                  <div style={{fontSize:11,color:'#94A3B8'}}>Rating</div>
+                </div>
+                <div style={{width:1,background:'#E2E8F0'}}/>
+                <div style={{textAlign:'center',flex:1}}>
+                  <div style={{fontFamily:'Syne,sans-serif',fontSize:16,fontWeight:700,color:'#7C3AED'}}>{d.experience_years||'5'}yr</div>
+                  <div style={{fontSize:11,color:'#94A3B8'}}>Exp</div>
+                </div>
+              </div>
+              <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:14}}>
+                <span style={{width:8,height:8,borderRadius:'50%',background:d.is_available?'#10B981':'#F43F5E',display:'inline-block'}}/>
+                <span style={{fontSize:12,color:d.is_available?'#10B981':'#F43F5E',fontWeight:600}}>{d.is_available?'Available Now':'Unavailable'}</span>
+              </div>
+              <button
+                onClick={()=>setBooking(d)}
+                disabled={!d.is_available}
+                style={{width:'100%',padding:'11px',background:d.is_available?'linear-gradient(135deg,#0D9B82,#1DBEA0)':'#F1F5F9',color:d.is_available?'white':'#94A3B8',border:'none',borderRadius:12,fontFamily:'DM Sans,sans-serif',fontSize:14,fontWeight:700,cursor:d.is_available?'pointer':'not-allowed',transition:'all .2s'}}
+              >
+                <i className='fas fa-calendar-plus' style={{marginRight:7}}/>
+                {d.is_available ? 'Book Appointment' : 'Unavailable'}
+              </button>
             </div>
-            <button style={{width:'100%',padding:'9px',background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',color:'white',border:'none',borderRadius:10,fontFamily:'DM Sans,sans-serif',fontSize:13,fontWeight:700,cursor:'pointer'}}>
-              Book Appointment
-            </button>
           </div>
         ))}
       </div>
+
+      {/* Booking Modal */}
+      {booking && (
+        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,.5)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:1000,padding:20}}>
+          <div style={{background:'white',borderRadius:24,width:'100%',maxWidth:460,overflow:'hidden',boxShadow:'0 24px 64px rgba(0,0,0,.2)'}}>
+            <div style={{background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',padding:'24px'}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                <div>
+                  <div style={{fontFamily:'Syne,sans-serif',fontSize:18,fontWeight:700,color:'white'}}>Book Appointment</div>
+                  <div style={{fontSize:13,color:'rgba(255,255,255,.8)',marginTop:2}}>with {booking.name}</div>
+                </div>
+                <button onClick={()=>setBooking(null)} style={{width:32,height:32,borderRadius:8,background:'rgba(255,255,255,.2)',border:'none',color:'white',cursor:'pointer',fontSize:16}}>x</button>
+              </div>
+            </div>
+            <div style={{padding:24}}>
+              <div style={{display:'flex',alignItems:'center',gap:12,padding:'14px',background:'#F8FAFC',borderRadius:12,marginBottom:20}}>
+                <div style={{width:44,height:44,borderRadius:12,background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:700,fontSize:16}}>
+                  {booking.name?.slice(0,2)}
+                </div>
+                <div>
+                  <div style={{fontWeight:600,fontSize:14}}>{booking.name}</div>
+                  <div style={{fontSize:12,color:'#94A3B8'}}>{booking.speciality} - Rs.{booking.consultation_fee}</div>
+                </div>
+              </div>
+
+              <div style={{marginBottom:16}}>
+                <label style={{display:'block',fontSize:12,fontWeight:700,color:'#64748B',marginBottom:6,textTransform:'uppercase',letterSpacing:.4}}>Appointment Type</label>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>
+                  {[{val:'in_person',label:'In Person',icon:'fa-hospital'},{val:'telehealth',label:'Telehealth',icon:'fa-video'}].map(t=>(
+                    <button key={t.val} onClick={()=>setApptType(t.val)} style={{padding:'10px',border:'2px solid',borderColor:apptType===t.val?'#0D9B82':'#E2E8F0',borderRadius:10,background:apptType===t.val?'#E6F7F4':'white',color:apptType===t.val?'#0D9B82':'#64748B',fontFamily:'DM Sans,sans-serif',fontSize:13,fontWeight:600,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:7}}>
+                      <i className={'fas '+t.icon}/>{t.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{marginBottom:16}}>
+                <label style={{display:'block',fontSize:12,fontWeight:700,color:'#64748B',marginBottom:6,textTransform:'uppercase',letterSpacing:.4}}>Select Date</label>
+                <input type='date' min={today} value={apptDate} onChange={e=>setApptDate(e.target.value)}
+                  style={{width:'100%',padding:'11px 14px',background:'#F8FAFC',border:'1.5px solid #E2E8F0',borderRadius:10,fontSize:14,color:'#0A1628',outline:'none',fontFamily:'DM Sans,sans-serif'}}/>
+              </div>
+
+              <div style={{marginBottom:20}}>
+                <label style={{display:'block',fontSize:12,fontWeight:700,color:'#64748B',marginBottom:6,textTransform:'uppercase',letterSpacing:.4}}>Select Time</label>
+                <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:6}}>
+                  {timeSlots.map(t=>(
+                    <button key={t} onClick={()=>setApptTime(t)} style={{padding:'8px 4px',border:'1.5px solid',borderColor:apptTime===t?'#0D9B82':'#E2E8F0',borderRadius:8,background:apptTime===t?'#E6F7F4':'white',color:apptTime===t?'#0D9B82':'#64748B',fontFamily:'DM Sans,sans-serif',fontSize:12,fontWeight:600,cursor:'pointer'}}>
+                      {t}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{display:'flex',gap:10}}>
+                <button onClick={()=>setBooking(null)} style={{flex:1,padding:'12px',background:'#F1F5F9',color:'#64748B',border:'none',borderRadius:12,fontFamily:'DM Sans,sans-serif',fontSize:14,fontWeight:600,cursor:'pointer'}}>
+                  Cancel
+                </button>
+                <button onClick={bookAppointment} disabled={submitting||!apptDate||!apptTime}
+                  style={{flex:2,padding:'12px',background:'linear-gradient(135deg,#0D9B82,#1DBEA0)',color:'white',border:'none',borderRadius:12,fontFamily:'DM Sans,sans-serif',fontSize:14,fontWeight:700,cursor:'pointer',opacity:submitting||!apptDate||!apptTime?0.7:1}}>
+                  <i className='fas fa-calendar-check' style={{marginRight:7}}/>
+                  {submitting ? 'Booking...' : 'Confirm Booking'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-
 function AdminDoctorsPanel() {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -529,7 +682,7 @@ function AdminDoctorsPanel() {
                 <td style={{padding:'13px 16px',fontWeight:600,fontSize:14}}>{d.name}</td>
                 <td style={{padding:'13px 16px',fontSize:13,color:'var(--text-2)'}}>{d.speciality}</td>
                 <td style={{padding:'13px 16px',fontSize:13}}>Rs.{d.consultation_fee}</td>
-                <td style={{padding:'13px 16px',fontSize:13}}>? {d.rating||'4.9'}</td>
+                <td style={{padding:'13px 16px',fontSize:13}}>{d.rating||'4.9'}</td>
                 <td style={{padding:'13px 16px'}}>
                   <span style={{fontSize:11,padding:'3px 9px',borderRadius:99,fontWeight:700,background:d.is_available?'#D1FAE5':'#FFE4E6',color:d.is_available?'#065F46':'#9F1239'}}>
                     {d.is_available?'Available':'Unavailable'}

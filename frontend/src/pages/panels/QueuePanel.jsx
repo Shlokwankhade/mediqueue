@@ -248,7 +248,7 @@ export default function QueuePanel({ role }) {
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
           <div style={{background:'white',border:'1px solid #E2E8F0',borderRadius:20,padding:28,textAlign:'center'}}>
             <div style={{fontSize:11,fontWeight:700,textTransform:'uppercase',letterSpacing:.8,color:'#94A3B8',marginBottom:8}}>Now Serving</div>
-            <div style={{fontFamily:'Syne,sans-serif',fontSize:80,fontWeight:900,color:'#0D9B82',lineHeight:1,marginBottom:8}}>
+            <div style={{fontFamily:'Syne,sans-serif',fontSize:72,fontWeight:900,color:'#0D9B82',lineHeight:1,marginBottom:8,letterSpacing:-2}}>
               {current ? current.token_number?.split('-')[1] : '--'}
             </div>
             <div style={{fontWeight:600,fontSize:15,marginBottom:4,color:'#0A1628'}}>{current?.patient_name || 'Queue Empty'}</div>
@@ -256,13 +256,23 @@ export default function QueuePanel({ role }) {
               Waiting: {waiting.length} | Done: {done.length}
             </div>
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:16}}>
-              <div style={{background:'#E6F7F4',borderRadius:14,padding:14,textAlign:'center'}}>
-                <div style={{fontFamily:'Syne,sans-serif',fontSize:28,fontWeight:800,color:'#0D9B82'}}>{waiting.length}</div>
-                <div style={{fontSize:12,color:'#94A3B8'}}>Waiting</div>
+              <div style={{background:'#E6F7F4',borderRadius:14,padding:14,display:'flex',alignItems:'center',gap:10}}>
+                <div style={{width:40,height:40,borderRadius:10,background:'#0D9B82',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                  <i className='fas fa-clock' style={{color:'white',fontSize:16}}/>
+                </div>
+                <div>
+                  <div style={{fontFamily:'Syne,sans-serif',fontSize:28,fontWeight:800,color:'#0D9B82',lineHeight:1}}>{waiting.length}</div>
+                  <div style={{fontSize:11,color:'#64748B',fontWeight:600}}>Waiting</div>
+                </div>
               </div>
-              <div style={{background:'#D1FAE5',borderRadius:14,padding:14,textAlign:'center'}}>
-                <div style={{fontFamily:'Syne,sans-serif',fontSize:28,fontWeight:800,color:'#065F46'}}>{done.length}</div>
-                <div style={{fontSize:12,color:'#94A3B8'}}>Completed</div>
+              <div style={{background:'#D1FAE5',borderRadius:14,padding:14,display:'flex',alignItems:'center',gap:10}}>
+                <div style={{width:40,height:40,borderRadius:10,background:'#10B981',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                  <i className='fas fa-check' style={{color:'white',fontSize:16}}/>
+                </div>
+                <div>
+                  <div style={{fontFamily:'Syne,sans-serif',fontSize:28,fontWeight:800,color:'#065F46',lineHeight:1}}>{done.length}</div>
+                  <div style={{fontSize:11,color:'#64748B',fontWeight:600}}>Completed</div>
+                </div>
               </div>
             </div>
             <button onClick={callNext} disabled={waiting.length===0}
