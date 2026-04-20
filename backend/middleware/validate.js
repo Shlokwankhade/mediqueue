@@ -4,7 +4,7 @@ const validateRegister = (req, res, next) => {
   const errors = [];
   
   if (!name || name.trim().length < 2) errors.push('Name must be at least 2 characters');
-  if (!email || !/^[^s@]+@[^s@]+.[^s@]+$/.test(email)) errors.push('Valid email required');
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push('Valid email required');
   if (!password || password.length < 6) errors.push('Password must be at least 6 characters');
   if (password && password.length > 100) errors.push('Password too long');
   

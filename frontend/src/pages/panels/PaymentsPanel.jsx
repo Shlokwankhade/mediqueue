@@ -3,6 +3,15 @@ import { appointmentAPI } from '../../services/api';
 import api from '../../services/api';
 import { toast } from '../../components/ToastStack';
 const tg = 'linear-gradient(135deg,#0D9B82,#1DBEA0)';
+
+const loadRazorpay = () => new Promise((resolve) => {
+  if (window.Razorpay) { resolve(true); return; }
+  const script = document.createElement('script');
+  script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+  script.onload = () => resolve(true);
+  script.onerror = () => resolve(false);
+  document.body.appendChild(script);
+});
 export default function PaymentsPanel() {
   const [payments, setPayments] = useState([]);
   const [appts, setAppts] = useState([]);
@@ -23,7 +32,8 @@ export default function PaymentsPanel() {
     try {
       const r = await api.post('/payments/create-order', { appointment_id: appt.id, amount: appt.consultation_fee || 500 });
       const { order, key_id } = r.data;
-      const options = {
+      await loadRazorpay();
+    const options = {
         key: key_id,
         amount: order.amount,
         currency: 'INR',

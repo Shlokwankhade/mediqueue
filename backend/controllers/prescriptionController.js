@@ -31,7 +31,7 @@ const createPrescription = async (req, res) => {
 
         await sendEmail({
           to: p.email,
-          subject: 'Your E-Prescription � MEDIQUEUE',
+          subject: 'Your E-Prescription - MEDIQUEUE',
           html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
             <div style="background:linear-gradient(135deg,#0D9B82,#1DBEA0);padding:32px;text-align:center;border-radius:12px 12px 0 0">
               <h1 style="color:white;margin:0;font-size:26px">MEDIQUEUE</h1>
@@ -52,7 +52,7 @@ const createPrescription = async (req, res) => {
                 <tbody>${medList}</tbody>
               </table>
               ${notes ? '<div style="background:#E6F7F4;border-radius:8px;padding:16px;margin-top:16px"><p style="color:#0A7A67;margin:0"><strong>Doctor Notes:</strong> ' + notes + '</p></div>' : ''}
-              <p style="color:#94A3B8;font-size:12px;margin-top:24px;text-align:center">MEDIQUEUE � Smart Healthcare</p>
+              <p style="color:#94A3B8;font-size:12px;margin-top:24px;text-align:center">MEDIQUEUE - Smart Healthcare</p>
             </div>
           </div>`
         });

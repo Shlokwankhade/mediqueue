@@ -42,7 +42,7 @@ export default function PrescriptionsPanel({ role }) {
     setSubmitting(true);
     try {
       await api.post('/prescriptions', form);
-      toast('Prescription sent! Patient will receive email ??', 'success');
+      toast('Prescription sent! Patient will receive email.', 'success');
       setModal(false);
       setForm({ appointment_id:'', patient_id:'', notes:'', medicines:[{ name:'', dosage:'', frequency:'', duration:'' }] });
       load();
@@ -122,10 +122,10 @@ export default function PrescriptionsPanel({ role }) {
           </div>
           {form.medicines.map((m, i) => (
             <div key={i} style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 1fr auto',gap:6,marginBottom:8}}>
-              <input placeholder='Medicine name' value={m.name} onChange={e => updateMedicine(i,'name',e.target.value)} style={iStyle}/>
-              <input placeholder='Dosage' value={m.dosage} onChange={e => updateMedicine(i,'dosage',e.target.value)} style={iStyle}/>
-              <input placeholder='Frequency' value={m.frequency} onChange={e => updateMedicine(i,'frequency',e.target.value)} style={iStyle}/>
-              <input placeholder='Duration' value={m.duration} onChange={e => updateMedicine(i,'duration',e.target.value)} style={iStyle}/>
+              <input placeholder='Medicine name' value={m.name || ''} onChange={e => updateMedicine(i,'name',e.target.value)} style={iStyle}/>
+              <input placeholder='Dosage' value={m.dosage || ''} onChange={e => updateMedicine(i,'dosage',e.target.value)} style={iStyle}/>
+              <input placeholder='Frequency' value={m.frequency || ''} onChange={e => updateMedicine(i,'frequency',e.target.value)} style={iStyle}/>
+              <input placeholder='Duration' value={m.duration || ''} onChange={e => updateMedicine(i,'duration',e.target.value)} style={iStyle}/>
               {form.medicines.length > 1 && <button onClick={() => removeMedicine(i)} style={{background:'#FFE4E6',color:'#9F1239',border:'none',borderRadius:8,width:32,cursor:'pointer',fontSize:14}}>x</button>}
             </div>
           ))}
@@ -133,11 +133,11 @@ export default function PrescriptionsPanel({ role }) {
 
         <div style={{marginBottom:16}}>
           <label style={lStyle}>Doctor Notes</label>
-          <textarea value={form.notes} onChange={e => setForm(f => ({...f, notes:e.target.value}))} placeholder='Additional instructions for patient...' rows={2} style={{...iStyle, resize:'vertical'}}/>
+          <textarea value={form.notes || ''} onChange={e => setForm(f => ({...f, notes:e.target.value}))} placeholder='Additional instructions for patient...' rows={2} style={{...iStyle, resize:'vertical'}}/>
         </div>
 
         <button onClick={submit} disabled={submitting} style={{width:'100%',padding:'12px',background:tg,color:'#fff',border:'none',borderRadius:10,fontFamily:'DM Sans,sans-serif',fontSize:14,fontWeight:700,cursor:'pointer',boxShadow:'0 4px 14px rgba(13,155,130,.3)'}}>
-          {submitting ? 'Sending...' : 'Send Prescription via Email ??'}
+          {submitting ? 'Sending...' : 'Send Prescription via Email'}
         </button>
       </Modal>
     </div>

@@ -401,7 +401,7 @@ export default function HealthPanel() {
             ].map(f=>(
               <div key={f.k} style={{marginBottom:16}}>
                 <label style={lStyle}>{f.label}</label>
-                <textarea style={{...iStyle,resize:'vertical'}} rows={2} placeholder={f.ph} value={form[f.k]} onChange={e=>set(f.k,e.target.value)} disabled={user?.role==='doctor'}/>
+                <textarea style={{...iStyle,resize:'vertical'}} rows={2} placeholder={f.ph} value={form[f.k] || ""} onChange={e=>set(f.k,e.target.value)} disabled={user?.role==='doctor'}/>
               </div>
             ))}
           </div>
@@ -543,7 +543,7 @@ function AddVitalsForm({ patientId, onSaved }) {
           {k:'blood_sugar',ph:'Sugar (mg/dL)',type:'number'},
           {k:'notes',ph:'Notes'},
         ].map(f=>(
-          <input key={f.k} style={iS} placeholder={f.ph} type={f.type||'text'} value={form[f.k]} onChange={e=>set(f.k,e.target.value)}/>
+          <input key={f.k} style={iS} placeholder={f.ph} type={f.type||'text'} value={form[f.k] || ''} onChange={e=>set(f.k,e.target.value)}/>
         ))}
       </div>
       <button onClick={save} disabled={saving} style={{padding:'9px 20px',background:'linear-gradient(135deg,#7C3AED,#A78BFA)',color:'white',border:'none',borderRadius:9,fontFamily:'DM Sans,sans-serif',fontSize:13,fontWeight:700,cursor:'pointer'}}>

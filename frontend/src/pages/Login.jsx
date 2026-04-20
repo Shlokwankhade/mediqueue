@@ -31,11 +31,18 @@ export default function Login() {
     setLoad(true);
     setError('');
     try {
-      const r = await api.post('/auth/login', form);
-      login(r.data.token, r.data.user);
-      nav('/dashboard');
+      const r = await api.post('/auth/login', {
+        email: form.email.trim().toLowerCase(),
+        password: form.password
+      });
+      if (r.data.success && r.data.token && r.data.user) {
+        login(r.data.token, r.data.user);
+        nav('/dashboard');
+      } else {
+        setError('Login failed. Please try again.');
+      }
     } catch(err) {
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
+      setError(err.response?.data?.message || 'Login failed. Check your email and password.');
     } finally {
       setLoad(false);
     }
@@ -63,7 +70,7 @@ export default function Login() {
         </div>
 
         <div style={{background:'#F8FAFC',border:'1px solid #E2E8F0',borderRadius:12,padding:'12px 14px',marginBottom:20}}>
-          <div style={{fontSize:12,fontWeight:700,color:'#64748B',marginBottom:8}}>Demo accounts: Click to auto-fill</div>
+          <div style={{fontSize:12,fontWeight:700,color:'#64748B',marginBottom:8}}>Demo accounts - Click to auto-fill</div>
           <div style={{display:'flex',gap:8}}>
             {[
               ['patient','fa-user','Patient','#0D9B82','#E6F7F4'],
@@ -78,8 +85,8 @@ export default function Login() {
         </div>
 
         {error && (
-          <div style={{background:'#FFE4E6',color:'#9F1239',padding:'10px 14px',borderRadius:10,fontSize:13,marginBottom:16,fontWeight:600}}>
-            <i className='fas fa-exclamation-circle' style={{marginRight:6}}/>{error}
+          <div style={{background:'#FFE4E6',color:'#9F1239',padding:'10px 14px',borderRadius:10,fontSize:13,marginBottom:16,fontWeight:600,display:'flex',alignItems:'center',gap:8}}>
+            <i className='fas fa-exclamation-circle'/>{error}
           </div>
         )}
 
@@ -103,9 +110,13 @@ export default function Login() {
           <button
             type='submit'
             disabled={loading}
-            style={{width:'100%',padding:'13px',background:tg,color:'white',border:'none',borderRadius:12,fontFamily:'DM Sans,sans-serif',fontSize:15,fontWeight:700,cursor:'pointer',boxShadow:'0 4px 14px rgba(13,155,130,.3)',marginBottom:4,opacity:loading?0.8:1}}
+            style={{width:'100%',padding:'13px',background:loading?'#94A3B8':tg,color:'white',border:'none',borderRadius:12,fontFamily:'DM Sans,sans-serif',fontSize:15,fontWeight:700,cursor:loading?'not-allowed':'pointer',boxShadow:'0 4px 14px rgba(13,155,130,.3)',transition:'all .2s',marginBottom:4}}
           >
-            {loading ? 'Signing in...' : 'Sign In as '+role.charAt(0).toUpperCase()+role.slice(1)}
+            {loading ? (
+              <span><i className='fas fa-spinner fa-spin' style={{marginRight:8}}/>Signing in...</span>
+            ) : (
+              <span><i className='fas fa-sign-in-alt' style={{marginRight:8}}/>Sign In</span>
+            )}
           </button>
         </form>
 

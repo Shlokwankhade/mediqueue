@@ -1,8 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+// rate limiting disabled
 const morgan = require('morgan');
-const rateLimit = require('express-rate-limit');
+// rate limiting disabled
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 require('dotenv').config();
@@ -20,18 +21,12 @@ const io = new Server(httpServer, {
 });
 
 // Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
-  message: { success: false, message: 'Too many requests, please try again later' }
-});
 
 // Middleware
 app.use(helmet());
 app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5173', credentials: true }));
 app.use(morgan('dev'));
 app.use(express.json({ limit: '10mb' }));
-app.use('/api/', limiter);
 
 // Health check
 app.get('/api/test-email', async (req, res) => {
