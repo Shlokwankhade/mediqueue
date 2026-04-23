@@ -34,6 +34,7 @@ export const doctorAPI = {
   getAll: () => api.get('/doctors'),
   getById: (id) => api.get('/doctors/' + id),
   updateProfile: (data) => api.post('/doctors/profile', data),
+  getAvailability: (doctorId, date) => api.get('/doctors/' + doctorId + '/availability?date=' + date),
 };
 
 export const queueAPI = {

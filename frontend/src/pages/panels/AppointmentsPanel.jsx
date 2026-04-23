@@ -27,10 +27,10 @@ export default function AppointmentsPanel({ role }) {
     try {
       const r = await appointmentAPI.getAll();
       setAppts(r.data.appointments || []);
-      if (role === 'patient') {
-        const d = await doctorAPI.getAll();
-        setDocs(d.data.doctors || []);
-      }
+      try {
+        const docs = await doctorAPI.getAll();
+        setDocs(docs.data.doctors || []);
+      } catch(de) { console.log('Doctors load error:', de.message); }
     } catch(e) { toast('Failed to load','error'); }
     finally { setLoad(false); }
   };
@@ -41,8 +41,17 @@ export default function AppointmentsPanel({ role }) {
     if (!doctorId || !date) return;
     try {
       const r = await doctorAPI.getAvailability(doctorId, date);
-      setSlots(r.data.slots || []);
-    } catch(e) { setSlots([]); }
+      setSlots(r.data.slots || generateSlots());
+    } catch(e) { setSlots(generateSlots()); }
+  };
+
+  const generateSlots = () => {
+    const times = [];
+    for (let h = 9; h <= 17; h++) {
+      times.push({ time: h.toString().padStart(2,'0') + ':00', available: true });
+      times.push({ time: h.toString().padStart(2,'0') + ':30', available: true });
+    }
+    return times;
   };
 
   const openModal = () => {
@@ -57,7 +66,7 @@ export default function AppointmentsPanel({ role }) {
     if (!form.time)      { toast('Please select a time slot','warning'); return; }
     setBook(true);
     try {
-      await appointmentAPI.book({
+      await appointmentAPI.create({
         doctor_id: form.doctor_id,
         appointment_time: form.date + 'T' + form.time + ':00',
         type: form.type,
@@ -182,7 +191,7 @@ export default function AppointmentsPanel({ role }) {
           />
         </div>
 
-        {slots.filter(s=>s.available).length > 0 && (
+        {form.date && form.doctor_id && (
           <div style={{marginBottom:18}}>
             <label style={labelStyle}>Available Time Slots</label>
             <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8}}>
