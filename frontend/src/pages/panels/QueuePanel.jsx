@@ -70,7 +70,7 @@ export default function QueuePanel({ role }) {
   const joinQueue = async (apptId, dId) => {
     setJoining(true);
     try {
-      const r = await queueAPI.join(apptId);
+      const r = await queueAPI.join({ appointment_id: apptId });
       setMyEntry(r.data.queueEntry);
       setDoctorId(dId);
       toast('Joined queue! Token: ' + r.data.queueEntry.token_number, 'success');
